@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"; 
-import { Link, Events } from "react-scroll";
+import { useState, useEffect } from "react";
+import { Link, scrollSpy } from "react-scroll";
 
 const sections = [
   { id: "about",    label: "About" },
@@ -13,51 +13,38 @@ const sections = [
 export default function Sidebar() {
   const [active, setActive] = useState("");
 
-  // Keep <active> in sync with the section that’s in view
+  /* ─── NEW: ask react-scroll to spy once at mount ─── */
   useEffect(() => {
-    Events.scrollEvent.register("begin", () => {});
-    Events.scrollEvent.register("end", (to) => setActive(to));
-    return () => {
-      Events.scrollEvent.remove("begin");
-      Events.scrollEvent.remove("end");
-    };
+    scrollSpy.update();           // initialise spy
   }, []);
 
   return (
     <aside
-      /* ⬅ fixed left edge, transparent → opaque on hover  */
       className="group fixed lg:inset-y-0 lg:left-0 lg:w-72
                  lg:flex lg:flex-col lg:px-2 lg:py-8
                  inset-x-0 top-0 flex-row justify-around
-
-             bg-white/0           /* fully transparent by default  */
-             hover:bg-white/20    /* ~20 % white overlay on hover   */
-
-             hover:backdrop-blur-md
-                 text-white          /* keep all text white            */
-                 transition-all duration-200" /* smooth opacity animation       */
-
+                 bg-white/0 hover:bg-white/20 hover:backdrop-blur-md
+                 text-white transition-all duration-200"
     >
-      {/* Logo or initials at the top */}
       <span className="mb-6 text-4xl font-semibold tracking-wide
-                        opacity-40 group-hover:opacity-100  /* 50 % → 100 % */
-                        transition-opacity">
+                       opacity-40 group-hover:opacity-100 transition-opacity">
         Gavin Onghai
       </span>
 
-      {/* Navigation links */}
       {sections.map(({ id, label }) => (
         <Link
           key={id}
           to={id}
           smooth
           duration={500}
-          spy
+          spy                 /* let react-scroll watch this link */
+          offset={-60}        /* adjust if you have a fixed header */
+          onSetActive={() => setActive(id)}   /* ← update state */
           className={`text-xl cursor-pointer transition-all
-            opacity-40 group-hover:opacity-100 
-            ${active === id ? "font-semibold" : "font-light"}
-            hover:text-5xl hover:font-semibold
-             !text-white`}
+            opacity-40 group-hover:opacity-100
+            ${active === id ? "font-semibold !text-5xl" : "font-light"}
+            hover:text-5xl hover:font-semibold !text-white
+            `}
         >
           {label}
         </Link>
