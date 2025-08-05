@@ -26,13 +26,22 @@ export default function Sidebar() {
   return (
     <aside
       /* ⬅ fixed left edge, transparent → opaque on hover  */
-      className="fixed inset-y-0 left-0 z-40 w-72 flex flex-col gap-12
-                 bg-white/0 hover:bg-white/90 transition-colors
-                 border-gray-200/50 backdrop-blur
-                 px-4 py-8 shadow-lg/0 hover:shadow-lg"
+      className="group fixed lg:inset-y-0 lg:left-0 lg:w-72
+                 lg:flex lg:flex-col lg:px-4 lg:py-8
+                 inset-x-0 top-0 flex-row justify-around
+
+             bg-white/0           /* fully transparent by default  */
+             hover:bg-white/20    /* ~20 % white overlay on hover   */
+
+             hover:backdrop-blur-md
+                 text-white          /* keep all text white            */
+                 transition-all duration-200" /* smooth opacity animation       */
+
     >
       {/* Logo or initials at the top */}
-      <span className="mb-6 text-4xl font-semibold tracking-wide">
+      <span className="mb-6 text-4xl font-semibold tracking-wide
+                        opacity-40 group-hover:opacity-100  /* 50 % → 100 % */
+                        transition-opacity">
         Gavin Onghai
       </span>
 
@@ -45,8 +54,10 @@ export default function Sidebar() {
           duration={500}
           spy
           className={`text-xl cursor-pointer transition-all
-            ${active === id ? "font-bold text-white" : "text-gray-700"}
-            hover:text-4xl`}
+            opacity-40 group-hover:opacity-100 
+            ${active === id ? "font-semibold" : "font-light"}
+            hover:text-5xl hover:font-semibold
+             !text-white`}
         >
           {label}
         </Link>
