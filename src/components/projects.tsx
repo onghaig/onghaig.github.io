@@ -1,9 +1,9 @@
 export default function Projects() {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen text-left">
-          <h1>
-            Past Projects
-          </h1>
-        </div>
+        <section id="projects" className="relative h-screen">
+                <h1 className="text-4xl font-bold mb-4">
+                    My Projects
+                </h1>
+        </section>
     )
 }

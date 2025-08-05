@@ -1,6 +1,7 @@
 export default function Resume() {
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen text-left">
+        <section id="resume" className="relative h-screen">
+        <div className="flex flex-col items-center justify-center text-left">
             <div>
                 <h1 className="text-4xl font-bold mb-4">
                     My Resume
@@ -13,5 +14,6 @@ export default function Resume() {
                 </h2>
             </div>
         </div>
+        </section>
     )
 }

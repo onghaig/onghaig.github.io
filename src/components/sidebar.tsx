@@ -27,7 +27,7 @@ export default function Sidebar() {
     <aside
       /* ⬅ fixed left edge, transparent → opaque on hover  */
       className="group fixed lg:inset-y-0 lg:left-0 lg:w-72
-                 lg:flex lg:flex-col lg:px-4 lg:py-8
+                 lg:flex lg:flex-col lg:px-2 lg:py-8
                  inset-x-0 top-0 flex-row justify-around
 
              bg-white/0           /* fully transparent by default  */

@@ -12,13 +12,13 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div className="flex">
+    <div className="flex,">
       <Sidebar/>
       <main className="flex-1 pl-52">
       <AboutMe/>
       <Projects/>
-      <Resume/>
       <Skills/>
+      <Resume/>
       <Contact/>
       <Blog/>
       </main>
