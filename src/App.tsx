@@ -1,4 +1,4 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import './App.css'
 import AboutMe from './components/aboutme'
 import Resume from './components/resume'
@@ -9,7 +9,7 @@ import Blog from './components/blog'
 import Skills from './components/skills'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
 
   return (
     <div className="flex,">
