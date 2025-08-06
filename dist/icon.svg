@@ -1,0 +1,36 @@
+<!-- go-logo.svg -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 120 120"
+  width="120"
+  height="120"
+  role="img"
+  aria-labelledby="logoTitle"
+>
+  <title id="logoTitle">G O monogram</title>
+
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="56" fill="#0a192f" />
+
+  <g
+    fill="none"
+    stroke="#64ffda"
+    stroke-width="10"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <!-- Proper G (left) -->
+    <!-- Draw almost-full circle, then little horizontal bar -->
+    <path d="
+      M45 35
+      a25 25 0 1 0 0 50
+      a25 25 0 1 0 0 -0
+      M45 60 h20
+      M60 60 v25
+      M45 85 h13
+    " />
+
+    <!-- O (right) -->
+    <circle cx="88" cy="70" r="15" />
+  </g>
+</svg>
