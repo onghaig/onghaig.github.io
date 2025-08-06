@@ -13,9 +13,9 @@ const sections = [
 export default function Sidebar() {
   const [active, setActive] = useState("");
 
-  /* ─── NEW: ask react-scroll to spy once at mount ─── */
+
   useEffect(() => {
-    scrollSpy.update();           // initialise spy
+    scrollSpy.update();
   }, []);
 
   return (
