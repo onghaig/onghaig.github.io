@@ -1,8 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@600;800&display=swap");
 @import "tailwindcss";
 
 html { scroll-behavior: smooth; } 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-body: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "Poppins", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -26,6 +28,7 @@ a:hover {
 }
 
 body {
+  font-family: var(--font-body);
   margin: 0;
   display: flex;
   place-items: center;
@@ -34,9 +37,17 @@ body {
 }
 
 h1 {
+  font-family: var(--font-heading);
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+h2, h3 {
+  font-family: var(--font-heading);
+  font-size: 1.5em;
+  line-height: 1.5;
+}
+
 
 button {
   border-radius: 8px;
