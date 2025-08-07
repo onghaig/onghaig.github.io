@@ -84,7 +84,7 @@ export default function Sidebar() {
             style={{
               fontSize: `${fontSize(r)}rem`,
               opacity: opacity(r),
-              transform: `scale(${1 + r * 0.2})`,
+              transform: `scale(${.9 + r * 0.2})`,
             }}
           >
             {label}
