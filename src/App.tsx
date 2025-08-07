@@ -7,7 +7,6 @@ import Projects from './components/projects'
 import Contact from './components/contact'
 import Blog from './components/blog'
 import Skills from './components/skills'
-import MyFace from './components/myface'
 
 function App() {
   // const [count, setCount] = useState(0)
