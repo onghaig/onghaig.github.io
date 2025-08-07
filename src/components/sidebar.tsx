@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, scrollSpy } from "react-scroll";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
 
 const sections = [
   { id: "about",    label: "About" },
@@ -9,6 +10,16 @@ const sections = [
   { id: "contact",  label: "Contact" },
   { id: "blog",     label: "Blog" },
 ];
+
+const links = [
+  { id: "github",    label: "GitHub",    url: "https://github.com/onghaig", iconTag: "FaGithub"},
+  { id: "linkedin",  label: "LinkedIn",  url: "https://www.linkedin.com/in/gavin-onghai/", iconTag: "FaLinkedin"},
+]
+
+const iconMap: Record<string, React.ElementType> = {
+  FaGithub,
+  FaLinkedin,
+};
 
 export default function Sidebar() {
   const [active, setActive] = useState("");
@@ -49,6 +60,24 @@ export default function Sidebar() {
           {label}
         </Link>
       ))}
+      <div className=" flex justify-center gap-4">
+        {links.map(({ id, url, iconTag, label }) => {
+          const Icon = iconMap[iconTag];
+          return (
+            <a
+              key={id}
+              href={url}
+              aria-label={label}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-40 group-hover:opacity-100 transition-opacity
+                         duration-400 hover:scale-200 hover:"
+            >
+              <Icon className="w-7 h-7" />
+            </a>
+          );
+        })}
+      </div>
     </aside>
   );
 }

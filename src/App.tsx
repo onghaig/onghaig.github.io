@@ -7,14 +7,15 @@ import Projects from './components/projects'
 import Contact from './components/contact'
 import Blog from './components/blog'
 import Skills from './components/skills'
+import MyFace from './components/myface'
 
 function App() {
   // const [count, setCount] = useState(0)
 
   return (
-    <div className="flex,">
+    <div className="flex">
       <Sidebar/>
-      <main className="flex-1 pl-52">
+      <main className="flex-auto">
       <AboutMe/>
       <Projects/>
       <Skills/>

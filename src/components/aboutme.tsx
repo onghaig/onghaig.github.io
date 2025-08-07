@@ -1,19 +1,11 @@
-import myFace from "../assets/myface.jpg";
+import MyFace from "./myface";
 
 export default function AboutMe() {
   return (
-    <section id="about" className="relative h-screen ">
-      <div className="flex flex-col items-start justify-around text-left px-8 py-16">
-        <div className="flex items-center">
-            <img
-            src={myFace}
-            alt="Gavin Ong Hai"
-            className="rounded-full w-48 h-64 object-cover"
-          />
+    <section id="about" className="relative h-screen flex items-center lg:flex-row lg:h-screen px-8">
+        <div className="flex flex-col items-start max-w-3xl">
           <h1 className="text-4xl font-bold">Hi there, I'm Gavin!</h1>
-        </div>
-
-        <h2 className="text-xl font-medium max-w-9xl">
+        <h2 className="text-xl text-left font-medium max-w-3xl mt-4 indent-10">
           My name is Gavin Ong Hai (王海), and I am a sophomore at Yale University
           studying Electrical Engineering and Computer Science. Much of my past
           work has been in material science and chemistry. Currently, I am more
@@ -21,7 +13,8 @@ export default function AboutMe() {
           learning about financial markets. I hope you enjoy looking through my
           website!
         </h2>
-      </div>
+        </div>
+      <MyFace/>
     </section>
   );
 }
