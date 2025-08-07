@@ -67,7 +67,9 @@ export default function Sidebar() {
     >
       <span className="text-4xl font-semibold tracking-wide
                        opacity-40 group-hover:opacity-100 transition-opacity">
+        <a href="https://onghaig.github.io" target="_blank" rel="noopener noreferrer">
         Gavin Onghai
+        </a>
       </span>
 
       {sections.map(({ id, label }) => {
