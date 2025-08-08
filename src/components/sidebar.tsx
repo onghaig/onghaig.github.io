@@ -65,7 +65,7 @@ export default function Sidebar() {
                  bg-white/0 hover:bg-white/20 hover:backdrop-blur-md
                  text-white transition-all duration-200"
     >
-      <span className="text-4xl font-semibold tracking-wide
+      <span className="text-md lg:text-4xl font-semibold tracking-wide
                        opacity-40 group-hover:opacity-100 transition-opacity">
         <a href="https://onghaig.github.io" target="_blank" rel="noopener noreferrer">
         Gavin Onghai

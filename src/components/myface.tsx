@@ -10,7 +10,7 @@ export default function MyFace() {
             className="w-64 h-80 lg:w-96 lg:h-128 object-cover rounded-2xl lg:rounded-4xl lg:ml-12"
           />
         <img src={YaleIcon} alt="" aria-hidden="true"
-          className="absolute -right-2 top-2 lg:right-0 lg:top-100 fill-white bg-white border-1 rounded-lg h-16 w-16 lg:h-24 lg:w-24" />
+          className="absolute right-0 top-60 lg:left-65 lg:top-95 fill-white bg-white border-1 rounded-lg h-16 w-16 lg:h-24 lg:w-24" />
         </div>
     )   
 }
