@@ -34,20 +34,39 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 h1 {
   font-family: var(--font-heading);
-  font-size: 3.2em;
+  font-size: 2.5em;
   line-height: 1.1;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 3.2em;
+  }
 }
 
 h2, h3 {
   font-family: var(--font-heading);
-  font-size: 1.5em;
-  line-height: 2;
+  font-size: 1.25em;
+  line-height: 1.6;
 }
 
+@media (min-width: 768px) {
+  h2, h3 {
+    font-size: 1.5em;
+    line-height: 2;
+  }
+}
 
 button {
   border-radius: 8px;
@@ -59,6 +78,8 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 button:hover {
   border-color: #646cff;
@@ -66,6 +87,24 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  button:hover {
+    border-color: transparent;
+  }
+  
+  a:hover {
+    color: #ffffff;
+  }
+}
+
+/* Prevent zoom on input focus on iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  input, select, textarea {
+    font-size: 16px;
+  }
 }
 
 @media (prefers-color-scheme: light) {
