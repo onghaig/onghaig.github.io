@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 function CycleText() {
-  const words = ["Software Developer", "Student", "Researcher", "Hahn Scholar"];
+  const words = ["Software Developer", "EECS Student", "Researcher", "Hahn Scholar"];
   const [index, setIndex] = useState(0);
   const total = words.length;
 
@@ -15,15 +15,15 @@ function CycleText() {
   }, [total]);
 
     return (
-    <span className="inline-block"> {/* Ensure the span is inline-block for proper alignment */}
+    <span className="inline-block"> 
       <AnimatePresence mode="wait">
         <motion.h1 
-          key={`words_${index}`} // Key is important to trigger animation on change
+          key={`words_${index}`} 
           initial={{ opacity: 0, y: 30 }} 
           animate={{ opacity: 1, y: 0 }} 
           exit={{ opacity: 0, y: -30 }} 
-          transition={{ duration: 0.08 }} // Customize your animation transition
-          className="inline-block font-bold text-3xl lg:text-4xl" // Align styles with your h1
+          transition={{ duration: 0.2 }} 
+          className="inline-block font-bold text-3xl lg:text-4xl" 
         >
           {words[index]} 
         </motion.h1>
@@ -41,6 +41,7 @@ export default function AboutMe() {
           </p>
           <h1 className="text-3xl lg:text-4xl font-bold">Gavin OngHai</h1>
           <div className="opacity-40">
+            <span> <h1 className="inline-block text-3xl lg:text-4xl font-bold mr-4 opacity-100">•</h1></span>
           <CycleText/>
           </div>
         <div className="flex flex-wrap gap-2 text-sm font-extralight mt-1">
@@ -48,7 +49,7 @@ export default function AboutMe() {
           <span>•</span>
           <a
             href="mailto:gavin.onghai@yale.edu"
-            className="text-blue-600 hover:underline"
+            className="hover:underline-offset-auto !hover:underline decoration-white transition-all duration-200"
           >
             gavin.onghai@yale.edu
           </a>
@@ -56,7 +57,7 @@ export default function AboutMe() {
           <span>19</span>
         </div>
         <p className="text-lg lg:text-xl text-center lg:text-left font-light max-w-5xl mt-4 lg:indent-10 leading-relaxed">
-          I am a sophomore and Hahn Scholar at Yale University studying Electrical Engineering and Computer Science. Much of my past
+          I am a sophomore and Hahn Scholar at Yale University majoring in Electrical Engineering and Computer Science. Much of my past
           work has been in material science and chemistry. Currently, I am focusing on software and hardware development, as well as
           learning about financial markets. I hope you enjoy looking through my
           website!
