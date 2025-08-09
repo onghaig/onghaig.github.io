@@ -1,4 +1,36 @@
 import MyFace from "./myface";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+function CycleText() {
+  const words = ["Software Developer", "Student", "Researcher", "Hahn Scholar"];
+  const [index, setIndex] = useState(0);
+  const total = words.length;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((current) => (current + 1) % total);
+    }, 1300); 
+    return () => clearInterval(interval);
+  }, [total]);
+
+    return (
+    <span className="inline-block"> {/* Ensure the span is inline-block for proper alignment */}
+      <AnimatePresence mode="wait">
+        <motion.h1 
+          key={`words_${index}`} // Key is important to trigger animation on change
+          initial={{ opacity: 0, y: 30 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          exit={{ opacity: 0, y: -30 }} 
+          transition={{ duration: 0.08 }} // Customize your animation transition
+          className="inline-block font-bold text-3xl lg:text-4xl" // Align styles with your h1
+        >
+          {words[index]} 
+        </motion.h1>
+      </AnimatePresence>
+    </span>
+  );
+}
 
 export default function AboutMe() {
   return (
@@ -8,6 +40,9 @@ export default function AboutMe() {
             Hi there, I'm
           </p>
           <h1 className="text-3xl lg:text-4xl font-bold">Gavin OngHai</h1>
+          <div className="opacity-40">
+          <CycleText/>
+          </div>
         <div className="flex flex-wrap gap-2 text-sm font-extralight mt-1">
           <span>Port Jefferson, NY <span>-</span> New Haven, CT</span>
           <span>•</span>
