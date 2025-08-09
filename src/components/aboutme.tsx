@@ -49,7 +49,6 @@ export default function AboutMe() {
           <span>•</span>
           <a
             href="mailto:gavin.onghai@yale.edu"
-            className="hover:underline-offset-auto !hover:underline decoration-white transition-all duration-200"
           >
             gavin.onghai@yale.edu
           </a>
