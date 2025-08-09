@@ -55,9 +55,15 @@ h1 {
   }
 }
 
-h2, h3 {
+h2 {
   font-family: var(--font-heading);
   font-size: 1.25em;
+  line-height: 1.6;
+}
+
+h3{
+  font-family: var(--font-body);
+  font-size: 1.1em;
   line-height: 1.6;
 }
 

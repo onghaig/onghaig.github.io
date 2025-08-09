@@ -1,6 +1,6 @@
 export default function Resume() {
     return (
-        <section id="resume" className="relative min-h-screen flex flex-col justify-center px-4 lg:px-8 py-16 lg:py-32">
+        <section id="resume" className="relative flex flex-col justify-center px-4 lg:px-8 py-16 lg:py-32">
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
             <div>
                 <h1 className="text-3xl lg:text-4xl font-bold mb-4">

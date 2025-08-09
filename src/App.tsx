@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="lg:flex">
       <Sidebar/>
-      <main className="flex-auto lg:ml-72 pt-16 lg:pt-0">
+      <main className="flex-auto lg:ml-24 pt-16 lg:pt-0">
       <AboutMe/>
       <Projects/>
       <Skills/>
