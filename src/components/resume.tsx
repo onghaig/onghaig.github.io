@@ -33,8 +33,6 @@ export default function Resume() {
             Download PDF
           </a>
         </div>
-
-        {/* Embedded viewer (hidden on very small screens for better UX) */}
         <div className="w-full">
           <object
             data={resumeUrl}
