@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@600;800&display=swap");
 @import "tailwindcss";
 
-html { scroll-behavior: smooth; } 
+html { scroll-behavior: smooth; scroll-snap-type: y mandatory; } 
 :root {
   --font-body: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-heading: "Poppins", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -50,6 +50,23 @@ h1 {
   line-height: 1.1;
 }
 
+/* Override for cycling text and bullet point */
+h1.cycle-text {
+  font-size: 1.125rem !important; /* text-lg */
+}
+
+@media (min-width: 640px) {
+  h1.cycle-text {
+    font-size: 1.25rem !important; /* sm:text-xl */
+  }
+}
+
+@media (min-width: 1024px) {
+  h1.cycle-text {
+    font-size: 2.25rem !important; /* lg:text-4xl */
+  }
+}
+
 @media (min-width: 768px) {
   h1 {
     font-size: 3.2em;
@@ -94,6 +111,10 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+section {
+  scroll-snap-align: start;
 }
 
 /* Touch-friendly improvements */
