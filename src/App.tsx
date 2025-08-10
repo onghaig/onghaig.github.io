@@ -11,9 +11,9 @@ function App() {
   // const [count, setCount] = useState(0)
 
   return (
-    <div className="flex flex-col lg:flex">
+    <div className="flex flex-col">
       <Sidebar/>
-      <main className="flex-auto lg:ml-36 flex flex-col">
+      <main className="flex-auto lg:ml-24 flex flex-col">
         <AboutMe/>
         <Skills/>
         <Projects/>

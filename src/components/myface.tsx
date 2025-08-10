@@ -3,7 +3,7 @@ import YaleIcon from "../assets/Yale_University_Shield.png";
 
 export default function MyFace() {
     return (
-        <div className="relative flex justify-center lg:justify-start items-center h-90">
+        <div className="relative flex justify-center lg:justify-center items-center h-90">
         <img 
             src={myFace}
             alt="Gavin Ong Hai"
