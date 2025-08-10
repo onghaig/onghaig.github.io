@@ -14,8 +14,8 @@ function CycleText() {
     return () => clearInterval(interval);
   }, [total]);
 
-    return (
-    <span className="inline-block"> 
+  return (
+    <div className="inline-block pointer-events-none">
       <AnimatePresence mode="wait">
         <motion.h1 
           key={`words_${index}`} 
@@ -28,7 +28,7 @@ function CycleText() {
           {words[index]} 
         </motion.h1>
       </AnimatePresence>
-    </span>
+    </div>
   );
 }
 
@@ -49,6 +49,7 @@ export default function AboutMe() {
           <span>•</span>
           <a
             href="mailto:gavin.onghai@yale.edu"
+            className="hover:underline hover:text-black hover:bg-white transition-all"
           >
             gavin.onghai@yale.edu
           </a>

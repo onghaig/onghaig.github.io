@@ -4,11 +4,11 @@ import { FaLinkedin, FaGithub } from "react-icons/fa";
 
 const sections = [
   { id: "about",    label: "About" },
-  { id: "projects", label: "Projects" },
   { id: "skills",   label: "Skills" },
+  { id: "projects", label: "Projects" },
   { id: "resume",   label: "Resume" },
   { id: "contact",  label: "Contact" },
-  { id: "blog",     label: "Blog" },
+  // { id: "blog",     label: "Blog" },
 ];
 
 const links = [

@@ -5,7 +5,6 @@ import Resume from './components/resume'
 import Sidebar from './components/sidebar'
 import Projects from './components/projects'
 import Contact from './components/contact'
-import Blog from './components/blog'
 import Skills from './components/skills'
 
 function App() {
@@ -14,13 +13,12 @@ function App() {
   return (
     <div className="lg:flex">
       <Sidebar/>
-      <main className="flex-auto lg:ml-24 pt-16 lg:pt-0">
-      <AboutMe/>
-      <Projects/>
-      <Skills/>
-      <Resume/>
-      <Contact/>
-      <Blog/>
+      <main className="flex-auto lg:ml-24 pt-16 lg:pt-0 flex flex-col">
+        <AboutMe/>
+        <Skills/>
+        <Projects/>
+        <Resume/>
+        <Contact/>
       </main>
     </div>
   )

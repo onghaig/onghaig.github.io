@@ -20,12 +20,13 @@ html { scroll-behavior: smooth; }
 
 a {
   font-weight: 500;
-  color: #ffffff;
+  /* color: #ffffff; */
   text-decoration: inherit;
+  user-select: auto;
 }
-a:hover {
+/* a:hover {
   color: #ffffff;
-}
+} */
 
 body {
   font-family: var(--font-body);

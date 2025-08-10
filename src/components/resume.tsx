@@ -6,7 +6,7 @@ export default function Resume() {
   return (
     <section
       id="resume"
-      className="relative flex flex-col justify-center px-4 lg:px-8 py-16 lg:py-32"
+      className="relative flex flex-col justify-center px-4 lg:px-8"
     >
       <div className="flex flex-col items-center lg:items-start text-center lg:text-left w-full">
         <h1 className="text-3xl lg:text-4xl font-bold mb-4">My Resume</h1>
@@ -21,14 +21,14 @@ export default function Resume() {
             href={resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-3 py-2 rounded-lg border text-sm hover:bg-black hover:text-white transition-colors"
+            className="px-3 py-2 rounded-lg border text-sm text-white hover:bg-white hover:text-black transition-colors"
           >
             Open in new tab
           </a>
           <a
             href={resumeUrl}
             download="Gavin_OngHai_Resume.pdf"
-            className="px-3 py-2 rounded-lg border text-sm hover:bg-black hover:text-white transition-colors"
+            className="px-3 py-2 rounded-lg border text-sm text-white hover:bg-white hover:text-black transition-colors"
           >
             Download PDF
           </a>
