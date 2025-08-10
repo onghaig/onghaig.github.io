@@ -63,16 +63,16 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile Navigation Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-white/20 px-4 py-3">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 dark:bg-white/10 bg-gray-100 backdrop-blur-md border-b dark:border-white/20 px-4 py-3">
         <div className="flex justify-between items-center">
-          <span className="text-lg font-semibold text-white">
+          <span className="text-lg font-semibold dark:text-white">
             {currentSection.label}
           </span>
           <a
             href="https://onghaig.github.io"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+            className="text-sm font-medium dark:text-white/80 transition-colors"
           >
             Gavin Onghai
           </a>
