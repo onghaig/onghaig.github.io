@@ -57,60 +57,83 @@ export default function Sidebar() {
   const fontSize = (ratio: number) => 1.25 + ratio * 1.75; // rem, roughly text-xl → text-5xl
   const opacity = (ratio: number) => 0.4 + ratio * 0.6;
 
+  // Find the current active section for mobile header
+  const currentSection = sections.reduce((active, section) => {
+    return (proximity[section.id] ?? 0) > (proximity[active.id] ?? 0) ? section : active;
+  }, sections[0]);
+
   return (
-    <aside
-      className="group fixed lg:inset-y-0 lg:left-0 lg:w-72
-                 lg:flex lg:flex-col lg:px-2 lg:py-8
-                 inset-x-0 top-0 flex-row justify-around
-                 bg-white/0 hover:bg-white/20 hover:backdrop-blur-md
-                 text-white transition-all duration-200"
-    >
-      <span className="text-md lg:text-4xl font-semibold tracking-wide
-                       opacity-40 group-hover:opacity-100 transition-opacity">
-        <a href="https://onghaig.github.io" target="_blank" rel="noopener noreferrer">
-        Gavin Onghai
-        </a>
-      </span>
-
-      {sections.map(({ id, label }) => {
-        const r = proximity[id] ?? 0;
-        return (
-          <Link
-            key={id}
-            to={id}
-            smooth
-            duration={500}
-            spy
-            offset={-60}
-            className="cursor-pointer hover:scale-150 transition-transform"
-            style={{
-              fontSize: `${fontSize(r)}rem`,
-              opacity: opacity(r),
-              transform: `scale(${.9 + r * 0.2})`,
-            }}
+    <>
+      {/* Mobile Navigation Header */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-white/20 px-4 py-3">
+        <div className="flex justify-between items-center">
+          <span className="text-lg font-semibold text-white">
+            {currentSection.label}
+          </span>
+          <a 
+            href="https://onghaig.github.io" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-white/80 hover:text-white transition-colors"
           >
-            {label}
-          </Link>
-        );
-      })}
+            Gavin Onghai
+          </a>
+        </div>
+      </header>
 
-      <div className="flex justify-center gap-4">
-        {links.map(({ id, url, iconTag, label }) => {
-          const Icon = iconMap[iconTag];
+      {/* Desktop Sidebar */}
+      <aside
+        className="hidden lg:flex group fixed inset-y-0 left-0 w-72 flex-col px-2 py-8
+                   bg-white/0 hover:bg-white/20 hover:backdrop-blur-md
+                   text-white transition-all duration-200"
+      >
+        <span className="text-4xl font-semibold tracking-wide
+                         opacity-40 group-hover:opacity-100 transition-opacity">
+          <a href="https://onghaig.github.io" target="_blank" rel="noopener noreferrer">
+          Gavin Onghai
+          </a>
+        </span>
+
+        {sections.map(({ id, label }) => {
+          const r = proximity[id] ?? 0;
           return (
-            <a
+            <Link
               key={id}
-              href={url}
-              aria-label={label}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="opacity-40 group-hover:opacity-100 transition-opacity duration-400 hover:scale-200"
+              to={id}
+              smooth
+              duration={500}
+              spy
+              offset={0}
+              className="cursor-pointer hover:scale-150 transition-transform"
+              style={{
+                fontSize: `${fontSize(r)}rem`,
+                opacity: opacity(r),
+                transform: `scale(${.9 + r * 0.2})`,
+              }}
             >
-              <Icon className="w-7 h-7" />
-            </a>
+              {label}
+            </Link>
           );
         })}
-      </div>
-    </aside>
+
+        <div className="flex justify-center gap-4 mt-auto">
+          {links.map(({ id, url, iconTag, label }) => {
+            const Icon = iconMap[iconTag];
+            return (
+              <a
+                key={id}
+                href={url}
+                aria-label={label}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opacity-40 hover:opacity-100 transition-opacity duration-400 hover:scale-200"
+              >
+                <Icon className="w-7 h-7" />
+              </a>
+            );
+          })}
+        </div>
+      </aside>
+    </>
   );
 }
