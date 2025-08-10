@@ -22,14 +22,14 @@ export default function Resume() {
               href={resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3 py-2 rounded-lg border text-sm text-white hover:bg-white hover:text-black transition-colors"
+              className="px-3 py-2 rounded-lg border text-sm dark:hover:bg-white dark:hover:text-black transition-colors"
             >
               Open in new tab
             </a>
             <a
               href={resumeUrl}
               download="Gavin_OngHai_Resume.pdf"
-              className="px-3 py-2 rounded-lg border text-sm text-white hover:bg-white hover:text-black transition-colors"
+              className="px-3 py-2 rounded-lg border text-sm dark:hover:bg-white dark:hover:text-black transition-colors"
             >
               Download PDF
             </a>

@@ -8,12 +8,11 @@ const sections = [
   { id: "projects", label: "Projects" },
   { id: "resume",   label: "Resume" },
   { id: "contact",  label: "Contact" },
-  // { id: "blog",     label: "Blog" },
 ];
 
 const links = [
-  { id: "github",    label: "GitHub",    url: "https://github.com/onghaig", iconTag: "FaGithub"},
-  { id: "linkedin",  label: "LinkedIn",  url: "https://www.linkedin.com/in/gavin-onghai/", iconTag: "FaLinkedin"},
+  { id: "github",   label: "GitHub",   url: "https://github.com/onghaig", iconTag: "FaGithub" },
+  { id: "linkedin", label: "LinkedIn", url: "https://www.linkedin.com/in/gavin-onghai/", iconTag: "FaLinkedin" },
 ];
 
 const iconMap: Record<string, React.ElementType> = {
@@ -22,7 +21,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export default function Sidebar() {
-  // each section gets a number 0-1 indicating how close its center is to viewport center
+  // 0–1 proximity to viewport center per section
   const [proximity, setProximity] = useState<Record<string, number>>(
     () => Object.fromEntries(sections.map(({ id }) => [id, 0]))
   );
@@ -37,8 +36,8 @@ export default function Sidebar() {
         const rect = el.getBoundingClientRect();
         const center = rect.top + rect.height / 2;
         const dist = Math.abs(center - vpCenter);
-        const maxDist = vpCenter + rect.height / 2; // farthest the section center can be
-        next[id] = Math.max(0, 1 - dist / maxDist); // 1 → exactly centered, 0 → far away
+        const maxDist = vpCenter + rect.height / 2;
+        next[id] = Math.max(0, 1 - dist / maxDist);
       });
       return next;
     });
@@ -54,13 +53,12 @@ export default function Sidebar() {
     };
   }, [update]);
 
-  const fontSize = (ratio: number) => 1.25 + ratio * 1.75; // rem, roughly text-xl → text-5xl
-  const opacity = (ratio: number) => 0.4 + ratio * 0.6;
+  const fontSize = (ratio: number) => 1.25 + ratio * 1.75; // rem
+  const opacity  = (ratio: number) => 0.4  + ratio * 0.6;
 
-  // Find the current active section for mobile header
-  const currentSection = sections.reduce((active, section) => {
-    return (proximity[section.id] ?? 0) > (proximity[active.id] ?? 0) ? section : active;
-  }, sections[0]);
+  const currentSection = sections.reduce((active, section) =>
+    (proximity[section.id] ?? 0) > (proximity[active.id] ?? 0) ? section : active
+  , sections[0]);
 
   return (
     <>
@@ -70,9 +68,9 @@ export default function Sidebar() {
           <span className="text-lg font-semibold text-white">
             {currentSection.label}
           </span>
-          <a 
-            href="https://onghaig.github.io" 
-            target="_blank" 
+          <a
+            href="https://onghaig.github.io"
+            target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-medium text-white/80 hover:text-white transition-colors"
           >
@@ -83,55 +81,74 @@ export default function Sidebar() {
 
       {/* Desktop Sidebar */}
       <aside
-        className="hidden lg:flex group fixed inset-y-0 left-0 w-72 flex-col px-2 py-8
-                   bg-white/0 hover:bg-white/20 hover:backdrop-blur-md
-                   text-white transition-all duration-200"
+        className="
+          hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:w-72
+          lg:flex-col lg:h-svh 
+          group bg-gray-50 hover:bg-gray-200 dark:bg-white/0 dark:hover:bg-white/20 hover:backdrop-blur-md 
+          transition-all duration-200
+        "
       >
-        <span className="text-4xl font-semibold tracking-wide
-                         opacity-40 group-hover:opacity-100 transition-opacity">
-          <a href="https://onghaig.github.io" target="_blank" rel="noopener noreferrer">
-          Gavin Onghai
-          </a>
-        </span>
+        {/* Header / Name */}
+        <div className="px-4 py-6">
+          <span className="text-4xl font-semibold tracking-wide opacity-40 group-hover:opacity-100 transition-opacity">
+            <a href="https://onghaig.github.io" target="_blank" rel="noopener noreferrer">
+              Gavin Onghai
+            </a>
+          </span>
+        </div>
 
-        {sections.map(({ id, label }) => {
-          const r = proximity[id] ?? 0;
-          return (
-            <Link
-              key={id}
-              to={id}
-              smooth
-              duration={500}
-              spy
-              offset={0}
-              className="cursor-pointer hover:scale-150 transition-transform"
-              style={{
-                fontSize: `${fontSize(r)}rem`,
-                opacity: opacity(r),
-                transform: `scale(${.9 + r * 0.2})`,
-              }}
-            >
-              {label}
-            </Link>
-          );
-        })}
-
-        <div className="flex justify-center gap-4 mt-auto">
-          {links.map(({ id, url, iconTag, label }) => {
-            const Icon = iconMap[iconTag];
+        {/* Evenly distributed nav (fills all remaining height) */}
+        <nav className="flex-1 flex flex-col">
+          {sections.map(({ id, label }) => {
+            const r = proximity[id] ?? 0;
             return (
-              <a
+              <Link
                 key={id}
-                href={url}
-                aria-label={label}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="opacity-40 hover:opacity-100 transition-opacity duration-400 hover:scale-200"
+                to={id}
+                smooth
+                duration={500}
+                spy
+                offset={0}
+                className="
+                  flex-1 flex items-center justify-center
+                  cursor-pointer select-none
+                "
               >
-                <Icon className="w-7 h-7" />
-              </a>
+                {/* scale/opacity on inner span so each row keeps equal height */}
+                <span
+                  className="transition-transform duration-300 will-change-transform"
+                  style={{
+                    fontSize: `${fontSize(r)}rem`,
+                    opacity: opacity(r),
+                    transform: `scale(${0.9 + r * 0.2})`,
+                  }}
+                >
+                  {label}
+                </span>
+              </Link>
             );
           })}
+        </nav>
+
+        {/* Footer / Socials pinned at bottom */}
+        <div className="px-4 py-6">
+          <div className="flex justify-center gap-4">
+            {links.map(({ id, url, iconTag, label }) => {
+              const Icon = iconMap[iconTag];
+              return (
+                <a
+                  key={id}
+                  href={url}
+                  aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="opacity-40 hover:opacity-100 transition-opacity duration-300 hover:scale-125"
+                >
+                  <Icon className="w-7 h-7" />
+                </a>
+              );
+            })}
+          </div>
         </div>
       </aside>
     </>
