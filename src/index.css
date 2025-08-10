@@ -21,7 +21,7 @@ html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
 a {
   font-weight: 500;
   /* color: #ffffff; */
-  text-decoration: inherit;
+  /* text-decoration: inherit; */
   user-select: auto;
 }
 /* a:hover {
@@ -106,8 +106,9 @@ button {
   touch-action: manipulation;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #ffffff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -145,6 +146,9 @@ section {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #575656ad;
+  }
+  button:hover {
+    border-color: #646cff;
   }
 }

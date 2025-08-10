@@ -4,6 +4,7 @@ export default function Skills() {
                 <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-center lg:text-left">
                     Skills
                 </h1>
+                
         </section>
     )
 }

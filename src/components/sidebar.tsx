@@ -63,7 +63,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile Navigation Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 dark:bg-white/10 bg-gray-100 backdrop-blur-md border-b dark:border-white/20 px-4 py-3">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 dark:bg-white/10 bg-black/20 backdrop-blur-md border-b dark:border-white/20 px-4 py-3">
         <div className="flex justify-between items-center">
           <span className="text-lg font-semibold dark:text-white">
             {currentSection.label}

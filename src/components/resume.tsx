@@ -13,7 +13,7 @@ export default function Resume() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">My Resume</h1>
 
           <p className="text-lg lg:text-xl font-medium leading-relaxed mb-4">
-            View or download my full resume detailing education, experience, and skills.
+            Here's my resume detailing my education, my experiences, and my skills.
           </p>
 
           {/* Action buttons */}
