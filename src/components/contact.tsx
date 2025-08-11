@@ -19,7 +19,7 @@ export default function ContactMe() {
       <div>
         <h1 className="w-full font-bold mb-6">My Contact Info</h1>
         <p className="mb-6 w-full">
-          I’m always open to interesting conversations, collaborations, and opportunities. Feel free to reach out!
+          I’m always open to interesting conversations, collaborations, and opportunities. Feel free to send a message!
         </p>
 
         {/* Contact details */}

@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 function CycleText() {
-  const words = ["Software Developer", "EECS Student", "Researcher", "Hahn Scholar"];
-  const [index, setIndex] = useState(0);
+  const words = ["Software Developer", "EECS Student", "Hahn Scholar"];
+  const [index, setIndex] = useState(1);
   const total = words.length;
 
   useEffect(() => {
