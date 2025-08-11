@@ -17,7 +17,7 @@ export default function ContactMe() {
       className="px-8 text-center lg:text-left"
     >
       <div>
-        <h1 className="text-3xl font-bold mb-6">My Contact Info</h1>
+        <h1 className="w-full font-bold mb-6">My Contact Info</h1>
         <p className="mb-6 w-full">
           I’m always open to interesting conversations, collaborations, and opportunities. Feel free to reach out!
         </p>
