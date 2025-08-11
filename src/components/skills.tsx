@@ -1,62 +1,85 @@
-import { SiPython, SiCplusplus, SiJavascript, SiHtml5, SiCss3,
+import {
+  SiPython, SiCplusplus, SiJavascript, SiHtml5, SiCss3,
   SiLinux, SiGit, SiNodedotjs, SiReact, SiTailwindcss,
   SiNumpy, SiPandas, SiScikitlearn,
 } from "react-icons/si";
 import { FaWindows } from "react-icons/fa";
 import { DiVisualstudio } from "react-icons/di";
-import { Cpu, CircuitBoard } from "lucide-react";
+import { Cpu, CircuitBoard, LineChart } from "lucide-react";
+
+type IconType = React.ComponentType<{ size?: number; className?: string }>;
 
 export default function Skills() {
-  const iconSize = 22;
+  const iconSize = 32;
+
+  const card =
+    "flex flex-col items-center justify-center p-3 rounded-lg bg-gray-100 dark:bg-gray-700 " +
+    "border border-transparent border-2 shadow-sm transition-all will-change-transform " +
+    "hover:border-gray-400 dark:hover:border-white hover:-translate-y-[8px] hover:shadow-md " +
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400";
+
+  const iconClass = "mb-2 text-gray-700 dark:text-gray-100";
+
+  const languages: { icon: IconType; name: string }[] = [
+    { icon: SiPython, name: "Python" },
+    { icon: SiCplusplus, name: "C/C++" },
+    { icon: SiJavascript, name: "JavaScript" },
+    { icon: SiHtml5, name: "HTML5" },
+    { icon: SiCss3, name: "CSS3" },
+    { icon: Cpu, name: "Verilog" },
+  ];
+
+  const tools: { icon: IconType; name: string }[] = [
+    { icon: FaWindows, name: "Windows" },
+    { icon: SiLinux, name: "Linux (CLI)" },
+    { icon: DiVisualstudio, name: "VS Code" },
+    { icon: SiGit, name: "Git" },
+    { icon: CircuitBoard, name: "Bash/Shell" },
+    { icon: SiNodedotjs, name: "Node.js" },
+    { icon: SiReact, name: "React" },
+    { icon: SiTailwindcss, name: "TailwindCSS" },
+    { icon: CircuitBoard, name: "Vivado" },
+  ];
+
+  const libraries: { icon: IconType; name: string }[] = [
+    { icon: SiNumpy, name: "NumPy" },
+    { icon: SiPandas, name: "Pandas" },
+    { icon: SiScikitlearn, name: "scikit-learn" },
+    { icon: LineChart, name: "Matplotlib" }, // ⬅️ monochrome, stylable
+  ];
+
+  const renderSkillBox = (Icon: IconType, name: string) => (
+    <div key={name} className={card} tabIndex={0}>
+      <Icon size={iconSize} className={iconClass} />
+      <span className="text-xs font-medium text-gray-900 dark:text-gray-100 text-center">
+        {name}
+      </span>
+    </div>
+  );
 
   return (
     <section id="skills" className="relative min-h-[60vh] flex flex-col justify-start px-4 lg:px-8 pt-16 lg:pt-24">
-      <h1 className="text-3xl lg:text-4xl font-bold mb-6">Skills</h1>
+      <h1 className="text-3xl lg:text-4xl font-bold mb-2">Skills</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-gray-700">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <div>
           <h3 className="font-semibold mb-3">Languages</h3>
-          <ul className="flex flex-wrap gap-3">
-            <li title="Python" aria-label="Python"><SiPython size={iconSize} /></li>
-            <li title="C/C++" aria-label="C/C++"><SiCplusplus size={iconSize} /></li>
-            <li title="JavaScript" aria-label="JavaScript"><SiJavascript size={iconSize} /></li>
-            <li title="HTML5" aria-label="HTML5"><SiHtml5 size={iconSize} /></li>
-            <li title="CSS3" aria-label="CSS3"><SiCss3 size={iconSize} /></li>
-            <li title="Verilog" aria-label="Verilog"><Cpu size={iconSize} /></li>
-          </ul>
+          <div className="grid grid-cols-3 gap-4">
+            {languages.map(({ icon, name }) => renderSkillBox(icon, name))}
+          </div>
         </div>
 
         <div>
           <h3 className="font-semibold mb-3">Tools & Systems</h3>
-          <ul className="flex flex-wrap gap-3">
-            <li title="Windows" aria-label="Windows"><FaWindows size={iconSize} /></li>
-            <li title="Linux (CLI)" aria-label="Linux (CLI)"><SiLinux size={iconSize} /></li>
-            <li title="VS Code" aria-label="VS Code"><DiVisualstudio size={iconSize} /></li>
-            <li title="Git" aria-label="Git"><SiGit size={iconSize} /></li>
-            <li title="Bash/Shell" aria-label="Bash/Shell"><CircuitBoard size={iconSize} /></li>
-            <li title="Node.js" aria-label="Node.js"><SiNodedotjs size={iconSize} /></li>
-            <li title="React" aria-label="React"><SiReact size={iconSize} /></li>
-            <li title="TailwindCSS" aria-label="TailwindCSS"><SiTailwindcss size={iconSize} /></li>
-            <li title="Vivado" aria-label="Vivado"><CircuitBoard size={iconSize} /></li>
-          </ul>
+          <div className="grid grid-cols-3 gap-4">
+            {tools.map(({ icon, name }) => renderSkillBox(icon, name))}
+          </div>
         </div>
 
-
         <div>
-          <h3 className="font-semibold mb-3">Core Skills & Libraries</h3>
-          <div className="space-y-2">
-            <ul className="flex flex-wrap gap-2">
-              {["Data Structures", "Object-Oriented Programming", "FPGA Programming & Simulation", "Research & Documentation"]
-                .map((skill) => (
-                  <li key={skill} className="px-2 py-1 rounded bg-gray-100 text-sm">{skill}</li>
-                ))}
-            </ul>
-            <ul className="flex flex-wrap gap-3 pt-1">
-              <li title="NumPy" aria-label="NumPy"><SiNumpy size={iconSize} /></li>
-              <li title="Pandas" aria-label="Pandas"><SiPandas size={iconSize} /></li>
-              <li title="scikit-learn" aria-label="scikit-learn"><SiScikitlearn size={iconSize} /></li>
-              <li className="px-2 py-1 rounded bg-gray-100 text-sm">Matplotlib</li>
-            </ul>
+          <h3 className="font-semibold mb-3">Libraries</h3>
+          <div className="grid grid-cols-3 gap-4">
+            {libraries.map(({ icon, name }) => renderSkillBox(icon, name))}
           </div>
         </div>
       </div>
