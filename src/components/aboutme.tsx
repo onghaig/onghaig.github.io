@@ -78,7 +78,7 @@ export default function AboutMe() {
 
             <p>
               When I’m not coding or in the lab, you’ll likely find me lifting at the gym, playing tennis or chess, reading, or 
-              debating ideas with friends, since great projects start with great conversations.
+              debating ideas with friends, since the best projects start with great conversations.
             </p>
           </div>
         </div>
