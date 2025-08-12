@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="flex flex-col">
       <Sidebar/>
-      <main className="flex-auto lg:ml-28 flex flex-col">
+      <main className="flex-auto lg:ml-32 flex flex-col">
         <AboutMe/>
         <Skills/>
         <Projects/>
