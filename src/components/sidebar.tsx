@@ -82,7 +82,7 @@ export default function Sidebar() {
       {/* Desktop Sidebar */}
       <aside
         className="
-          hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:w-72
+          hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:w-48
           lg:flex-col lg:h-svh 
           group bg-gray-50 hover:bg-gray-200 dark:bg-white/0 dark:hover:bg-white/20 hover:backdrop-blur-md 
           transition-all duration-200
