@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@600;800&display=swap");
 @import "tailwindcss";
 
-html { scroll-behavior: smooth; scroll-snap-stop:normal ; scroll-snap-type: y mandatory; } 
+html { scroll-behavior: smooth; } 
 :root {
   --font-body: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-heading: "Poppins", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

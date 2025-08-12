@@ -34,7 +34,7 @@ function CycleText() {
 
 export default function AboutMe() {
   return (
-    <section id="about" className="relative min-h-screen px-4 lg:px-8 py-16 lg:py-32 flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-0">
+    <section id="about" className="relative min-h-[80vh] px-4 lg:px-8 py-16 flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-0">
         <div className="flex flex-col items-center lg:items-start max-w-3xl">
           <p className="font-extralight text-left">
             Hi there, I'm

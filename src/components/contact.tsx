@@ -14,16 +14,16 @@ export default function ContactMe() {
   return (
     <section
       id="contact"
-      className="px-8 text-center lg:text-left"
+      className="px-8"
     >
       <div>
-        <h1 className="w-full font-bold mb-6">My Contact Info</h1>
+        <h1 className="w-full font-bold mb-6">My Contact</h1>
         <p className="mb-6 w-full">
           I’m always open to interesting conversations, collaborations, and opportunities. Feel free to send a message!
         </p>
 
         {/* Contact details */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-start gap-6">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-center">
           {/* Email */}
           <div className="flex items-center gap-3">
             <FaEnvelope className="text-lg" />
@@ -50,8 +50,9 @@ export default function ContactMe() {
           </div>
         </div>
 
+
         {/* Social links */}
-        <div className="flex gap-6 mt-8 justify-center lg:justify-start">
+        <div className="flex gap-6 mt-8 justify-center">
           <a
             href="https://www.linkedin.com/in/gavin-onghai"
             target="_blank"

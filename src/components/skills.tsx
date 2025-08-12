@@ -59,7 +59,7 @@ export default function Skills() {
   );
 
   return (
-    <section id="skills" className="relative min-h-[60vh] flex flex-col justify-start px-4 lg:px-8 pt-16 lg:pt-24">
+    <section id="skills" className="relative min-h-[40vh] flex flex-col justify-start px-4 lg:px-8 pt-16 lg:pt-24">
       <h1 className="text-3xl lg:text-4xl font-bold mb-2">Skills</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

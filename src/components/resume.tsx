@@ -8,7 +8,7 @@ export default function Resume() {
       id="resume"
       className="relative h-screen flex flex-col px-4 lg:px-8 pt-16 lg:pt-16 pb-16 scroll-mt-0"
     >
-      <div className="flex flex-col lg:text-left w-full h-full">
+      <div className="flex flex-col text-center w-full h-full">
         <div className="flex-shrink-0">
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">My Resume</h1>
 
@@ -17,7 +17,7 @@ export default function Resume() {
           </p>
 
           {/* Action buttons */}
-          <div className="flex gap-3 mb-6">
+          <div className="flex gap-3 mb-6 items-center justify-center">
             <a
               href={resumeUrl}
               target="_blank"
