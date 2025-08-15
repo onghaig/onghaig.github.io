@@ -1,5 +1,6 @@
 import antennaImg from "../projectData/Antenna.jpg";
 import LenslessImg from "../projectData/LenslessImg.png";
+import improveeImg from "../projectData/improveEdgeextension.png"
 
 export default function Projects() {
   const projects = [
@@ -8,6 +9,11 @@ export default function Projects() {
       description:
         "Lensless computational imaging pipeline, with capabilities in estimating Stokes parameters with ADMM.",
       image: LenslessImg,
+    },
+    {
+      title: "ImproveEdge Extension",
+      description: "Created a custom homepage extension with extensive full feature set, working with API calls, React JSX, Vite, and TailwindCSS",
+      image: improveeImg,
     },
     {
       title: "Yale Menus: Campus Dining App",
@@ -21,7 +27,7 @@ export default function Projects() {
       description:
         "Designed a Yagi-Uda antenna for 2.4 GHz WiFi with ~12 dBi gain.",
       image: antennaImg,
-    }
+    },
   ];
 
   return (
