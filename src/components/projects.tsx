@@ -18,14 +18,14 @@ export default function Projects() {
     {
       title: "Yale Menus: Campus Dining App",
       description:
-        "Responsive PWA for browsing dining halls with offline cache, search, and allergen filters.",
+        "Responsive mobile app for browsing dining halls with offline cache, search, and allergen filters.",
       image: "https://yalemenus.com/images/logo/logo.png",
       link: "https://yalemenus.com/",
     },
     {
       title: "Yagi-Uda Antenna Design",
       description:
-        "Designed a Yagi-Uda antenna for 2.4 GHz WiFi with ~12 dBi gain.",
+        "Designed and created a Yagi-Uda antenna for 2.4 GHz WiFi with ~15 dBi gain.",
       image: antennaImg,
     },
   ];
