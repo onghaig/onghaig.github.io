@@ -13,36 +13,12 @@ This repository contains my personal portfolio website, built to showcase my pro
 * **Dark/Light mode support** 
 * **Deploy-ready** on GitHub Pages
 
-## Tech Stack
+## Stack
 
 * **Frontend Framework**: [React](https://reactjs.org/) with [Vite](https://vitejs.dev/)
 * **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 * **Animations**: [Framer Motion](https://www.framer.com/motion/)
 * **Deployment**: GitHub Pages 
-
-## Project Structure
-
-```
-.
-├── public/            # Static assets
-├── src/
-│   ├── components/    # React components (Navbar, Projects, Contact, etc.)
-│   ├── pages/         # Page-level components
-│   ├── App.jsx        # Main app entry point
-│   ├── main.jsx       # React DOM rendering
-│   └── styles/        # Tailwind or global styles
-├── package.json
-├── tailwind.config.js
-└── vite.config.js
-```
-
-## Getting Started
-
-### Prerequisites
-
-* Node.js (>= 18.x recommended)
-* npm
-
 
 ## Contact
 
