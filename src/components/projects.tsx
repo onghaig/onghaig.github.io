@@ -9,11 +9,13 @@ export default function Projects() {
       description:
         "Lensless computational imaging pipeline, with capabilities in estimating Stokes parameters with ADMM.",
       image: LenslessImg,
+      link: "https://github.com/onghaig/LenslessPiCam"
     },
     {
       title: "ImproveEdge Extension",
-      description: "Created a custom homepage extension with extensive full feature set, working with API calls, React JSX, Vite, and TailwindCSS",
+      description: "Created a custom homepage and new tab extension with extensive feature set, working with API calls, React JSX, Vite, and TailwindCSS",
       image: improveeImg,
+      link: "https://github.com/onghaig/ImprovEdge-Extension"
     },
     {
       title: "Yale Menus: Campus Dining App",
