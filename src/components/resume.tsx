@@ -1,4 +1,4 @@
-import gavinResume from "../assets/Gavin Technical Resume 8-4-2025.pdf";
+import gavinResume from "../assets/Gavin Technical Resume.pdf";
 
 export default function Resume() {
   const resumeUrl = gavinResume as string;
