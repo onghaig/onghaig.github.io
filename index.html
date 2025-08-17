@@ -2,13 +2,92 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg" href="/icon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="theme-color" content="#060c14" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="format-detection" content="telephone=no" />
-    <title>Gavin Onghai</title>
+
+    <!-- Primary SEO -->
+    <title>Gavin Onghai — Yale EECS | Software & Computational Imaging</title>
+    <meta name="description" content="Portfolio of Gavin Onghai (Yale EECS). Projects in React/TypeScript, backend APIs, and lensless computational imaging (polarimetry).">
+    <link rel="canonical" href="https://onghaig.github.io/">
+    <meta name="robots" content="index,follow">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Gavin Onghai — Yale EECS | Software & Computational Imaging">
+    <meta property="og:description" content="Selected projects in React/TypeScript, backend APIs, and computational imaging research.">
+    <meta property="og:url" content="https://onghaig.github.io/">
+    <meta property="og:image" content="https://onghaig.github.io/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Gavin Onghai — Yale EECS | Software & Computational Imaging">
+    <meta name="twitter:description" content="Selected projects in React/TypeScript, backend APIs, and computational imaging research.">
+    <meta name="twitter:image" content="https://onghaig.github.io/og-image.jpg">
+
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Performance hints -->
+    <!-- Preconnect to Google Fonts (sets up DNS + TLS early) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+
+
+    <!-- Structured Data (JSON-LD) -->
+        <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://onghaig.github.io/#person",
+          "name": "Gavin Onghai",
+          "url": "https://onghaig.github.io/",
+          "image": "https://onghaig.github.io/og-image.jpg",
+          "jobTitle": "Electrical Engineering & Computer Science student",
+          "affiliation": { "@type": "CollegeOrUniversity", "name": "Yale University" },
+          "sameAs": [
+            "https://www.linkedin.com/in/gavin-onghai",
+            "https://github.com/onghaig"
+          ]
+        },
+        {
+          "@type": "ItemList",
+          "name": "Highlighted Projects",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "item": {
+                "@type": "SoftwareSourceCode",
+                "name": "Yale Menus — Campus Dining PWA",
+                "programmingLanguage": ["TypeScript","React"],
+                "description": "Responsive PWA with offline caching, search, and allergen filters.",
+                "codeRepository": "https://github.com/onghaig/...",
+                "url": "https://onghaig.github.io/#projects"
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
+                "@type": "SoftwareSourceCode",
+                "name": "Lensless Polarimetric Imaging",
+                "programmingLanguage": ["Python"],
+                "description": "Computational imaging pipeline estimating Stokes parameters (ADMM/FISTA).",
+                "url": "https://onghaig.github.io/#projects"
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
   </head>
   <body>
     <div id="root"></div>
