@@ -58,15 +58,15 @@ export default function AboutMe() {
         </div>
           <div className="text-xsm lg:text-lg text-left text-neutral-400 font-light mt-4 indent-10 leading-relaxed space-y-2">
             <p>
-              I’m a sophomore at <strong className="text-neutral-300 font-bold">Yale University</strong> studying <strong className="text-neutral-300 font-bold">Electrical Engineering and Computer Science</strong> with a <strong className="text-neutral-300 font-bold">Certificate in Data Science</strong>. 
-              I’m fascinated by projects that blend engineering precision with real-world impact, whether that’s with code, hardware, or both.
+              I’m a sophomore at <strong className="text-neutral-300 font-bold">Yale University</strong> pursuing a Bachelor's degree in <strong className="text-neutral-300 font-bold">Electrical Engineering and Computer Science</strong> and a <strong className="text-neutral-300 font-bold">Certificate in Data Science</strong>.
             </p>
 
             <p>
               As a <a href="https://yaledailynews.com/blog/2023/02/26/inside-the-hahn-scholars-programs-push-to-recruit-top-stem-students/" 
-              className="!font-extrabold text-white hover:underline hover:text-black hover:bg-white transition-all">
-              Hahn Scholar</a> in Professor Mengxia Liu’s lab, I’m developing a <strong className="text-neutral-300 font-bold">lensless imaging system</strong> that uses computational imaging techniques 
-              to capture and reconstruct data invisible to the human eye. The mix of optics, AI, and problem-solving keeps me constantly learning.
+              className="!font-extrabold text-white underline hover:text-black hover:bg-white transition-all">
+              Hahn Scholar</a> in <a href="https://www.liu-research.com/" className="!font-extrabold text-white underline hover:text-black hover:bg-white transition-all">Professor Mengxia Liu’s lab</a>, I’m developing a <strong className="text-neutral-300 font-bold">lensless imaging system</strong> that
+               uses computational imaging techniques 
+              to capture and reconstruct data invisible to the human eye.
             </p>
 
             <p>
