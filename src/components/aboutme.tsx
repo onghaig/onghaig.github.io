@@ -70,11 +70,14 @@ export default function AboutMe() {
             </p>
 
             <p>
-              Outside the lab, I’m a developer for the <strong className="text-neutral-300 font-bold">Yale Computer Society</strong>, contributing to the full-stack development of <strong className="text-neutral-300 font-bold">Yale Menus</strong>, a platform used daily by thousands of students to check campus dining menus in real time.
+              Outside the lab, I’m a developer for the <a href="https://yalecomputersociety.org/" 
+              className="!font-extrabold text-white underline hover:text-black hover:bg-white transition-all">Yale Computer Society</a>, contributing to the full-stack development of <strong className="text-neutral-300 font-bold">Yale Menus</strong>, a platform used daily by thousands of students to check campus dining menus in real time.
             </p>
 
             <p>
-              Before Yale, I explored materials science and chemistry through the Garcia and Simons Summer Research Programs at Stony Brook University, 
+              Before Yale, I explored materials science and chemistry through the <a href="https://www.stonybrook.edu/commcms/garcia/summer_program/program_description" 
+              className="!font-extrabold text-white underline hover:text-black hover:bg-white transition-all">Garcia</a> and <a href="https://www.stonybrook.edu/simons/" 
+              className="!font-extrabold text-white underline hover:text-black hover:bg-white transition-all">Simons Summer Research Programs</a> at <strong className="text-neutral-300 font-bold">Stony Brook University</strong>, 
               working on projects from <strong className="text-neutral-300 font-bold">graphene-based polymer blends</strong> to recycling biowaste into <strong className="text-neutral-300 font-bold">sustainable water filters</strong>.
             </p>
 
