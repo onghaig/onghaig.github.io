@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 function CycleText() {
   const words = ["Software Developer", "EECS Student", "Hahn Scholar"];
-  const [index, setIndex] = useState(1);
+  const [index, setIndex] = useState(0);
   const total = words.length;
 
   useEffect(() => {
@@ -78,12 +78,12 @@ export default function AboutMe() {
               Before Yale, I explored materials science and chemistry through the <a href="https://www.stonybrook.edu/commcms/garcia/summer_program/program_description" 
               className="!font-extrabold text-white underline hover:text-black hover:bg-white transition-all">Garcia</a> and <a href="https://www.stonybrook.edu/simons/" 
               className="!font-extrabold text-white underline hover:text-black hover:bg-white transition-all">Simons Summer Research Programs</a> at <strong className="text-neutral-300 font-bold">Stony Brook University</strong>, 
-              working on projects from <strong className="text-neutral-300 font-bold">graphene-based polymer blends</strong> to recycling biowaste into <strong className="text-neutral-300 font-bold">sustainable water filters</strong>.
+              working on projects rangingfrom <strong className="text-neutral-300 font-bold">graphene-based polymer blends</strong> to creating <strong className="text-neutral-300 font-bold">sustainable water filters</strong> by recycling biowaste.
             </p>
 
             <p>
               When I’m not coding or in the lab, you’ll likely find me lifting at the gym, learning guitar, playing tennis or chess, reading, or 
-              debating ideas with friends, since <strong className="text-neutral-300 font-bold">the best projects start with great conversations</strong>.
+              debating ideas with friends.
             </p>
           </div>
         </div>
