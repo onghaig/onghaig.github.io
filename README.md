@@ -25,5 +25,5 @@ This repository contains my personal portfolio website, built to showcase my pro
 Feel free to connect with me:
 
 * Email: gavin.onghai@yale.edu
-* LinkedIn: [linkedin.com/in/your-profile](https://linkedin.com/in/gavin-onghai)
-* GitHub: [github.com/your-username](https://github.com/onghaig)
+* LinkedIn: [linkedin.com/in/gavin-onghai](https://linkedin.com/in/gavin-onghai)
+* GitHub: [github.com/onghaig](https://github.com/onghaig)
