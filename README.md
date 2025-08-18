@@ -1,6 +1,6 @@
 # Portfolio Website
 
-This repository contains my personal portfolio website, built to showcase my projects, skills, research, and experiences. The site is designed to be clean, responsive, and minimalistic, with smooth animations and modern UI/UX practices.
+This repository contains my personal portfolio website which was built to showcase my projects, skills, research, and experiences. The site is designed to be clean, responsive, and minimalistic, with smooth animations and modern UI/UX practices.
 
 ## Features
 
