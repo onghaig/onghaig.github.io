@@ -90,7 +90,7 @@ export default function Sidebar() {
       >
         {/* Header / Name */}
         <div className="px-4 py-6">
-          <span className="text-4xl font-semibold tracking-wide opacity-40 group-hover:opacity-100 transition-opacity">
+          <span className="text-4xl font-semibold tracking-wide opacity-70 group-hover:opacity-100 transition-opacity">
             <a href="https://onghaig.github.io" target="_blank" rel="noopener noreferrer">
               Gavin Onghai
             </a>
@@ -119,7 +119,7 @@ export default function Sidebar() {
                   className="transition-transform duration-300 will-change-transform"
                   style={{
                     fontSize: `${fontSize(r)}rem`,
-                    opacity: opacity(r),
+                    opacity: opacity(r) + 0.2,
                     transform: `scale(${0.8 + r * 0.2})`,
                   }}
                 >

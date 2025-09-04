@@ -139,16 +139,16 @@ section {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #172531;
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: #14186b;
   }
   button {
-    background-color: #213547;
+    background-color: #060c14b1;
   }
   button:hover {
-    border-color: #646cff;
+    background-color: #060c14;
   }
 }
