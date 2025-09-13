@@ -60,7 +60,9 @@ export default function AboutMe() {
             <p>
               I’m a sophomore at <strong className="dark:text-neutral-300 font-bold">Yale University</strong> pursuing a Bachelor's degree in <strong className="dark:text-neutral-300 font-bold">Electrical Engineering and Computer Science</strong> and a <strong className="dark:text-neutral-300 font-bold">Certificate in Data Science</strong>.
             </p>
-
+            <p>
+            I’m currently exploring <strong className="dark:text-neutral-300 font-bold">finance, software engineering, and hardware systems,</strong> with a focus on learning how data and computation drive innovation across these fields.
+            </p>
             <p>
               As a <a href="https://yaledailynews.com/blog/2023/02/26/inside-the-hahn-scholars-programs-push-to-recruit-top-stem-students/" 
               className="!font-extrabold dark:text-white underline hover:text-black hover:bg-white transition-all">
