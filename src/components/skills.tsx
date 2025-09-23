@@ -1,7 +1,9 @@
 import {
   SiPython, SiCplusplus, SiJavascript, SiHtml5, SiCss3,
   SiLinux, SiGit, SiNodedotjs, SiReact, SiTailwindcss,
-  SiNumpy, SiPandas, SiScikitlearn, SiTypescript
+  SiNumpy, SiPandas, SiScikitlearn, SiTypescript,
+  SiPostcss,
+  SiPostgresql
 } from "react-icons/si";
 import { FaWindows } from "react-icons/fa";
 import { DiVisualstudio } from "react-icons/di";
@@ -28,6 +30,7 @@ export default function Skills() {
     { icon: SiCss3, name: "CSS3" },
     { icon: SiTypescript, name: "TypeScript" },
     { icon: Cpu, name: "Verilog" },
+    { icon: SiPostgresql, name: "PostgreSQL" },
   ];
 
   const tools: { icon: IconType; name: string }[] = [
