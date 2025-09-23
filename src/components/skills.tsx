@@ -2,7 +2,6 @@ import {
   SiPython, SiCplusplus, SiJavascript, SiHtml5, SiCss3,
   SiLinux, SiGit, SiNodedotjs, SiReact, SiTailwindcss,
   SiNumpy, SiPandas, SiScikitlearn, SiTypescript,
-  SiPostcss,
   SiPostgresql
 } from "react-icons/si";
 import { FaWindows } from "react-icons/fa";
