@@ -58,7 +58,7 @@ export default function AboutMe() {
         </div>
           <div className="text-xsm lg:text-lg text-left dark:text-neutral-400 font-light mt-4 indent-10 leading-relaxed space-y-2">
             <p>
-              I’m a sophomore at <strong className="dark:text-neutral-300 font-bold">Yale University</strong> pursuing Bachelor's degrees in <strong className="dark:text-neutral-300 font-bold">Electrical Engineering and Computer Science</strong> and <strong className="dark:text-neutral-300 font-bold">Mathematics</strong>.
+              I’m an undergraduate student at <strong className="dark:text-neutral-300 font-bold">Yale University</strong> pursuing Bachelor's degrees in <strong className="dark:text-neutral-300 font-bold">Electrical Engineering and Computer Science</strong> and <strong className="dark:text-neutral-300 font-bold">Mathematics</strong>.
             </p>
             <p>
             I’m currently exploring <strong className="dark:text-neutral-300 font-bold">finance, software engineering, and hardware systems,</strong> with a focus on learning how data and computation can drive innovation across these fields.
