@@ -11,10 +11,13 @@
 
     <!-- Primary SEO -->
     <title>Gavin Onghai — Student at Yale studying EECS</title>
-    <meta name="description" content="Portfolio of Gavin Onghai (Yale EECS).">
+    <meta name="description" content="Portfolio of Gavin Onghai - Yale EECS student, software developer, and researcher specializing in computational imaging and full-stack development.">
+    <meta name="keywords" content="Gavin Onghai, Yale, EECS, Software Development, Computational Imaging, Full Stack Developer">
     <link rel="icon" type="image/x-icon" href="/public/icon.ico">
     <link rel="canonical" href="https://onghaig.github.io/">
     <meta name="robots" content="index,follow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -88,6 +91,10 @@
 
   </head>
   <body>
+    <script>
+      // Initialize dark mode immediately to prevent flash
+      document.documentElement.classList.add('dark');
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

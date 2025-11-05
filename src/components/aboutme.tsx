@@ -72,8 +72,13 @@ export default function AboutMe() {
             </p>
 
             <p>
-              Outside the lab, I’m a developer for the <a href="https://yalecomputersociety.org/" 
+              Outside the lab, I'm a developer for the <a href="https://yalecomputersociety.org/" 
               className="!font-extrabold dark:text-white underline hover:text-black hover:bg-white transition-all">Yale Computer Society</a>, contributing to the full-stack development of <strong className="dark:text-neutral-300 font-bold">Yale Menus</strong>, a platform used daily by thousands of students to check campus dining menus in real time.
+            </p>
+
+            <p>
+              I'm also working as a <strong className="dark:text-neutral-300 font-bold">Software Engineer</strong> for <a href="https://withnira.com" 
+              className="!font-extrabold dark:text-white underline hover:text-black hover:bg-white transition-all">NIRA</a>, where I'm building tools that make connecting with others easier.
             </p>
 
             <p>

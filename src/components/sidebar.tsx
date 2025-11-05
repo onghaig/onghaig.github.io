@@ -1,6 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-scroll";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
+import { Moon, Sun } from "lucide-react";
+
+interface SidebarProps {
+  onThemeToggle: () => void;
+  theme: 'light' | 'dark';
+}
 
 const sections = [
   { id: "about",    label: "About" },
@@ -20,7 +26,7 @@ const iconMap: Record<string, React.ElementType> = {
   FaLinkedin,
 };
 
-export default function Sidebar() {
+export default function Sidebar({ onThemeToggle, theme }: SidebarProps) {
   // 0–1 proximity to viewport center per section
   const [proximity, setProximity] = useState<Record<string, number>>(
     () => Object.fromEntries(sections.map(({ id }) => [id, 0]))
@@ -68,14 +74,31 @@ export default function Sidebar() {
           <span className="text-lg font-semibold dark:text-white">
             {currentSection.label}
           </span>
-          <a
-            href="https://onghaig.github.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium dark:text-white/80 transition-colors"
-          >
-            Gavin Onghai
-          </a>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onThemeToggle();
+              }}
+              className="p-2 rounded-lg opacity-80 hover:opacity-100 transition-all"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-white" />
+              ) : (
+                <Moon className="w-5 h-5 text-white" />
+              )}
+            </button>
+            <a
+              href="https://onghaig.github.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium dark:text-white/80 transition-colors"
+            >
+              Gavin Onghai
+            </a>
+          </div>
         </div>
       </header>
 
@@ -132,7 +155,7 @@ export default function Sidebar() {
 
         {/* Footer / Socials pinned at bottom */}
         <div className="px-4 py-6">
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 items-center">
             {links.map(({ id, url, iconTag, label }) => {
               const Icon = iconMap[iconTag];
               return (
@@ -148,6 +171,22 @@ export default function Sidebar() {
                 </a>
               );
             })}
+            
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onThemeToggle();
+              }}
+              className="p-2 rounded-lg opacity-40 hover:opacity-100 transition-all"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-6 h-6" />
+              ) : (
+                <Moon className="w-6 h-6" />
+              )}
+            </button>
           </div>
         </div>
       </aside>

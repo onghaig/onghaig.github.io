@@ -1,45 +1,19 @@
-import antennaImg from "../projectData/Antenna.jpg";
-import LenslessImg from "../projectData/LenslessImg.png";
-import improveeImg from "../projectData/improveEdgeextension.png"
+import { projects } from '../projectData/projects';
+import { motion } from 'framer-motion';
 
 export default function Projects() {
-  const projects = [
-    {
-      title: "Lensless Polarimetric Imaging",
-      description:
-        "Lensless computational imaging pipeline, with capabilities in estimating Stokes parameters with ADMM.",
-      image: LenslessImg,
-      link: "https://github.com/onghaig/LenslessPiCam"
-    },
-    {
-      title: "ImproveEdge Extension",
-      description: "Created a custom homepage and new tab extension with extensive feature set, working with API calls, React JSX, Vite, and TailwindCSS",
-      image: improveeImg,
-      link: "https://github.com/onghaig/ImprovEdge-Extension"
-    },
-    {
-      title: "Yale Menus: Campus Dining App",
-      description:
-        "Responsive mobile app for browsing dining halls with offline cache, search, and allergen filters.",
-      image: "https://yalemenus.com/images/logo/logo.png",
-      link: "https://yalemenus.com/",
-    },
-    {
-      title: "Yagi-Uda Antenna Design",
-      description:
-        "Designed and created a Yagi-Uda antenna for 2.4 GHz WiFi with ~15 dBi gain.",
-      image: antennaImg,
-    },
-  ];
-
   return (
     <section id="projects" className="px-8 py-16 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold mb-10">Projects</h1>
 
       <div className="flex flex-col gap-12">
         {projects.map((project, idx) => (
-          <div
+          <motion.div
             key={idx}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: idx * 0.2 }}
+            viewport={{ once: true }}
             className="flex flex-col md:flex-row items-center gap-8"
           >
             {/* Image */}
@@ -47,7 +21,8 @@ export default function Projects() {
               <img
                 src={project.image}
                 alt={project.title}
-                className="max-w-96 max-h-128rounded-lg shadow-lg w-full object-cover"
+                loading="lazy"
+                className="max-w-96 max-h-128 rounded-lg shadow-lg w-full object-cover transition-transform duration-300 hover:scale-105"
               />
             </div>
 
@@ -57,6 +32,15 @@ export default function Projects() {
               <p className="text-neutral-700 dark:text-neutral-300">
                 {project.description}
               </p>
+              {project.technologies && (
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((tech) => (
+                    <span key={tech} className="px-2 py-1 text-sm bg-gray-200 dark:bg-gray-700 rounded">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              )}
               {project.link && (
                 <a
                   href={project.link}
@@ -68,7 +52,7 @@ export default function Projects() {
                 </a>
               )}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

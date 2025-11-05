@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import gavinResume from "../assets/Gavin Technical Resume.pdf";
+import { Loader2 } from 'lucide-react';
 
 export default function Resume() {
   const resumeUrl = gavinResume as string;
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <section
@@ -36,13 +39,19 @@ export default function Resume() {
           </div>
         </div>
         
-        {/* PDF Viewer - takes remaining space */}
-        <div className="flex-1 overflow-hidden">
+          {/* PDF Viewer - takes remaining space */}
+        <div className="flex-1 overflow-hidden relative">
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+              <Loader2 className="w-8 h-8 animate-spin" />
+            </div>
+          )}
           <object
             data={resumeUrl}
             type="application/pdf"
             aria-label="Embedded PDF resume"
             className="w-full h-full rounded-xl border shadow sm:block"
+            onLoad={() => setIsLoading(false)}
           >
             <div className="p-4 text-sm">
               Your browser can't display the PDF.{" "}
