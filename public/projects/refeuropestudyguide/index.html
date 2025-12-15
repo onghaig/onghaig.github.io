@@ -382,24 +382,40 @@
         // --- DATASETS ---
 
         // 1. EXCERPTS
-        const excerptData = [
-            { author: "Carlo Ginzburg (Menocchio)", text: "I have said that, in my opinion, all was chaos, that is, earth, air, water, and fire were mixed together; and out of that bulk a mass formed – just as cheese is made out of milk – and worms appeared in it, and these were the angels." },
-            { author: "John Calvin", text: "The spiritual kingdom of Christ and civil government are things very widely separated." },
-            { author: "John Calvin", text: "Our wisdom, in so far as it ought to be deemed true and solid Wisdom, consists almost entirely of two parts: the knowledge of God and of ourselves." },
-            { author: "John Foxe", text: "Lord, open the King of England's eyes." },
-            { author: "Thomas Jefferson", text: "The truth is that the greatest enemies to the doctrines of Jesus are those calling themselves the expositors of them, who have perverted them for the structure of a system of fancy absolutely incomprehensible." },
-            { author: "Baron d'Holbach", text: "If men imagine for themselves a tyrannical, capricious or wicked God their religion will breathe slavery, inconsistency, and cruelty." },
-            { author: "Immanuel Kant", text: "Enlightenment is man's release from his self-incurred tutelage. Sapere aude! 'Have courage to use your own reason!'— that is the motto of enlightenment." },
-            { author: "Blaise Pascal", text: "The heart has its reasons, which reason does not know. We feel it in a thousand things." },
-            { author: "St. Francis De Sales", text: "True and living devotion... is neither more nor less than a very real love of God... when it strengthens us to do well, it is called Charity; but when it attains its fullest perfection... it is called Devotion." },
-            { author: "Council of Trent", text: "If any one saith, that by faith alone the impious is justified... let him be anathema." },
-            { author: "John Hooper", text: "If the priesthood and ministry of Christ with his notes and marks are true, holy, and absolutely perfect, receive it - in case it be not, follow the pope." },
-            { author: "John Knox", text: "To you it no less appertains, than to your king or princes, to provide that Christ Jesus be truly preached amongst you, seeing that without his true knowledge neither of you can attain to salvation." },
-            { author: "William Allen", text: "We measure not the matter by the number, nor by the severity of the punishment only or specially, but by the cause... whereby we can prove Queen Mary's doings to be commendable and most lawful." },
-            { author: "St. Ignatius of Loyola", text: "To be right in everything, we ought always to hold that the white which I see, is black, if the Hierarchical Church so decides it." },
-            { author: "St. Teresa of Avila", text: "I thought of the soul as resembling a castle, formed of a single diamond or a very transparent crystal, and containing many rooms, just as in heaven there are many mansions." }
+               const excerptData = [
+            { type: "excerpt", author: "Carlo Ginzburg (Menocchio)", text: "I have said that, in my opinion, all was chaos, that is, earth, air, water, and fire were mixed together; and out of that bulk a mass formed – just as cheese is made out of milk – and worms appeared in it, and these were the angels." },
+            { type: "excerpt", author: "Carlo Ginzburg (Menocchio)", text: "I think speaking Latin is a betrayal of the poor because in lawsuits the poor do not know what is being said and are crushed; and if they want to say four words they need a lawyer." },
+            { type: "excerpt", author: "Carlo Ginzburg (Menocchio)", text: "The majesty of God has given the Holy Spirit to all, to Christians, to heretics, to Turks, and to Jews; and he considers them all dear, and they are all saved in the same manner." },
+            { type: "excerpt", author: "John Calvin", text: "The spiritual kingdom of Christ and civil government are things very widely separated." },
+            { type: "excerpt", author: "John Calvin", text: "Wherefore, if we are cruelly tormented by a savage, if we are rapaciously pillaged by an avaricious or luxurious... let us first call up the remembrance of our faults, which doubtless the Lord is chastising by such scourges." },
+            { type: "excerpt", author: "John Calvin", text: "But if from this you conclude that obedience is to be returned to none but just governors, you reason absurdly." },
+            { type: "excerpt", author: "John Foxe", text: "Lord, open the King of England's eyes." },
+            { type: "excerpt", author: "John Foxe", text: "I perceive that it was not possible to establish the lay people in any truth, except the Scriptures were so plainly laid before their eyes in their mother tongue." },
+            { type: "excerpt", author: "John Foxe", text: "Thus was he three quarters of an hour or more in the fire; even as the lamb, patiently bearing the extremity thereof, neither moving forwards, backwards, nor to any side." },
+            { type: "excerpt", author: "Thomas Jefferson", text: "The truth is that the greatest enemies to the doctrines of Jesus are those calling themselves the expositors of them, who have perverted them for the structure of a system of fancy absolutely incomprehensible." },
+            { type: "excerpt", author: "Thomas Jefferson", text: "And the day will come when the mystical generation of Jesus, by the supreme being as his father in the womb of a virgin will be classed with the fable of the generation of Minerva in the brain of Jupiter." },
+            { type: "excerpt", author: "Baron d'Holbach", text: "If men imagine for themselves a tyrannical, capricious or wicked God their religion will breathe slavery, inconsistency, and cruelty." },
+            { type: "excerpt", author: "Baron d'Holbach", text: "If they think that we can please him with vain and puerile practices or through barbaric actions... then the idea they truly have of the Divinity will be directly opposed to what they say." },
+            { type: "excerpt", author: "Immanuel Kant", text: "Enlightenment is man's release from his self-incurred tutelage. Tutelage is man's inability to make use of his understanding without direction from another." },
+            { type: "excerpt", author: "Immanuel Kant", text: "Sapere aude! 'Have courage to use your own reason!'— that is the motto of enlightenment." },
+            { type: "excerpt", author: "Blaise Pascal", text: "The heart has its reasons, which reason does not know. We feel it in a thousand things." },
+            { type: "excerpt", author: "Blaise Pascal", text: "Let us weigh the gain and the loss in wagering that God is. If you gain, you gain all; if you lose, you lose nothing." },
+            { type: "excerpt", author: "St. Francis De Sales", text: "True and living devotion... is neither more nor less than a very real love of God... when it strengthens us to do well, it is called Charity; but when it attains its fullest perfection... it is called Devotion." },
+            { type: "excerpt", author: "St. Francis De Sales", text: "The ostrich never flies... but the eagle, the dove, and the swallow, are continually on the wing... even so sinners do not rise towards God." },
+            { type: "excerpt", author: "Council of Trent", text: "If any one saith, that by faith alone the impious is justified; in such wise as to mean, that nothing else is required to co-operate in order to the obtaining the grace of Justification... let him be anathema." },
+            { type: "excerpt", author: "Council of Trent", text: "In the mass a true and proper sacrifice is offered to God... a propitiatory sacrifice... for the living and the dead." },
+            { type: "excerpt", author: "John Hooper", text: "If the priesthood and ministry of Christ with his notes and marks are true, holy, and absolutely perfect, receive it - in case it be not, follow the pope." },
+            { type: "excerpt", author: "John Hooper", text: "What king or prince of the world would suffer his statutes, laws and testament to be cut off and set on, at every man's liberty and pleasure?" },
+            { type: "excerpt", author: "John Knox", text: "To you it no less appertains, than to your king or princes, to provide that Christ Jesus be truly preached amongst you, seeing that without his true knowledge neither of you can attain to salvation." },
+            { type: "excerpt", author: "John Knox", text: "For if antiquity or multitude of men could justify any religion, then was the idolatry of the Gentiles, and now is the abomination of the Turks, good religion." },
+            { type: "excerpt", author: "William Allen", text: "We measure not the matter by the number, nor by the severity of the punishment only or specially, but by the cause... whereby we can prove Queen Mary's doings to be commendable and most lawful." },
+            { type: "excerpt", author: "William Allen", text: "When the temporal Prince or lay people rebel against their own bishops... that is a persecution, sedition, and rebellion in the highest degree." },
+            { type: "excerpt", author: "St. Ignatius of Loyola", text: "To be right in everything, we ought always to hold that the white which I see, is black, if the Hierarchical Church so decides it." },
+            { type: "excerpt", author: "St. Ignatius of Loyola", text: "We ought not to speak so much with insistence on grace that the poison of discarding liberty be engendered." },
+            { type: "excerpt", author: "St. Teresa of Avila", text: "I thought of the soul as resembling a castle, formed of a single diamond or a very transparent crystal, and containing many rooms, just as in heaven there are many mansions." },
+            { type: "excerpt", author: "St. Teresa of Avila", text: "The silkworm symbolizes the soul which begins to live when, kindled by the Holy Spirit... Then this large and ugly worm leaves the cocoon as a lovely little white butterfly." }
         ];
-
+        
         // 2. DATES
         const dateData = [
             { title: "Institutes of the Christian Religion", author: "John Calvin", answer: "1536–1559", distractors: ["1517", "1609", "1492"] },
