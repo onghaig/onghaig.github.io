@@ -32,7 +32,7 @@
         #main-menu {
             text-align: center;
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
             margin-top: 20px;
         }
 
@@ -60,6 +60,7 @@
             align-items: center;
             justify-content: center;
             height: 100%;
+            min-height: 100px;
         }
 
         .menu-btn:hover {
@@ -322,13 +323,13 @@
                 Timeline Challenge
                 <small>Match text to year</small>
             </button>
-            <button class="menu-btn" onclick="initGame('significance')">
-                Why It Matters
-                <small>Identify historical significance</small>
-            </button>
             <button class="menu-btn" onclick="initGame('context')">
                 The Motivator
                 <small>Why was it written?</small>
+            </button>
+            <button class="menu-btn" onclick="initGame('significance')">
+                Why It Matters
+                <small>Identify historical significance</small>
             </button>
             <button class="menu-btn" onclick="initGame('themes')">
                 Theme Spotter
@@ -337,6 +338,10 @@
             <button class="menu-btn" onclick="initGame('thesis')">
                 Thesis Match
                 <small>Identify main arguments</small>
+            </button>
+            <button class="menu-btn" onclick="initGame('connection')" style="grid-column: 1 / -1; background-color: #fcf3cf; border-color: #f1c40f; color: #b7950b;">
+                Reformation Connection
+                <small>How does it fit the movement?</small>
             </button>
         </div>
     </div>
@@ -376,7 +381,7 @@
     <script>
         // --- DATASETS ---
 
-        // 1. EXCERPTS (Original Data - Text Identification)
+        // 1. EXCERPTS
         const excerptData = [
             { author: "Carlo Ginzburg (Menocchio)", text: "I have said that, in my opinion, all was chaos, that is, earth, air, water, and fire were mixed together; and out of that bulk a mass formed – just as cheese is made out of milk – and worms appeared in it, and these were the angels." },
             { author: "John Calvin", text: "The spiritual kingdom of Christ and civil government are things very widely separated." },
@@ -395,7 +400,7 @@
             { author: "St. Teresa of Avila", text: "I thought of the soul as resembling a castle, formed of a single diamond or a very transparent crystal, and containing many rooms, just as in heaven there are many mansions." }
         ];
 
-        // 2. DATES (Timeline Challenge)
+        // 2. DATES
         const dateData = [
             { title: "Institutes of the Christian Religion", author: "John Calvin", answer: "1536–1559", distractors: ["1517", "1609", "1492"] },
             { title: "Sermons upon the Prophet Jonah", author: "John Hooper", answer: "1550", distractors: ["1534", "1588", "1620"] },
@@ -413,7 +418,7 @@
             { title: "Letter to John Adams", author: "Thomas Jefferson", answer: "1823", distractors: ["1776", "1789", "1800"] }
         ];
 
-        // 3. SIGNIFICANCE (Historical Importance)
+        // 3. SIGNIFICANCE
         const significanceData = [
             { title: "Institutes of the Christian Religion", author: "John Calvin", answer: "Foundational systematic theology of the Reformed tradition; emphasizes sovereignty and predestination.", distractors: ["Arguments for the right to resist ungodly rulers.", "A mystical guide to the interior soul.", "A defense of atheism and critique of religious cruelty."] },
             { title: "Sermons upon the Prophet Jonah", author: "John Hooper", answer: "Early English radical Protestantism; preached before the King; forerunner to Puritanism.", distractors: ["A defense of the Catholic hierarchy.", "A philosophical definition of the Enlightenment.", "A manual for lay devotion in everyday life."] },
@@ -431,34 +436,34 @@
             { title: "Letter to John Adams", author: "Thomas Jefferson", answer: "Reveals Deist/Unitarian views; rejects the 'artificial scaffolding' of Christian dogma.", distractors: ["Defends the divinity of Christ.", "Argues for the establishment of a state church.", "Supports the authority of the Pope."] }
         ];
 
-        // 4. CONTEXT / MOTIVATOR ("Why was it written?")
+        // 4. CONTEXT / MOTIVATOR
         const contextData = [
-            { text: "Which text was written specifically to refute the government pamphlet 'The Execution of Justice in England' and prove that Catholics were martyrs, not traitors?", correct: "Defense of English Catholics (William Allen)", distractors: ["Acts and Monuments (John Foxe)", "Rules for Thinking with the Church (Loyola)", "Letter to John Adams (Jefferson)"] },
-            { text: "Which text was written to incite the common people of Scotland to rebellion against the Catholic Regent, Mary of Guise, by arguing they had a duty to reform religion if nobles wouldn't?", correct: "Exhortation to the Commonalty (John Knox)", distractors: ["The First Blast of the Trumpet (John Knox)", "Sermons on Jonah (John Hooper)", "Institutes of the Christian Religion (Calvin)"] },
-            { text: "Which text was written to provide a systematic theology for the Reformed faith and to defend Protestants against the charge of being anarchists (to King Francis I)?", correct: "Institutes of the Christian Religion (John Calvin)", distractors: ["95 Theses (Luther)", "Confession of Augsburg", "Decrees of the Council of Trent"] },
-            { text: "Which text was preached before King Edward VI during Lent to admonish the King and Council to purify the church and govern by God's law?", correct: "Sermons on Jonah (John Hooper)", distractors: ["Exhortation to the Commonalty (Knox)", "Defense of English Catholics (Allen)", "What is Enlightenment? (Kant)"] },
-            { text: "Which text was written to demonstrate that a life of holiness is possible for laypeople living in the secular world, not just for monks and nuns?", correct: "Introduction to the Devout Life (Francis De Sales)", distractors: ["Interior Castle (Teresa of Avila)", "Spiritual Exercises (Loyola)", "The Cheese and the Worms (Ginzburg)"] },
-            { text: "Which text was written under obedience to a confessor to describe the stages of mystical prayer and the soul's journey to union with God?", correct: "Interior Castle (Teresa of Avila)", distractors: ["Revelations of Divine Love (Julian of Norwich)", "Introduction to the Devout Life (Francis De Sales)", "Pensées (Pascal)"] },
-            { text: "Which text was written to define Enlightenment as the courage to use one's own reason without the guidance of others?", correct: "What is Enlightenment? (Immanuel Kant)", distractors: ["The Social Contract (Rousseau)", "On Religious Cruelty (d'Holbach)", "Letter to John Adams (Jefferson)"] },
-            { text: "Which text was written to memorialize Protestant victims of the Marian persecutions and establish a historical narrative of the 'true' vs 'false' church?", correct: "Acts and Monuments (John Foxe)", distractors: ["The Book of Common Prayer", "Defense of English Catholics (Allen)", "History of the Reformation (Burnet)"] },
-            { text: "Which text was written as a series of notes for an 'Apology for the Christian Religion' addressed to skeptics and libertines?", correct: "Pensées (Blaise Pascal)", distractors: ["Institutes of the Christian Religion (Calvin)", "Summa Theologica (Aquinas)", "On Religious Cruelty (d'Holbach)"] },
+            { text: "Which text was written specifically to refute the government pamphlet 'The Execution of Justice in England'?", correct: "Defense of English Catholics (William Allen)", distractors: ["Acts and Monuments (John Foxe)", "Rules for Thinking with the Church (Loyola)", "Letter to John Adams (Jefferson)"] },
+            { text: "Which text was written to incite the common people of Scotland to rebellion against the Catholic Regent, Mary of Guise?", correct: "Exhortation to the Commonalty (John Knox)", distractors: ["The First Blast of the Trumpet (John Knox)", "Sermons on Jonah (John Hooper)", "Institutes of the Christian Religion (Calvin)"] },
+            { text: "Which text was written to provide a systematic theology and defend Protestants against the charge of being anarchists?", correct: "Institutes of the Christian Religion (John Calvin)", distractors: ["95 Theses (Luther)", "Confession of Augsburg", "Decrees of the Council of Trent"] },
+            { text: "Which text was preached before King Edward VI to admonish the King and Council to purify the church?", correct: "Sermons on Jonah (John Hooper)", distractors: ["Exhortation to the Commonalty (Knox)", "Defense of English Catholics (Allen)", "What is Enlightenment? (Kant)"] },
+            { text: "Which text was written to demonstrate that a life of holiness is possible for laypeople in the secular world?", correct: "Introduction to the Devout Life (Francis De Sales)", distractors: ["Interior Castle (Teresa of Avila)", "Spiritual Exercises (Loyola)", "The Cheese and the Worms (Ginzburg)"] },
+            { text: "Which text was written under obedience to a confessor to describe the stages of mystical prayer?", correct: "Interior Castle (Teresa of Avila)", distractors: ["Revelations of Divine Love (Julian of Norwich)", "Introduction to the Devout Life (Francis De Sales)", "Pensées (Pascal)"] },
+            { text: "Which text was written to define Enlightenment as the courage to use one's own reason?", correct: "What is Enlightenment? (Immanuel Kant)", distractors: ["The Social Contract (Rousseau)", "On Religious Cruelty (d'Holbach)", "Letter to John Adams (Jefferson)"] },
+            { text: "Which text was written to memorialize Protestant victims of the Marian persecutions?", correct: "Acts and Monuments (John Foxe)", distractors: ["The Book of Common Prayer", "Defense of English Catholics (Allen)", "History of the Reformation (Burnet)"] },
+            { text: "Which text was written as notes for an 'Apology for the Christian Religion' addressed to skeptics?", correct: "Pensées (Blaise Pascal)", distractors: ["Institutes of the Christian Religion (Calvin)", "Summa Theologica (Aquinas)", "On Religious Cruelty (d'Holbach)"] },
             { text: "Which text serves as an Enlightenment attack on religious fanaticism, arguing that religion causes misery?", correct: "On Religious Cruelty (Baron d'Holbach)", distractors: ["What is Enlightenment? (Kant)", "Pensées (Pascal)", "Defense of English Catholics (Allen)"] },
             { text: "Which text is a private correspondence discussing the corruption of 'primitive' Christianity by artificial dogmas?", correct: "Letter to John Adams (Thomas Jefferson)", distractors: ["What is Enlightenment? (Kant)", "The Age of Reason (Paine)", "Institutes of the Christian Religion (Calvin)"] },
             { text: "Which text acts as the definitive response to Protestant heresies and a guide for Catholic reform?", correct: "Decrees of the Council of Trent", distractors: ["Rules for Thinking with the Church (Loyola)", "Interior Castle (Teresa)", "Defense of English Catholics (Allen)"] },
-            { text: "Which text is a set of guidelines within the 'Spiritual Exercises' to ensure Catholics remained orthodox during the Reformation?", correct: "Rules for Thinking With the Church (Loyola)", distractors: ["Decrees of the Council of Trent", "Interior Castle (Teresa)", "Introduction to the Devout Life (De Sales)"] },
-            { text: "Which text is a historical study of inquisitorial records to explore the gap between elite and popular culture?", correct: "The Cheese and the Worms (Ginzburg)", distractors: ["Acts and Monuments (Foxe)", "The Peasants' War (Engels)", "Montaillou (Le Roy Ladurie)"] }
+            { text: "Which text is a set of guidelines to ensure Catholics remained orthodox during the Reformation?", correct: "Rules for Thinking With the Church (Loyola)", distractors: ["Decrees of the Council of Trent", "Interior Castle (Teresa)", "Introduction to the Devout Life (De Sales)"] },
+            { text: "Which text is a historical study of inquisitorial records exploring the gap between elite and popular culture?", correct: "The Cheese and the Worms (Ginzburg)", distractors: ["Acts and Monuments (Foxe)", "The Peasants' War (Engels)", "Montaillou (Le Roy Ladurie)"] }
         ];
 
-        // 5. THEMES ("What does it reveal about the Reformation?")
+        // 5. THEMES
         const themeData = [
-            { text: "This text reveals the Radical Reformation's 'Peasant Theology,' blending materialism with religious ideas (e.g., world born from putrefaction/cheese).", correct: "The Cheese and the Worms (Menocchio)", distractors: ["Institutes of the Christian Religion (Calvin)", "Praise of Folly (Erasmus)", "Utopia (More)"] },
-            { text: "This text illustrates the Counter-Reformation emphasis on absolute obedience to the hierarchical Church ('white is black if the Church says so').", correct: "Rules for Thinking With the Church (Loyola)", distractors: ["Decrees of the Council of Trent", "Interior Castle (Teresa of Avila)", "Defense of English Catholics (Allen)"] },
+            { text: "This text reveals the Radical Reformation's 'Peasant Theology,' blending materialism with religious ideas.", correct: "The Cheese and the Worms (Menocchio)", distractors: ["Institutes of the Christian Religion (Calvin)", "Praise of Folly (Erasmus)", "Utopia (More)"] },
+            { text: "This text illustrates the Counter-Reformation emphasis on absolute obedience to the hierarchical Church.", correct: "Rules for Thinking With the Church (Loyola)", distractors: ["Decrees of the Council of Trent", "Interior Castle (Teresa of Avila)", "Defense of English Catholics (Allen)"] },
             { text: "This text reveals the Enlightenment critique of religious 'cruelty' and the belief that fear of a tyrannical God leads to bad morals.", correct: "On Religious Cruelty (Baron d'Holbach)", distractors: ["What is Enlightenment? (Kant)", "Pensées (Pascal)", "Letter to John Adams (Jefferson)"] },
-            { text: "This text illustrates the definitive Catholic dogmatic response to Protestantism, affirming both Scripture AND Tradition, and the Seven Sacraments.", correct: "Decrees of the Council of Trent", distractors: ["Rules for Thinking With the Church (Loyola)", "Confutation of Augsburg", "Unam Sanctam (Boniface VIII)"] },
-            { text: "This text reveals the 'Wager' argument: that it is rational to believe in God because the potential gain (heaven) outweighs any finite loss.", correct: "Pensées (Blaise Pascal)", distractors: ["Institutes of the Christian Religion (Calvin)", "What is Enlightenment? (Kant)", "Summa Theologica (Aquinas)"] },
-            { text: "This text illustrates the 'Right of Resistance' theory: that ordinary citizens have a duty to disobey and depose idolatrous rulers.", correct: "Exhortation to the Commonalty (John Knox)", distractors: ["Sermons on Jonah (Hooper)", "Defense of English Catholics (Allen)", "Civil Government (Calvin)"] },
+            { text: "This text illustrates the definitive Catholic dogmatic response to Protestantism, affirming both Scripture AND Tradition.", correct: "Decrees of the Council of Trent", distractors: ["Rules for Thinking With the Church (Loyola)", "Confutation of Augsburg", "Unam Sanctam (Boniface VIII)"] },
+            { text: "This text reveals the 'Wager' argument: that it is rational to believe in God because the potential gain outweighs any loss.", correct: "Pensées (Blaise Pascal)", distractors: ["Institutes of the Christian Religion (Calvin)", "What is Enlightenment? (Kant)", "Summa Theologica (Aquinas)"] },
+            { text: "This text illustrates the 'Right of Resistance' theory: that ordinary citizens have a duty to disobey idolatrous rulers.", correct: "Exhortation to the Commonalty (John Knox)", distractors: ["Sermons on Jonah (Hooper)", "Defense of English Catholics (Allen)", "Civil Government (Calvin)"] },
             { text: "This text illustrates the theme of 'Sovereignty of God' and 'Predestination' central to Reformed Theology.", correct: "Institutes of the Christian Religion (John Calvin)", distractors: ["Rules for Thinking with the Church (Loyola)", "Pensées (Pascal)", "Introduction to the Devout Life (De Sales)"] },
-            { text: "This text reflects the concept of the 'Invisible Church' of true believers persecuted by the 'False Church' (Antichrist).", correct: "Acts and Monuments (John Foxe)", distractors: ["Defense of English Catholics (Allen)", "Decrees of the Council of Trent", "History of the Reformation (Burnet)"] },
+            { text: "This text reflects the concept of the 'Invisible Church' of true believers persecuted by the 'False Church'.", correct: "Acts and Monuments (John Foxe)", distractors: ["Defense of English Catholics (Allen)", "Decrees of the Council of Trent", "History of the Reformation (Burnet)"] },
             { text: "This text deals with the conflict between political loyalty and religious conscience (Martyrdom vs. Treason).", correct: "Defense of English Catholics (William Allen)", distractors: ["Exhortation to the Commonalty (Knox)", "What is Enlightenment? (Kant)", "Sermons on Jonah (Hooper)"] },
             { text: "This text illustrates the theme of 'Public vs. Private Reason' and the exit from 'Self-incurred Tutelage'.", correct: "What is Enlightenment? (Immanuel Kant)", distractors: ["On Religious Cruelty (d'Holbach)", "Letter to John Adams (Jefferson)", "Pensées (Pascal)"] },
             { text: "This text reflects the theme of 'Universal Holiness'—that devotion is adaptable to every state of life.", correct: "Introduction to the Devout Life (Francis De Sales)", distractors: ["Interior Castle (Teresa)", "Spiritual Exercises (Loyola)", "Institutes of the Christian Religion (Calvin)"] },
@@ -467,13 +472,13 @@
             { text: "This text reflects the theme of the Magistrate's duty to purge idolatry and the 'Ship of State' metaphor.", correct: "Sermons on Jonah (John Hooper)", distractors: ["Exhortation to the Commonalty (Knox)", "Defense of English Catholics (Allen)", "Civil Government (Calvin)"] }
         ];
 
-        // 6. THESIS ("What is the author's main concern?")
+        // 6. THESIS
         const thesisData = [
-            { text: "Thesis: The Pope is the Antichrist, and the Catholic Church is a 'false' church that has persecuted the 'true' faithful throughout history.", correct: "John Foxe (Acts and Monuments)", distractors: ["John Calvin (Institutes)", "John Knox (Exhortation)", "Menocchio (Cheese and Worms)"] },
-            { text: "Thesis: True wisdom consists of the knowledge of God and the knowledge of ourselves; God is sovereign and predetermines salvation.", correct: "John Calvin (Institutes)", distractors: ["St. Ignatius of Loyola (Spiritual Exercises)", "Martin Luther (Bondage of the Will)", "St. Francis De Sales (Devout Life)"] },
-            { text: "Thesis: Christianity has been corrupted by 'artificial scaffolding' (Trinity, etc.); the true religion is the simple moral teaching of Jesus.", correct: "Thomas Jefferson (Letter to Adams)", distractors: ["Immanuel Kant (What is Enlightenment?)", "Baron d'Holbach (Religious Cruelty)", "Menocchio (Cheese and Worms)"] },
+            { text: "Thesis: The Pope is the Antichrist, and the Catholic Church is a 'false' church that has persecuted the 'true' faithful.", correct: "John Foxe (Acts and Monuments)", distractors: ["John Calvin (Institutes)", "John Knox (Exhortation)", "Menocchio (Cheese and Worms)"] },
+            { text: "Thesis: True wisdom consists of the knowledge of God and the knowledge of ourselves; God is sovereign.", correct: "John Calvin (Institutes)", distractors: ["St. Ignatius of Loyola (Spiritual Exercises)", "Martin Luther (Bondage of the Will)", "St. Francis De Sales (Devout Life)"] },
+            { text: "Thesis: Christianity has been corrupted by 'artificial scaffolding' (Trinity, etc.); the true religion is the moral teaching of Jesus.", correct: "Thomas Jefferson (Letter to Adams)", distractors: ["Immanuel Kant (What is Enlightenment?)", "Baron d'Holbach (Religious Cruelty)", "Menocchio (Cheese and Worms)"] },
             { text: "Thesis: The soul is like a castle with many mansions; one enters through prayer and moves toward the center where God dwells.", correct: "St. Teresa of Avila (Interior Castle)", distractors: ["St. Francis De Sales (Devout Life)", "Julian of Norwich (Showings)", "St. John of the Cross (Dark Night)"] },
-            { text: "Thesis: God is like the captain of a ship; the King and Council must repent and purge idolatry to save the 'ship' of the Commonwealth.", correct: "John Hooper (Sermons on Jonah)", distractors: ["John Knox (Exhortation)", "William Allen (Defense)", "Thomas More (Utopia)"] },
+            { text: "Thesis: God is like the captain of a ship; the King and Council must repent and purge idolatry to save the 'ship'.", correct: "John Hooper (Sermons on Jonah)", distractors: ["John Knox (Exhortation)", "William Allen (Defense)", "Thomas More (Utopia)"] },
             { text: "Thesis: English Catholics are not traitors; they are being executed for their religion, not for treason against the Queen.", correct: "William Allen (Defense of English Catholics)", distractors: ["John Foxe (Acts and Monuments)", "John Knox (Exhortation)", "Thomas More (Utopia)"] },
             { text: "Thesis: If the nobility fails to reform religion, the common people have the right and duty to disobey and depose idolatrous rulers.", correct: "John Knox (Exhortation to the Commonalty)", distractors: ["John Hooper (Sermons on Jonah)", "John Calvin (Institutes)", "William Allen (Defense)"] },
             { text: "Thesis: We must set aside our own judgment and obey the Hierarchical Church in all things to think with the Church.", correct: "St. Ignatius of Loyola (Rules)", distractors: ["Council of Trent (Decrees)", "Teresa of Avila (Interior Castle)", "Francis De Sales (Devout Life)"] },
@@ -483,6 +488,24 @@
             { text: "Thesis: Man is wretched without God; reason is insufficient; therefore, it is rational to wager that God exists.", correct: "Blaise Pascal (Pensées)", distractors: ["Immanuel Kant (What is Enlightenment?)", "John Calvin (Institutes)", "Thomas Aquinas (Summa)"] },
             { text: "Thesis: Enlightenment is the courage to use one's own understanding without the guidance of another.", correct: "Immanuel Kant (What is Enlightenment?)", distractors: ["Thomas Jefferson (Letter to Adams)", "Baron d'Holbach (Religious Cruelty)", "John Locke (Essay)"] },
             { text: "Thesis: The idea of a cruel and tyrannical God corrupts human morality and leads to cruelty among believers.", correct: "Baron d'Holbach (On Religious Cruelty)", distractors: ["Thomas Jefferson (Letter to Adams)", "Immanuel Kant (What is Enlightenment?)", "Voltaire (Candide)"] }
+        ];
+
+        // 7. CONNECTION (How does it fit the movement?)
+        const connectionData = [
+            { text: "How does this text connect to the Reformation? It represents the 'Magisterial Reformation', creating a systematic Protestant theology.", correct: "Institutes of the Christian Religion (John Calvin)", distractors: ["Sermons on Jonah (Hooper)", "Rules for Thinking with the Church (Loyola)", "The Cheese and the Worms (Menocchio)"] },
+            { text: "How does this text connect to the Reformation? It represents the 'Radical' edge of the English Reformation, pushing for purer Zwinglian reforms.", correct: "Sermons on Jonah (John Hooper)", distractors: ["Acts and Monuments (Foxe)", "Introduction to the Devout Life (De Sales)", "Defense of English Catholics (Allen)"] },
+            { text: "How does this text connect to the Reformation? It links the Scottish Reformation to political revolution via Resistance Theory.", correct: "Exhortation to the Commonalty (John Knox)", distractors: ["Institutes (Calvin)", "What is Enlightenment? (Kant)", "Interior Castle (Teresa)"] },
+            { text: "How does this text connect to the Reformation? It helped forge a distinct English Protestant national identity based on anti-Catholicism.", correct: "Acts and Monuments (John Foxe)", distractors: ["Defense of English Catholics (Allen)", "Decrees of the Council of Trent", "Pensées (Pascal)"] },
+            { text: "How does this text connect to the Reformation? It represents the 'Catholic Exile' community attempting to reclaim England for Rome.", correct: "Defense of English Catholics (William Allen)", distractors: ["John Foxe (Acts and Monuments)", "John Knox (Exhortation)", "Thomas More (Utopia)"] },
+            { text: "How does this text connect to the Reformation? It defines the militant 'Jesuit' obedience that became the vanguard of the Counter-Reformation.", correct: "Rules for Thinking With the Church (Loyola)", distractors: ["Decrees of the Council of Trent", "Interior Castle (Teresa)", "Introduction to the Devout Life (De Sales)"] },
+            { text: "How does this text connect to the Reformation? It represents the 'Mystical' renewal within the Catholic Reformation.", correct: "Interior Castle (Teresa of Avila)", distractors: ["Rules for Thinking with the Church (Loyola)", "Institutes (Calvin)", "Pensées (Pascal)"] },
+            { text: "How does this text connect to the Reformation? It is the official 'Institutional' response of the Catholic Church, defining dogma against Protestant errors.", correct: "Decrees of the Council of Trent", distractors: ["Rules for Thinking with the Church (Loyola)", "Confutation of Augsburg", "Institutes (Calvin)"] },
+            { text: "How does this text connect to the Reformation? It represents the 'Pastoral' Catholic Reformation, bringing spirituality to the laity.", correct: "Introduction to the Devout Life (Francis De Sales)", distractors: ["Interior Castle (Teresa)", "Spiritual Exercises (Loyola)", "Institutes (Calvin)"] },
+            { text: "How does this text connect to the Reformation? It represents the 'Radical Reformation' from below, showing how common people reinterpreted dogma.", correct: "The Cheese and the Worms (Menocchio)", distractors: ["Baron d'Holbach (Religious Cruelty)", "Thomas Jefferson (Letter to Adams)", "Voltaire (Candide)"] },
+            { text: "How does this text connect to the Reformation? It represents a 17th-century Catholic response to the skepticism/libertinism that arose post-Reformation.", correct: "Pensées (Blaise Pascal)", distractors: ["Immanuel Kant (What is Enlightenment?)", "John Calvin (Institutes)", "Thomas Aquinas (Summa)"] },
+            { text: "How does this text connect to the Reformation? It represents the 'Radical Enlightenment' rejection of all Reformation theology (atheism).", correct: "On Religious Cruelty (Baron d'Holbach)", distractors: ["Thomas Jefferson (Letter to Adams)", "Immanuel Kant (What is Enlightenment?)", "Voltaire (Candide)"] },
+            { text: "How does this text connect to the Reformation? It represents the 'Enlightenment' secularization of the Reformation's emphasis on individual judgment.", correct: "What is Enlightenment? (Immanuel Kant)", distractors: ["Thomas Jefferson (Letter to Adams)", "Baron d'Holbach (Religious Cruelty)", "John Locke (Essay)"] },
+            { text: "How does this text connect to the Reformation? It represents the 'American' consequence: rejecting Calvinist dogma for rational religion (Deism).", correct: "Letter to John Adams (Thomas Jefferson)", distractors: ["What is Enlightenment? (Kant)", "On Religious Cruelty (d'Holbach)", "Pensées (Pascal)"] }
         ];
 
         // --- GAME LOGIC ---
@@ -564,6 +587,12 @@
                 questionPool = [...thesisData];
                 questionBoxEl.classList.remove('quote-style');
                 optionsGridEl.classList.add('stacked-grid');
+            } else if (mode === 'connection') {
+                gameTitleEl.innerText = "Reformation Connection";
+                gameSubtitleEl.innerText = "How does it fit the movement?";
+                questionPool = [...connectionData];
+                questionBoxEl.classList.remove('quote-style');
+                optionsGridEl.classList.add('stacked-grid');
             }
 
             totalCountEl.innerText = questionPool.length;
@@ -596,7 +625,7 @@
                 questionTextEl.innerHTML = `<strong>${currentQuestion.title}</strong>`;
                 authorDisplayEl.innerText = `by ${currentQuestion.author}`;
             } else {
-                // Context, Themes, Thesis
+                // Context, Themes, Thesis, Connection
                 questionTextEl.innerText = currentQuestion.text;
                 authorDisplayEl.innerText = "";
             }
@@ -613,7 +642,7 @@
             } else if (currentMode === 'dates' || currentMode === 'significance') {
                 options = [currentQuestion.answer, ...currentQuestion.distractors];
             } else {
-                // Context, Themes, Thesis
+                // Context, Themes, Thesis, Connection
                 options = [currentQuestion.correct, ...currentQuestion.distractors];
             }
 
