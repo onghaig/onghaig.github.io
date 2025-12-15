@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reformation Ultimate Study Suite</title>
+    <style>
+        :root {
+            --bg-color: #fdfbf7;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --secondary: #2980b9; /* Blue */
+            --accent: #8e44ad;    /* Purple */
+            --correct: #27ae60;
+            --wrong: #c0392b;
+            --button-text: #34495e;
+        }
+
+        body {
+            font-family: "Georgia", "Times New Roman", serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* --- MENU STYLES --- */
+        #main-menu {
+            text-align: center;
+            width: 100%;
+            max-width: 700px;
+            margin-top: 20px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .menu-btn {
+            padding: 20px;
+            font-size: 1.1rem;
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: "Helvetica Neue", sans-serif;
+            font-weight: bold;
+            color: var(--secondary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .menu-btn:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .menu-btn small {
+            font-weight: normal;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        /* --- GAME STYLES --- */
+        #game-interface {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+            position: relative;
+        }
+
+        .home-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-family: sans-serif;
+            background: white;
+        }
+
+        .home-icon:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: var(--text-color);
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .subtitle {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+
+        #game-container {
+            background: var(--card-bg);
+            width: 100%;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 1px solid #dcdde1;
+            min-height: 450px;
+        }
+
+        #score-board {
+            font-family: "Helvetica Neue", sans-serif;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: var(--accent);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #question-box {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            padding: 30px;
+            border-left: 5px solid var(--accent);
+            background-color: #fafafa;
+            text-align: left;
+            min-height: 100px;
+            position: relative;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.03);
+        }
+
+        .quote-style::before {
+            content: "“";
+            font-size: 5rem;
+            color: #ecf0f1;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            z-index: 0;
+            font-family: serif;
+        }
+
+        #question-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .author-label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--secondary);
+            font-family: sans-serif;
+            text-align: right;
+        }
+
+        #options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .stacked-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        button.option-btn {
+            background: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            padding: 15px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: "Helvetica Neue", sans-serif;
+            font-weight: 600;
+            color: var(--button-text);
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Centered by default */
+            min-height: 60px;
+            text-align: center;
+        }
+        
+        .stacked-grid button.option-btn {
+            text-align: left;
+            justify-content: flex-start;
+            padding-left: 20px;
+        }
+
+        button.option-btn:hover {
+            background: #dfe6e9;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        button.correct {
+            background-color: var(--correct) !important;
+            color: white !important;
+            border-color: var(--correct) !important;
+        }
+
+        button.wrong {
+            background-color: var(--wrong) !important;
+            color: white !important;
+            border-color: var(--wrong) !important;
+            opacity: 0.6;
+        }
+
+        #next-btn {
+            display: none;
+            margin-top: 25px;
+            padding: 12px 40px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: background 0.3s;
+        }
+
+        #next-btn:hover {
+            background-color: #2c3e50;
+        }
+
+        /* End Screen */
+        #end-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding-top: 50px;
+        }
+
+        .final-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin: 20px 0;
+        }
+
+        .end-message {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: #34495e;
+        }
+
+        #restart-btn, #menu-return-btn {
+            padding: 15px 40px;
+            margin: 10px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            width: 250px;
+        }
+
+        #restart-btn { background-color: var(--correct); }
+        #restart-btn:hover { background-color: #219150; }
+        
+        #menu-return-btn { background-color: var(--secondary); }
+        #menu-return-btn:hover { background-color: #34495e; }
+
+        @media (max-width: 600px) {
+            .menu-grid { grid-template-columns: 1fr; }
+            #options-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-menu">
+        <h1>Reformation Study Suite</h1>
+        <div class="subtitle">Choose a Game Mode</div>
+        
+        <div class="menu-grid">
+            <button class="menu-btn" onclick="initGame('excerpts')">
+                Who Wrote This?
+                <small>Identify author from text</small>
+            </button>
+            <button class="menu-btn" onclick="initGame('dates')">
+                Timeline Challenge
+                <small>Match text to year</small>
+            </button>
+            <button class="menu-btn" onclick="initGame('significance')">
+                Why It Matters
+                <small>Identify historical significance</small>
+            </button>
+            <button class="menu-btn" onclick="initGame('context')">
+                The Motivator
+                <small>Why was it written?</small>
+            </button>
+            <button class="menu-btn" onclick="initGame('themes')">
+                Theme Spotter
+                <small>Connect text to doctrine</small>
+            </button>
+            <button class="menu-btn" onclick="initGame('thesis')">
+                Thesis Match
+                <small>Identify main arguments</small>
+            </button>
+        </div>
+    </div>
+
+    <div id="game-interface">
+        <header>
+            <a href="#" class="home-icon" onclick="showMainMenu()">&#8962; Menu</a>
+            <h1 id="game-title">Game Title</h1>
+            <div class="subtitle" id="game-subtitle">Subtitle</div>
+        </header>
+
+        <div id="game-container">
+            <div id="game-content">
+                <div id="score-board">Score: <span id="score">0</span> | Question: <span id="question-count">1</span> / <span id="total-count">0</span></div>
+                
+                <div id="question-box">
+                    <span id="question-text">Loading...</span>
+                    <span id="author-display" class="author-label"></span>
+                </div>
+
+                <div id="options-grid">
+                    </div>
+
+                <button id="next-btn" onclick="nextQuestion()">Next Question &rarr;</button>
+            </div>
+
+            <div id="end-screen">
+                <h2>Session Complete!</h2>
+                <div class="end-message" id="end-msg">Great work!</div>
+                <div class="final-score" id="final-score-display">0 / 0</div>
+                <button id="restart-btn" onclick="restartCurrentGame()">Play Again</button>
+                <button id="menu-return-btn" onclick="showMainMenu()">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATASETS ---
+
+        // 1. EXCERPTS (Original Data - Text Identification)
+        const excerptData = [
+            { author: "Carlo Ginzburg (Menocchio)", text: "I have said that, in my opinion, all was chaos, that is, earth, air, water, and fire were mixed together; and out of that bulk a mass formed – just as cheese is made out of milk – and worms appeared in it, and these were the angels." },
+            { author: "John Calvin", text: "The spiritual kingdom of Christ and civil government are things very widely separated." },
+            { author: "John Calvin", text: "Our wisdom, in so far as it ought to be deemed true and solid Wisdom, consists almost entirely of two parts: the knowledge of God and of ourselves." },
+            { author: "John Foxe", text: "Lord, open the King of England's eyes." },
+            { author: "Thomas Jefferson", text: "The truth is that the greatest enemies to the doctrines of Jesus are those calling themselves the expositors of them, who have perverted them for the structure of a system of fancy absolutely incomprehensible." },
+            { author: "Baron d'Holbach", text: "If men imagine for themselves a tyrannical, capricious or wicked God their religion will breathe slavery, inconsistency, and cruelty." },
+            { author: "Immanuel Kant", text: "Enlightenment is man's release from his self-incurred tutelage. Sapere aude! 'Have courage to use your own reason!'— that is the motto of enlightenment." },
+            { author: "Blaise Pascal", text: "The heart has its reasons, which reason does not know. We feel it in a thousand things." },
+            { author: "St. Francis De Sales", text: "True and living devotion... is neither more nor less than a very real love of God... when it strengthens us to do well, it is called Charity; but when it attains its fullest perfection... it is called Devotion." },
+            { author: "Council of Trent", text: "If any one saith, that by faith alone the impious is justified... let him be anathema." },
+            { author: "John Hooper", text: "If the priesthood and ministry of Christ with his notes and marks are true, holy, and absolutely perfect, receive it - in case it be not, follow the pope." },
+            { author: "John Knox", text: "To you it no less appertains, than to your king or princes, to provide that Christ Jesus be truly preached amongst you, seeing that without his true knowledge neither of you can attain to salvation." },
+            { author: "William Allen", text: "We measure not the matter by the number, nor by the severity of the punishment only or specially, but by the cause... whereby we can prove Queen Mary's doings to be commendable and most lawful." },
+            { author: "St. Ignatius of Loyola", text: "To be right in everything, we ought always to hold that the white which I see, is black, if the Hierarchical Church so decides it." },
+            { author: "St. Teresa of Avila", text: "I thought of the soul as resembling a castle, formed of a single diamond or a very transparent crystal, and containing many rooms, just as in heaven there are many mansions." }
+        ];
+
+        // 2. DATES (Timeline Challenge)
+        const dateData = [
+            { title: "Institutes of the Christian Religion", author: "John Calvin", answer: "1536–1559", distractors: ["1517", "1609", "1492"] },
+            { title: "Sermons upon the Prophet Jonah", author: "John Hooper", answer: "1550", distractors: ["1534", "1588", "1620"] },
+            { title: "Exhortation to the Commonalty", author: "John Knox", answer: "1558", distractors: ["1517", "1598", "1536"] },
+            { title: "Acts and Monuments (Book of Martyrs)", author: "John Foxe", answer: "1563", distractors: ["1520", "1599", "1611"] },
+            { title: "Defense of English Catholics", author: "William Allen", answer: "1584", distractors: ["1535", "1559", "1605"] },
+            { title: "Rules for Thinking With the Church", author: "St. Ignatius of Loyola", answer: "1548", distractors: ["1517", "1580", "1622"] },
+            { title: "Interior Castle", author: "St. Teresa of Avila", answer: "1577", distractors: ["1520", "1545", "1610"] },
+            { title: "Decrees of the Council of Trent", author: "Catholic Church", answer: "1545–1563", distractors: ["1517–1521", "1580–1590", "1618–1648"] },
+            { title: "Introduction to the Devout Life", author: "Francis De Sales", answer: "1609", distractors: ["1550", "1584", "1650"] },
+            { title: "The Cheese and the Worms (Menocchio's Trials)", author: "Carlo Ginzburg (Source)", answer: "1584–1599", distractors: ["1510–1520", "1630–1640", "1540–1550"] },
+            { title: "Pensées", author: "Blaise Pascal", answer: "1670", distractors: ["1590", "1637", "1710"] },
+            { title: "On Religious Cruelty", author: "Baron D’Holbach", answer: "1769", distractors: ["1690", "1720", "1850"] },
+            { title: "What is Enlightenment?", author: "Immanuel Kant", answer: "1784", distractors: ["1689", "1750", "1815"] },
+            { title: "Letter to John Adams", author: "Thomas Jefferson", answer: "1823", distractors: ["1776", "1789", "1800"] }
+        ];
+
+        // 3. SIGNIFICANCE (Historical Importance)
+        const significanceData = [
+            { title: "Institutes of the Christian Religion", author: "John Calvin", answer: "Foundational systematic theology of the Reformed tradition; emphasizes sovereignty and predestination.", distractors: ["Arguments for the right to resist ungodly rulers.", "A mystical guide to the interior soul.", "A defense of atheism and critique of religious cruelty."] },
+            { title: "Sermons upon the Prophet Jonah", author: "John Hooper", answer: "Early English radical Protestantism; preached before the King; forerunner to Puritanism.", distractors: ["A defense of the Catholic hierarchy.", "A philosophical definition of the Enlightenment.", "A manual for lay devotion in everyday life."] },
+            { title: "Exhortation to the Commonalty", author: "John Knox", answer: "Argument for the right to resist ungodly rulers; call for the common people to reform religion.", distractors: ["A defense of the divine right of kings.", "A guide to Jesuit obedience.", "A proposal for religious toleration."] },
+            { title: "Acts and Monuments", author: "John Foxe", answer: "Shaped English Protestant identity by documenting Marian persecutions and the history of the 'true church'.", distractors: ["A collection of Catholic saints' lives.", "A critique of the Spanish Inquisition from a secular view.", "A systematic theology of the sacraments."] },
+            { title: "Defense of English Catholics", author: "William Allen", answer: "Argues that Catholics in England suffer for their religion, not for treason against the Queen.", distractors: ["Argues that the Pope is the Antichrist.", "A defense of the Spanish Armada's invasion.", "A mystical guide to prayer."] },
+            { title: "Rules for Thinking With the Church", author: "St. Ignatius of Loyola", answer: "Emphasizes absolute obedience to the Church hierarchy; 'thinking with the church' against Protestant individualism.", distractors: ["Promotes the idea that every individual can interpret Scripture.", "Rejects the use of images and relics.", "Calls for the abolition of the priesthood."] },
+            { title: "Interior Castle", author: "St. Teresa of Avila", answer: "Catholic mystical theology describing the soul's internal journey through 'mansions' to union with God.", distractors: ["A political treatise on the duties of Christian princes.", "A defense of the Council of Trent's decrees.", "A critique of monastic life."] },
+            { title: "Decrees of the Council of Trent", author: "Catholic Church", answer: "Definitive Catholic response to Protestantism; defined dogmas on Justification, Scripture, and Tradition.", distractors: ["A compromise seeking unity with Lutherans.", "A declaration of the Pope's infallibility.", "A manual for the Spanish Inquisition."] },
+            { title: "The Cheese and the Worms (Menocchio)", author: "Carlo Ginzburg (Source)", answer: "Illustrates the gap between official Church doctrine and the alternative 'cosmology' of a peasant.", distractors: ["Demonstrates the complete success of the Counter-Reformation.", "A standard example of Lutheran theology.", "Shows that all peasants were atheists."] },
+            { title: "Introduction to the Devout Life", author: "Francis De Sales", answer: "Demonstrates that holiness is possible in secular life, not just in the cloister.", distractors: ["A harsh condemnation of worldly pleasures.", "A defense of the Huguenots in France.", "A philosophical tract on Deism."] },
+            { title: "Pensées", author: "Blaise Pascal", answer: "Defense of Christianity against skeptics/libertines; emphasizes human misery without God.", distractors: ["A scientific treatise on geometry.", "A systematic theology like Calvin's.", "A critique of the Jesuits' obedience."] },
+            { title: "What is Enlightenment?", author: "Immanuel Kant", answer: "Defines Enlightenment as man's release from self-incurred tutelage; 'Sapere Aude' (Dare to know).", distractors: ["Argues that religion is the only source of truth.", "A defense of absolute monarchy.", "A critique of scientific progress."] },
+            { title: "On Religious Cruelty", author: "Baron d'Holbach", answer: "Enlightenment atheism; argues that fear of a cruel God leads to cruelty in believers.", distractors: ["A defense of religious toleration within Christianity.", "A mystical guide to the soul.", "A defense of the Council of Trent."] },
+            { title: "Letter to John Adams", author: "Thomas Jefferson", answer: "Reveals Deist/Unitarian views; rejects the 'artificial scaffolding' of Christian dogma.", distractors: ["Defends the divinity of Christ.", "Argues for the establishment of a state church.", "Supports the authority of the Pope."] }
+        ];
+
+        // 4. CONTEXT / MOTIVATOR ("Why was it written?")
+        const contextData = [
+            { text: "Which text was written specifically to refute the government pamphlet 'The Execution of Justice in England' and prove that Catholics were martyrs, not traitors?", correct: "Defense of English Catholics (William Allen)", distractors: ["Acts and Monuments (John Foxe)", "Rules for Thinking with the Church (Loyola)", "Letter to John Adams (Jefferson)"] },
+            { text: "Which text was written to incite the common people of Scotland to rebellion against the Catholic Regent, Mary of Guise, by arguing they had a duty to reform religion if nobles wouldn't?", correct: "Exhortation to the Commonalty (John Knox)", distractors: ["The First Blast of the Trumpet (John Knox)", "Sermons on Jonah (John Hooper)", "Institutes of the Christian Religion (Calvin)"] },
+            { text: "Which text was written to provide a systematic theology for the Reformed faith and to defend Protestants against the charge of being anarchists (to King Francis I)?", correct: "Institutes of the Christian Religion (John Calvin)", distractors: ["95 Theses (Luther)", "Confession of Augsburg", "Decrees of the Council of Trent"] },
+            { text: "Which text was preached before King Edward VI during Lent to admonish the King and Council to purify the church and govern by God's law?", correct: "Sermons on Jonah (John Hooper)", distractors: ["Exhortation to the Commonalty (Knox)", "Defense of English Catholics (Allen)", "What is Enlightenment? (Kant)"] },
+            { text: "Which text was written to demonstrate that a life of holiness is possible for laypeople living in the secular world, not just for monks and nuns?", correct: "Introduction to the Devout Life (Francis De Sales)", distractors: ["Interior Castle (Teresa of Avila)", "Spiritual Exercises (Loyola)", "The Cheese and the Worms (Ginzburg)"] },
+            { text: "Which text was written under obedience to a confessor to describe the stages of mystical prayer and the soul's journey to union with God?", correct: "Interior Castle (Teresa of Avila)", distractors: ["Revelations of Divine Love (Julian of Norwich)", "Introduction to the Devout Life (Francis De Sales)", "Pensées (Pascal)"] },
+            { text: "Which text was written to define Enlightenment as the courage to use one's own reason without the guidance of others?", correct: "What is Enlightenment? (Immanuel Kant)", distractors: ["The Social Contract (Rousseau)", "On Religious Cruelty (d'Holbach)", "Letter to John Adams (Jefferson)"] },
+            { text: "Which text was written to memorialize Protestant victims of the Marian persecutions and establish a historical narrative of the 'true' vs 'false' church?", correct: "Acts and Monuments (John Foxe)", distractors: ["The Book of Common Prayer", "Defense of English Catholics (Allen)", "History of the Reformation (Burnet)"] },
+            { text: "Which text was written as a series of notes for an 'Apology for the Christian Religion' addressed to skeptics and libertines?", correct: "Pensées (Blaise Pascal)", distractors: ["Institutes of the Christian Religion (Calvin)", "Summa Theologica (Aquinas)", "On Religious Cruelty (d'Holbach)"] },
+            { text: "Which text serves as an Enlightenment attack on religious fanaticism, arguing that religion causes misery?", correct: "On Religious Cruelty (Baron d'Holbach)", distractors: ["What is Enlightenment? (Kant)", "Pensées (Pascal)", "Defense of English Catholics (Allen)"] },
+            { text: "Which text is a private correspondence discussing the corruption of 'primitive' Christianity by artificial dogmas?", correct: "Letter to John Adams (Thomas Jefferson)", distractors: ["What is Enlightenment? (Kant)", "The Age of Reason (Paine)", "Institutes of the Christian Religion (Calvin)"] },
+            { text: "Which text acts as the definitive response to Protestant heresies and a guide for Catholic reform?", correct: "Decrees of the Council of Trent", distractors: ["Rules for Thinking with the Church (Loyola)", "Interior Castle (Teresa)", "Defense of English Catholics (Allen)"] },
+            { text: "Which text is a set of guidelines within the 'Spiritual Exercises' to ensure Catholics remained orthodox during the Reformation?", correct: "Rules for Thinking With the Church (Loyola)", distractors: ["Decrees of the Council of Trent", "Interior Castle (Teresa)", "Introduction to the Devout Life (De Sales)"] },
+            { text: "Which text is a historical study of inquisitorial records to explore the gap between elite and popular culture?", correct: "The Cheese and the Worms (Ginzburg)", distractors: ["Acts and Monuments (Foxe)", "The Peasants' War (Engels)", "Montaillou (Le Roy Ladurie)"] }
+        ];
+
+        // 5. THEMES ("What does it reveal about the Reformation?")
+        const themeData = [
+            { text: "This text reveals the Radical Reformation's 'Peasant Theology,' blending materialism with religious ideas (e.g., world born from putrefaction/cheese).", correct: "The Cheese and the Worms (Menocchio)", distractors: ["Institutes of the Christian Religion (Calvin)", "Praise of Folly (Erasmus)", "Utopia (More)"] },
+            { text: "This text illustrates the Counter-Reformation emphasis on absolute obedience to the hierarchical Church ('white is black if the Church says so').", correct: "Rules for Thinking With the Church (Loyola)", distractors: ["Decrees of the Council of Trent", "Interior Castle (Teresa of Avila)", "Defense of English Catholics (Allen)"] },
+            { text: "This text reveals the Enlightenment critique of religious 'cruelty' and the belief that fear of a tyrannical God leads to bad morals.", correct: "On Religious Cruelty (Baron d'Holbach)", distractors: ["What is Enlightenment? (Kant)", "Pensées (Pascal)", "Letter to John Adams (Jefferson)"] },
+            { text: "This text illustrates the definitive Catholic dogmatic response to Protestantism, affirming both Scripture AND Tradition, and the Seven Sacraments.", correct: "Decrees of the Council of Trent", distractors: ["Rules for Thinking With the Church (Loyola)", "Confutation of Augsburg", "Unam Sanctam (Boniface VIII)"] },
+            { text: "This text reveals the 'Wager' argument: that it is rational to believe in God because the potential gain (heaven) outweighs any finite loss.", correct: "Pensées (Blaise Pascal)", distractors: ["Institutes of the Christian Religion (Calvin)", "What is Enlightenment? (Kant)", "Summa Theologica (Aquinas)"] },
+            { text: "This text illustrates the 'Right of Resistance' theory: that ordinary citizens have a duty to disobey and depose idolatrous rulers.", correct: "Exhortation to the Commonalty (John Knox)", distractors: ["Sermons on Jonah (Hooper)", "Defense of English Catholics (Allen)", "Civil Government (Calvin)"] },
+            { text: "This text illustrates the theme of 'Sovereignty of God' and 'Predestination' central to Reformed Theology.", correct: "Institutes of the Christian Religion (John Calvin)", distractors: ["Rules for Thinking with the Church (Loyola)", "Pensées (Pascal)", "Introduction to the Devout Life (De Sales)"] },
+            { text: "This text reflects the concept of the 'Invisible Church' of true believers persecuted by the 'False Church' (Antichrist).", correct: "Acts and Monuments (John Foxe)", distractors: ["Defense of English Catholics (Allen)", "Decrees of the Council of Trent", "History of the Reformation (Burnet)"] },
+            { text: "This text deals with the conflict between political loyalty and religious conscience (Martyrdom vs. Treason).", correct: "Defense of English Catholics (William Allen)", distractors: ["Exhortation to the Commonalty (Knox)", "What is Enlightenment? (Kant)", "Sermons on Jonah (Hooper)"] },
+            { text: "This text illustrates the theme of 'Public vs. Private Reason' and the exit from 'Self-incurred Tutelage'.", correct: "What is Enlightenment? (Immanuel Kant)", distractors: ["On Religious Cruelty (d'Holbach)", "Letter to John Adams (Jefferson)", "Pensées (Pascal)"] },
+            { text: "This text reflects the theme of 'Universal Holiness'—that devotion is adaptable to every state of life.", correct: "Introduction to the Devout Life (Francis De Sales)", distractors: ["Interior Castle (Teresa)", "Spiritual Exercises (Loyola)", "Institutes of the Christian Religion (Calvin)"] },
+            { text: "This text illustrates the Deist/Enlightenment theme of demystifying Christianity (Jesus as moral teacher, not God).", correct: "Letter to John Adams (Thomas Jefferson)", distractors: ["What is Enlightenment? (Kant)", "On Religious Cruelty (d'Holbach)", "Pensées (Pascal)"] },
+            { text: "This text illustrates the theme of the 'Interior Journey' of the soul and the structure of mystical experience.", correct: "Interior Castle (Teresa of Avila)", distractors: ["Introduction to the Devout Life (De Sales)", "Spiritual Exercises (Loyola)", "Pensées (Pascal)"] },
+            { text: "This text reflects the theme of the Magistrate's duty to purge idolatry and the 'Ship of State' metaphor.", correct: "Sermons on Jonah (John Hooper)", distractors: ["Exhortation to the Commonalty (Knox)", "Defense of English Catholics (Allen)", "Civil Government (Calvin)"] }
+        ];
+
+        // 6. THESIS ("What is the author's main concern?")
+        const thesisData = [
+            { text: "Thesis: The Pope is the Antichrist, and the Catholic Church is a 'false' church that has persecuted the 'true' faithful throughout history.", correct: "John Foxe (Acts and Monuments)", distractors: ["John Calvin (Institutes)", "John Knox (Exhortation)", "Menocchio (Cheese and Worms)"] },
+            { text: "Thesis: True wisdom consists of the knowledge of God and the knowledge of ourselves; God is sovereign and predetermines salvation.", correct: "John Calvin (Institutes)", distractors: ["St. Ignatius of Loyola (Spiritual Exercises)", "Martin Luther (Bondage of the Will)", "St. Francis De Sales (Devout Life)"] },
+            { text: "Thesis: Christianity has been corrupted by 'artificial scaffolding' (Trinity, etc.); the true religion is the simple moral teaching of Jesus.", correct: "Thomas Jefferson (Letter to Adams)", distractors: ["Immanuel Kant (What is Enlightenment?)", "Baron d'Holbach (Religious Cruelty)", "Menocchio (Cheese and Worms)"] },
+            { text: "Thesis: The soul is like a castle with many mansions; one enters through prayer and moves toward the center where God dwells.", correct: "St. Teresa of Avila (Interior Castle)", distractors: ["St. Francis De Sales (Devout Life)", "Julian of Norwich (Showings)", "St. John of the Cross (Dark Night)"] },
+            { text: "Thesis: God is like the captain of a ship; the King and Council must repent and purge idolatry to save the 'ship' of the Commonwealth.", correct: "John Hooper (Sermons on Jonah)", distractors: ["John Knox (Exhortation)", "William Allen (Defense)", "Thomas More (Utopia)"] },
+            { text: "Thesis: English Catholics are not traitors; they are being executed for their religion, not for treason against the Queen.", correct: "William Allen (Defense of English Catholics)", distractors: ["John Foxe (Acts and Monuments)", "John Knox (Exhortation)", "Thomas More (Utopia)"] },
+            { text: "Thesis: If the nobility fails to reform religion, the common people have the right and duty to disobey and depose idolatrous rulers.", correct: "John Knox (Exhortation to the Commonalty)", distractors: ["John Hooper (Sermons on Jonah)", "John Calvin (Institutes)", "William Allen (Defense)"] },
+            { text: "Thesis: We must set aside our own judgment and obey the Hierarchical Church in all things to think with the Church.", correct: "St. Ignatius of Loyola (Rules)", distractors: ["Council of Trent (Decrees)", "Teresa of Avila (Interior Castle)", "Francis De Sales (Devout Life)"] },
+            { text: "Thesis: Justification comes by faith and works; Scripture and Tradition are equal authorities; the 7 Sacraments are instituted by Christ.", correct: "Decrees of the Council of Trent", distractors: ["Rules for Thinking with the Church (Loyola)", "Confutation of Augsburg", "Institutes (Calvin)"] },
+            { text: "Thesis: True devotion is not just for the cloister; it is possible to live a holy life at court, in the military, or in marriage.", correct: "Francis De Sales (Introduction to the Devout Life)", distractors: ["Teresa of Avila (Interior Castle)", "Ignatius of Loyola (Rules)", "John Calvin (Institutes)"] },
+            { text: "Thesis: The universe was born from chaos (like cheese from milk); the Church exploits the poor; all religions are equal.", correct: "Menocchio (The Cheese and the Worms)", distractors: ["Baron d'Holbach (Religious Cruelty)", "Thomas Jefferson (Letter to Adams)", "Voltaire (Candide)"] },
+            { text: "Thesis: Man is wretched without God; reason is insufficient; therefore, it is rational to wager that God exists.", correct: "Blaise Pascal (Pensées)", distractors: ["Immanuel Kant (What is Enlightenment?)", "John Calvin (Institutes)", "Thomas Aquinas (Summa)"] },
+            { text: "Thesis: Enlightenment is the courage to use one's own understanding without the guidance of another.", correct: "Immanuel Kant (What is Enlightenment?)", distractors: ["Thomas Jefferson (Letter to Adams)", "Baron d'Holbach (Religious Cruelty)", "John Locke (Essay)"] },
+            { text: "Thesis: The idea of a cruel and tyrannical God corrupts human morality and leads to cruelty among believers.", correct: "Baron d'Holbach (On Religious Cruelty)", distractors: ["Thomas Jefferson (Letter to Adams)", "Immanuel Kant (What is Enlightenment?)", "Voltaire (Candide)"] }
+        ];
+
+        // --- GAME LOGIC ---
+        let currentMode = null;
+        let questionPool = [];
+        let score = 0;
+        let round = 0;
+        let currentQuestion = null;
+        let isAnswered = false;
+
+        // DOM Elements
+        const menuEl = document.getElementById('main-menu');
+        const gameInterfaceEl = document.getElementById('game-interface');
+        const gameContentEl = document.getElementById('game-content');
+        const endScreenEl = document.getElementById('end-screen');
+        const gameTitleEl = document.getElementById('game-title');
+        const gameSubtitleEl = document.getElementById('game-subtitle');
+        const questionBoxEl = document.getElementById('question-box');
+        const questionTextEl = document.getElementById('question-text');
+        const authorDisplayEl = document.getElementById('author-display');
+        const optionsGridEl = document.getElementById('options-grid');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score');
+        const questionCountEl = document.getElementById('question-count');
+        const totalCountEl = document.getElementById('total-count');
+        const finalScoreEl = document.getElementById('final-score-display');
+        const endMsgEl = document.getElementById('end-msg');
+
+        function showMainMenu() {
+            gameInterfaceEl.style.display = 'none';
+            menuEl.style.display = 'block';
+        }
+
+        function initGame(mode) {
+            currentMode = mode;
+            menuEl.style.display = 'none';
+            gameInterfaceEl.style.display = 'flex';
+            gameContentEl.style.display = 'block';
+            endScreenEl.style.display = 'none';
+            
+            score = 0;
+            round = 0;
+            scoreEl.innerText = '0';
+
+            // Configure based on Mode
+            if (mode === 'excerpts') {
+                gameTitleEl.innerText = "Who Wrote This?";
+                gameSubtitleEl.innerText = "Identify the author from the text";
+                questionPool = [...excerptData];
+                questionBoxEl.classList.add('quote-style');
+                optionsGridEl.classList.remove('stacked-grid');
+            } else if (mode === 'dates') {
+                gameTitleEl.innerText = "Timeline Challenge";
+                gameSubtitleEl.innerText = "When was this text written?";
+                questionPool = [...dateData];
+                questionBoxEl.classList.remove('quote-style');
+                optionsGridEl.classList.remove('stacked-grid');
+            } else if (mode === 'significance') {
+                gameTitleEl.innerText = "Why It Matters";
+                gameSubtitleEl.innerText = "Identify historical significance";
+                questionPool = [...significanceData];
+                questionBoxEl.classList.remove('quote-style');
+                optionsGridEl.classList.add('stacked-grid');
+            } else if (mode === 'context') {
+                gameTitleEl.innerText = "The Motivator";
+                gameSubtitleEl.innerText = "Why was this text written?";
+                questionPool = [...contextData];
+                questionBoxEl.classList.remove('quote-style');
+                optionsGridEl.classList.add('stacked-grid');
+            } else if (mode === 'themes') {
+                gameTitleEl.innerText = "Theme Spotter";
+                gameSubtitleEl.innerText = "Connect text to doctrine";
+                questionPool = [...themeData];
+                questionBoxEl.classList.remove('quote-style');
+                optionsGridEl.classList.add('stacked-grid');
+            } else if (mode === 'thesis') {
+                gameTitleEl.innerText = "Thesis Match";
+                gameSubtitleEl.innerText = "Identify main arguments";
+                questionPool = [...thesisData];
+                questionBoxEl.classList.remove('quote-style');
+                optionsGridEl.classList.add('stacked-grid');
+            }
+
+            totalCountEl.innerText = questionPool.length;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (questionPool.length === 0) {
+                endGame();
+                return;
+            }
+
+            isAnswered = false;
+            nextBtn.style.display = 'none';
+            optionsGridEl.innerHTML = '';
+            
+            round++;
+            questionCountEl.innerText = round;
+
+            // Pick random question from pool
+            const randomIndex = Math.floor(Math.random() * questionPool.length);
+            currentQuestion = questionPool[randomIndex];
+            questionPool.splice(randomIndex, 1);
+
+            // Display Logic
+            if (currentMode === 'excerpts') {
+                questionTextEl.innerText = currentQuestion.text;
+                authorDisplayEl.innerText = ""; 
+            } else if (currentMode === 'dates' || currentMode === 'significance') {
+                questionTextEl.innerHTML = `<strong>${currentQuestion.title}</strong>`;
+                authorDisplayEl.innerText = `by ${currentQuestion.author}`;
+            } else {
+                // Context, Themes, Thesis
+                questionTextEl.innerText = currentQuestion.text;
+                authorDisplayEl.innerText = "";
+            }
+
+            // Options Logic
+            let options = [];
+            if (currentMode === 'excerpts') {
+                const allAuthors = [...new Set(excerptData.map(i => i.author))];
+                options = [currentQuestion.author];
+                while (options.length < 4) {
+                    const random = allAuthors[Math.floor(Math.random() * allAuthors.length)];
+                    if (!options.includes(random)) options.push(random);
+                }
+            } else if (currentMode === 'dates' || currentMode === 'significance') {
+                options = [currentQuestion.answer, ...currentQuestion.distractors];
+            } else {
+                // Context, Themes, Thesis
+                options = [currentQuestion.correct, ...currentQuestion.distractors];
+            }
+
+            // Shuffle Options
+            options.sort(() => Math.random() - 0.5);
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(btn, opt);
+                optionsGridEl.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(btn, guess) {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            let correctAnswer = "";
+            if (currentMode === 'excerpts') correctAnswer = currentQuestion.author;
+            else if (currentMode === 'dates' || currentMode === 'significance') correctAnswer = currentQuestion.answer;
+            else correctAnswer = currentQuestion.correct;
+
+            const buttons = document.querySelectorAll('.option-btn');
+
+            if (guess === correctAnswer) {
+                btn.classList.add('correct');
+                score++;
+                scoreEl.innerText = score;
+            } else {
+                btn.classList.add('wrong');
+                buttons.forEach(b => {
+                    if (b.innerText === correctAnswer) b.classList.add('correct');
+                });
+            }
+
+            nextBtn.style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            loadQuestion();
+        }
+
+        function endGame() {
+            gameContentEl.style.display = 'none';
+            endScreenEl.style.display = 'flex';
+            
+            const total = parseInt(totalCountEl.innerText);
+            finalScoreEl.innerText = `${score} / ${total}`;
+
+            if (score === total) endMsgEl.innerText = "Perfect! You're ready for the midterm.";
+            else if (score > total * 0.7) endMsgEl.innerText = "Great job! Just a little more review.";
+            else endMsgEl.innerText = "Keep studying! Review your notes and try again.";
+        }
+
+        function restartCurrentGame() {
+            initGame(currentMode);
+        }
+
+    </script>
+</body>
+</html>
