@@ -1,0 +1,32 @@
+{
+    "servers": [
+        {
+            "name": "my-anisette",
+            "address": "https://anisette-v3-server-rsg5.onrender.com"
+        },
+        {
+            "name": "SideStore (.xyz)",
+            "address": "https://ani.846969.xyz"
+        },
+        {
+            "name": "nythepegasus",
+            "address": "https://ani.npeg.us"
+        },
+        {
+            "name": "WE. Studio",
+            "address": "https://anisette.wedotstud.io"
+        },
+        {
+            "name": "owoellen",
+            "address": "https://ani.owoellen.rocks"
+        },
+        {
+            "name": "iDH Server",
+            "address": "https://ani.idevicehacked.com"
+        },
+        {
+            "name": "neoarz",
+            "address": "https://ani.neoarz.xyz"
+        }
+    ]
+}
