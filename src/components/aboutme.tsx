@@ -66,19 +66,16 @@ export default function AboutMe() {
             <p>
               As a <a href="https://yaledailynews.com/blog/2023/02/26/inside-the-hahn-scholars-programs-push-to-recruit-top-stem-students/" 
               className="!font-extrabold dark:text-white underline hover:text-black hover:bg-white transition-all">
-              Hahn Scholar</a> in <a href="https://www.liu-research.com/" className="!font-extrabold dark:text-white underline hover:text-black hover:bg-white transition-all">Professor Mengxia Liu’s lab</a>, I’m developing a <strong className="dark:text-neutral-300 font-bold">lensless imaging system</strong> that
-               uses computational imaging techniques 
+              Hahn Scholar</a> in <a href="https://www.liu-research.com/" className="!font-extrabold dark:text-white underline hover:text-black hover:bg-white transition-all">Professor Mengxia Liu’s lab</a>, I developed a <strong className="dark:text-neutral-300 font-bold">lensless imaging system</strong> that
+               used computational imaging techniques
               to capture and reconstruct data invisible to the human eye.
+              I'm also an incoming Visiting Researcher at <strong className="dark:text-neutral-300 font-bold">HKUST</strong> in <strong className="dark:text-neutral-300 font-bold">Professor Gary Sheung Han Chan's group</strong>, where I'll be working on AIoT for traffic management and optimization.
             </p>
 
             <p>
-              Outside the lab, I'm a developer for the <a href="https://yalecomputersociety.org/" 
-              className="!font-extrabold dark:text-white underline hover:text-black hover:bg-white transition-all">Yale Computer Society</a>, contributing to the full-stack development of <strong className="dark:text-neutral-300 font-bold">Yale Menus</strong>, a platform used daily by thousands of students to check campus dining menus in real time.
-            </p>
-
-            <p>
-              I'm also working as a <strong className="dark:text-neutral-300 font-bold">Software Engineer</strong> for <a href="https://withnira.com" 
-              className="!font-extrabold dark:text-white underline hover:text-black hover:bg-white transition-all">NIRA</a>, where I'm building tools that make connecting with others easier.
+              I was a developer for the <a href="https://yalecomputersociety.org/" 
+              className="!font-extrabold dark:text-white underline hover:text-black hover:bg-white transition-all">Yale Computer Society</a>, contributing to the full-stack development of <strong className="dark:text-neutral-300 font-bold">Yale Menus</strong>, a platform used daily by thousands of students to check campus dining menus in real time. I also previously worked as a <strong className="dark:text-neutral-300 font-bold">Software Engineer</strong> for <a href="https://withnira.com" 
+              className="!font-extrabold dark:text-white underline hover:text-black hover:bg-white transition-all">NIRA</a>, where I built tools that make connecting with others easier.
             </p>
 
             <p>

@@ -13,6 +13,14 @@ interface Project {
 
 export const projects: Project[] = [
   {
+    title: "SmartBell",
+    description: "A fully offline smart doorbell built on a Raspberry Pi 4. It detects motion, classifies what is there using on-device TFLite inference, recognizes faces by name using OpenCV DNN and OpenFace embeddings, and announces results through a speaker — no cloud, no subscription, no images leaving the device.",
+    image: "https://opengraph.githubassets.com/1/onghaig/smartDoorBell",
+    link: "https://github.com/onghaig/smartDoorBell",
+    technologies: ["C++17", "Python", "TensorFlow Lite", "OpenCV", "OpenFace", "Piper TTS", "pigpio", "libcamera", "Raspberry Pi 4", "Unix sockets", "MobileNet SSD", "Edge AI"],
+    completed: "2026"
+  },
+  {
     title: "Lensless Polarimetric Imaging",
     description: "Lensless computational imaging pipeline, with capabilities in estimating Stokes parameters with ADMM.",
     image: LenslessImg,
