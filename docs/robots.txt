@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://onghaig.github.io/sitemap.xml

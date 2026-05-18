@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JERA TECHNOLOGIES — Satellite Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/leaflet.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0A;
+    --bg2: #111111;
+    --bg3: #161616;
+    --border: #1E1E1E;
+    --amber: #E8A020;
+    --text: #C8C8C8;
+    --text-dim: #666;
+    --white: #FFFFFF;
+    --green: #22C55E;
+    --red: #EF4444;
+    --yellow: #F59E0B;
+    --tenke: #E8A020;
+    --mutanda: #4ECDC4;
+    --kamoto: #FF6B6B;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    font-size: 12px;
+    overflow: hidden;
+  }
+
+  #app {
+    display: grid;
+    grid-template-rows: 38px 1fr 220px;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── Header ── */
+  #header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 16px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  #header .logo {
+    color: var(--amber);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+  }
+
+  .hstat {
+    color: var(--text-dim);
+    font-size: 11px;
+  }
+  .hstat span { color: var(--text); }
+
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--green);
+  }
+  .live-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .alert-badge {
+    margin-left: auto;
+    color: var(--red);
+    font-size: 11px;
+    border: 1px solid var(--red);
+    padding: 2px 8px;
+  }
+
+  /* ── Middle row ── */
+  #middle {
+    display: grid;
+    grid-template-columns: 58% 42%;
+    border-bottom: 1px solid var(--border);
+    min-height: 0;
+  }
+
+  #map-panel {
+    position: relative;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  #map {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+  }
+
+  .panel-label {
+    position: absolute;
+    top: 8px; left: 8px;
+    z-index: 1000;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--amber);
+    background: rgba(10,10,10,0.85);
+    padding: 2px 6px;
+    pointer-events: none;
+  }
+
+  #chart-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 12px 8px;
+    min-height: 0;
+  }
+
+  .chart-title {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--amber);
+    margin-bottom: 6px;
+    flex-shrink: 0;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  .legend-item:hover { color: var(--text); }
+  .legend-dot {
+    width: 8px; height: 2px;
+    flex-shrink: 0;
+  }
+
+  #activity-chart-wrapper {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+  }
+
+  /* ── Bottom row ── */
+  #bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .bottom-panel {
+    padding: 8px 12px;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .bottom-panel:last-child { border-right: none; }
+
+  .panel-title {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--amber);
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+  }
+
+  /* ── Before/After Slider ── */
+  #slider-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .stab {
+    font-size: 10px;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    cursor: pointer;
+    background: none;
+    font-family: inherit;
+    letter-spacing: 0.05em;
+  }
+  .stab.active {
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  #slider-container {
+    position: relative;
+    width: 100%;
+    height: 118px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    cursor: col-resize;
+    user-select: none;
+  }
+
+  #slider-after, #slider-before {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  #slider-before {
+    clip-path: inset(0 50% 0 0);
+  }
+
+  #slider-divider {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: var(--amber);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  #slider-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--amber);
+    transform: translate(-50%, -50%);
+  }
+
+  .slider-label {
+    position: absolute;
+    bottom: 4px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    background: rgba(10,10,10,0.8);
+    padding: 1px 4px;
+    pointer-events: none;
+  }
+  #label-before { left: 4px; color: var(--text-dim); }
+  #label-after  { right: 4px; color: var(--amber); }
+
+  #delta-badge {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 11px;
+    color: var(--red);
+    border: 1px solid var(--red);
+    padding: 1px 6px;
+  }
+
+  /* ── Alert Feed ── */
+  .alert-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .alert-row:last-child { border-bottom: none; }
+
+  .alert-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .alert-meta { color: var(--text-dim); font-size: 9px; }
+  .alert-mine { color: var(--white); font-size: 11px; font-weight: 500; }
+
+  /* ── API Output ── */
+  #api-output {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 8px;
+    font-size: 10px;
+    line-height: 1.6;
+    height: calc(100% - 28px);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .json-key   { color: #7DD3FC; }
+  .json-str   { color: #86EFAC; }
+  .json-num   { color: #FCA5A5; }
+  .json-alert { color: var(--red); }
+
+  #cursor {
+    display: inline-block;
+    width: 7px; height: 12px;
+    background: var(--amber);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+
+  /* ── Leaflet overrides ── */
+  .leaflet-container { background: #0A0A0A; }
+  .leaflet-control-zoom a {
+    background: var(--bg2) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+  }
+  .leaflet-control-attribution {
+    background: rgba(10,10,10,0.7) !important;
+    color: var(--text-dim) !important;
+  }
+  .leaflet-control-attribution a { color: var(--text-dim) !important; }
+
+  /* ── Pulse animation for alert mine ── */
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+  .pulse-marker {
+    position: relative;
+    width: 12px; height: 12px;
+  }
+  .pulse-marker::after {
+    content: '';
+    position: absolute;
+    top: -3px; left: -3px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: rgba(232,160,32,0.6);
+    animation: pulse-ring 1.5s ease-out infinite;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Header -->
+  <div id="header">
+    <div class="logo">JERA TECHNOLOGIES</div>
+    <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+    <div class="hstat">SITES <span>47</span></div>
+    <div class="hstat">METALS <span>Co · Ni · Li</span></div>
+    <div class="hstat">COVERAGE <span>DRC · Zambia · Chile</span></div>
+    <div class="alert-badge">3 ALERTS ACTIVE</div>
+  </div>
+
+  <!-- Middle: Map + Chart -->
+  <div id="middle">
+    <div id="map-panel">
+      <div class="panel-label">KATANGA BELT — SAR SURVEILLANCE</div>
+      <div id="map"></div>
+    </div>
+    <div id="chart-panel">
+      <div class="chart-title">MINING ACTIVITY INDEX — REAL-TIME SIGNAL</div>
+      <div class="chart-legend">
+        <div class="legend-item" onclick="toggleMine(0)">
+          <div class="legend-dot" style="background:var(--tenke)"></div>Tenke Fungurume
+        </div>
+        <div class="legend-item" onclick="toggleMine(1)">
+          <div class="legend-dot" style="background:var(--mutanda)"></div>Mutanda
+        </div>
+        <div class="legend-item" onclick="toggleMine(2)">
+          <div class="legend-dot" style="background:var(--kamoto)"></div>Kamoto
+        </div>
+        <div class="legend-item" style="cursor:default">
+          <div class="legend-dot" style="background:#555;border-top:1px dashed #555"></div>Cobalt Price
+        </div>
+      </div>
+      <div id="activity-chart-wrapper">
+        <canvas id="activityChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom: Slider | Alerts | API -->
+  <div id="bottom">
+
+    <!-- Before/After Slider -->
+    <div class="bottom-panel">
+      <div class="panel-title">BEFORE / AFTER — SAR BACKSCATTER</div>
+      <div id="slider-tabs">
+        <button class="stab active" onclick="selectMineSlider('tenke_fungurume')">TENKE</button>
+        <button class="stab" onclick="selectMineSlider('mutanda')">MUTANDA</button>
+        <button class="stab" onclick="selectMineSlider('kamoto')">KAMOTO</button>
+      </div>
+      <div id="slider-container">
+        <img id="slider-after"  src="" alt="Feb 2025">
+        <img id="slider-before" src="" alt="Oct 2024">
+        <div id="slider-divider"></div>
+        <div class="slider-label" id="label-before">OCT 2024</div>
+        <div class="slider-label" id="label-after">FEB 2025</div>
+      </div>
+      <div id="delta-badge">↓ 23% ACTIVITY VS 30D AVG</div>
+    </div>
+
+    <!-- Alert Feed -->
+    <div class="bottom-panel">
+      <div class="panel-title">SIGNAL ALERTS</div>
+      <div class="alert-row">
+        <div class="alert-dot" style="background:var(--red)"></div>
+        <div>
+          <div class="alert-mine">Tenke Fungurume</div>
+          <div class="alert-meta">Activity -23% vs 30d avg &mdash; Feb 14, 2025</div>
+          <div class="alert-meta" style="color:var(--amber)">CRITICAL · 8 days before export ban</div>
+        </div>
+      </div>
+      <div class="alert-row">
+        <div class="alert-dot" style="background:var(--yellow)"></div>
+        <div>
+          <div class="alert-mine">Mutanda</div>
+          <div class="alert-meta">New equipment cluster detected &mdash; Feb 10, 2025</div>
+          <div class="alert-meta">WARNING · Potential operational shift</div>
+        </div>
+      </div>
+      <div class="alert-row">
+        <div class="alert-dot" style="background:var(--green)"></div>
+        <div>
+          <div class="alert-mine">Kamoto</div>
+          <div class="alert-meta">Activity consistent with reported output</div>
+          <div class="alert-meta">NOMINAL · No anomalies detected</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- API Output -->
+    <div class="bottom-panel">
+      <div class="panel-title">API OUTPUT — LIVE SIGNAL</div>
+      <div id="api-output">
+<span class="json-key">"site_id"</span>: <span class="json-str">"tenke-fungurume-001"</span>,
+<span class="json-key">"metal"</span>: <span class="json-str">"cobalt"</span>,
+<span class="json-key">"date"</span>: <span class="json-str">"2025-02-14"</span>,
+<span class="json-key">"activity_index"</span>: <span class="json-num">0.241</span>,
+<span class="json-key">"30d_delta"</span>: <span class="json-str">"-23.4%"</span>,
+<span class="json-key">"confidence"</span>: <span class="json-num">0.89</span>,
+<span class="json-key">"alert"</span>: <span class="json-alert">"ACTIVITY_DECLINE"</span>,
+<span class="json-key">"signal_days_before_event"</span>: <span class="json-num">8</span>
+<div id="cursor"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="assets/leaflet.js"></script>
+<script src="assets/chart.js"></script>
+<script src="assets/chartjs-plugin-annotation.js"></script>
+<script>
+// Data injected by 07_export.py — do not edit manually
+const ACTIVITY_DATA = {"Tenke Fungurume":[{"date":"2024-10-02","raw":null,"smoothed":null},{"date":"2024-10-07","raw":null,"smoothed":null},{"date":"2024-10-14","raw":0.3194,"smoothed":0.3194},{"date":"2024-10-19","raw":0.5519,"smoothed":0.4356},{"date":"2024-10-26","raw":0.5567,"smoothed":0.476},{"date":"2024-10-31","raw":1.0,"smoothed":0.7029},{"date":"2024-11-07","raw":0.8309,"smoothed":0.7959},{"date":"2024-11-12","raw":0.8672,"smoothed":0.8994},{"date":"2024-11-24","raw":0.5111,"smoothed":0.7364},{"date":"2024-12-06","raw":0.6964,"smoothed":0.6916},{"date":"2024-12-13","raw":0.0,"smoothed":0.4025},{"date":"2024-12-18","raw":0.667,"smoothed":0.4545},{"date":"2024-12-25","raw":0.2459,"smoothed":0.3043},{"date":"2024-12-30","raw":0.6137,"smoothed":0.5088},{"date":"2025-01-06","raw":0.3293,"smoothed":0.3963},{"date":"2025-01-11","raw":0.6549,"smoothed":0.5326},{"date":"2025-01-18","raw":0.2822,"smoothed":0.4221},{"date":"2025-01-23","raw":0.4529,"smoothed":0.4633},{"date":"2025-01-30","raw":0.104,"smoothed":0.2797},{"date":"2025-02-04","raw":1.0,"smoothed":0.519},{"date":"2025-02-11","raw":0.0,"smoothed":0.188},{"date":"2025-02-16","raw":0.5971,"smoothed":0.3524},{"date":"2025-02-23","raw":0.0719,"smoothed":0.0},{"date":"2025-02-28","raw":0.3518,"smoothed":0.0603},{"date":"2025-03-07","raw":0.4137,"smoothed":0.0},{"date":"2025-03-12","raw":0.809,"smoothed":0.2448},{"date":"2025-03-19","raw":1.0,"smoothed":0.4609},{"date":"2025-03-24","raw":0.7442,"smoothed":0.5711},{"date":"2025-03-31","raw":0.752,"smoothed":0.5521}],"Mutanda":[{"date":"2024-10-02","raw":null,"smoothed":null},{"date":"2024-10-14","raw":null,"smoothed":null},{"date":"2024-10-26","raw":0.966,"smoothed":0.966},{"date":"2024-11-07","raw":0.6807,"smoothed":0.8233},{"date":"2024-12-13","raw":0.5567,"smoothed":0.7345},{"date":"2024-12-25","raw":0.415,"smoothed":0.5508},{"date":"2025-01-06","raw":0.9254,"smoothed":0.6324},{"date":"2025-01-18","raw":0.7874,"smoothed":0.7093},{"date":"2025-01-30","raw":0.8021,"smoothed":0.8383},{"date":"2025-02-11","raw":0.5861,"smoothed":0.5452},{"date":"2025-02-23","raw":0.6103,"smoothed":0.3861},{"date":"2025-03-07","raw":0.0,"smoothed":0.1188},{"date":"2025-03-19","raw":0.5504,"smoothed":0.1069},{"date":"2025-03-31","raw":0.601,"smoothed":0.1038}],"Kamoto":[{"date":"2024-10-07","raw":null,"smoothed":null},{"date":"2024-10-19","raw":null,"smoothed":null},{"date":"2024-10-31","raw":0.8502,"smoothed":0.8502},{"date":"2024-11-12","raw":0.7341,"smoothed":0.7922},{"date":"2024-11-24","raw":0.6518,"smoothed":0.7454},{"date":"2024-12-06","raw":0.8245,"smoothed":0.7368},{"date":"2024-12-18","raw":0.7765,"smoothed":0.7509},{"date":"2024-12-30","raw":0.4073,"smoothed":0.6694},{"date":"2025-01-11","raw":0.0811,"smoothed":0.4216},{"date":"2025-01-23","raw":0.5401,"smoothed":0.3428},{"date":"2025-02-04","raw":0.7574,"smoothed":0.4595},{"date":"2025-02-16","raw":0.1731,"smoothed":0.3102},{"date":"2025-02-28","raw":0.0,"smoothed":0.0302},{"date":"2025-03-12","raw":0.3555,"smoothed":0.0},{"date":"2025-03-24","raw":0.8831,"smoothed":0.1329}]};
+const PRICE_DATA = {"prices":[{"date":"2024-10-01","raw":4.2427,"normalized":0.1577},{"date":"2024-10-02","raw":3.9882,"normalized":0.0886},{"date":"2024-10-03","raw":4.3484,"normalized":0.1863},{"date":"2024-10-04","raw":4.3392,"normalized":0.1838},{"date":"2024-10-05","raw":4.2809,"normalized":0.168},{"date":"2024-10-06","raw":4.3169,"normalized":0.1778},{"date":"2024-10-07","raw":4.2622,"normalized":0.163},{"date":"2024-10-08","raw":4.6274,"normalized":0.262},{"date":"2024-10-09","raw":4.1817,"normalized":0.1411},{"date":"2024-10-10","raw":4.1355,"normalized":0.1286},{"date":"2024-10-11","raw":4.0418,"normalized":0.1032},{"date":"2024-10-12","raw":3.9832,"normalized":0.0873},{"date":"2024-10-13","raw":3.9387,"normalized":0.0752},{"date":"2024-10-14","raw":4.0134,"normalized":0.0955},{"date":"2024-10-15","raw":4.1852,"normalized":0.142},{"date":"2024-10-16","raw":4.2702,"normalized":0.1651},{"date":"2024-10-17","raw":4.2107,"normalized":0.149},{"date":"2024-10-18","raw":4.0392,"normalized":0.1025},{"date":"2024-10-19","raw":4.389,"normalized":0.1973},{"date":"2024-10-20","raw":4.3553,"normalized":0.1882},{"date":"2024-10-21","raw":4.1665,"normalized":0.137},{"date":"2024-10-22","raw":4.0629,"normalized":0.1089},{"date":"2024-10-23","raw":4.3152,"normalized":0.1773},{"date":"2024-10-24","raw":4.2395,"normalized":0.1568},{"date":"2024-10-25","raw":3.8959,"normalized":0.0636},{"date":"2024-10-26","raw":4.1857,"normalized":0.1422},{"date":"2024-10-27","raw":4.255,"normalized":0.161},{"date":"2024-10-28","raw":4.0111,"normalized":0.0948},{"date":"2024-10-29","raw":4.2399,"normalized":0.1569},{"date":"2024-10-30","raw":3.8945,"normalized":0.0632},{"date":"2024-10-31","raw":4.4806,"normalized":0.2222},{"date":"2024-11-01","raw":4.4621,"normalized":0.2171},{"date":"2024-11-02","raw":4.147,"normalized":0.1317},{"date":"2024-11-03","raw":4.2763,"normalized":0.1668},{"date":"2024-11-04","raw":3.6939,"normalized":0.0088},{"date":"2024-11-05","raw":3.9572,"normalized":0.0802},{"date":"2024-11-06","raw":4.1383,"normalized":0.1293},{"date":"2024-11-07","raw":3.9749,"normalized":0.085},{"date":"2024-11-08","raw":4.35,"normalized":0.1868},{"date":"2024-11-09","raw":4.6194,"normalized":0.2598},{"date":"2024-11-10","raw":3.9529,"normalized":0.0791},{"date":"2024-11-11","raw":4.0241,"normalized":0.0984},{"date":"2024-11-12","raw":4.2494,"normalized":0.1595},{"date":"2024-11-13","raw":4.5383,"normalized":0.2378},{"date":"2024-11-14","raw":3.9433,"normalized":0.0765},{"date":"2024-11-15","raw":4.2523,"normalized":0.1603},{"date":"2024-11-16","raw":4.5825,"normalized":0.2498},{"date":"2024-11-17","raw":3.8531,"normalized":0.052},{"date":"2024-11-18","raw":3.931,"normalized":0.0731},{"date":"2024-11-19","raw":4.111,"normalized":0.1219},{"date":"2024-11-20","raw":4.0907,"normalized":0.1164},{"date":"2024-11-21","raw":4.3706,"normalized":0.1923},{"date":"2024-11-22","raw":4.2507,"normalized":0.1598},{"date":"2024-11-23","raw":3.8273,"normalized":0.045},{"date":"2024-11-24","raw":4.3082,"normalized":0.1754},{"date":"2024-11-25","raw":4.0787,"normalized":0.1132},{"date":"2024-11-26","raw":4.4676,"normalized":0.2187},{"date":"2024-11-27","raw":4.0682,"normalized":0.1103},{"date":"2024-11-28","raw":4.0663,"normalized":0.1098},{"date":"2024-11-29","raw":4.3136,"normalized":0.1769},{"date":"2024-11-30","raw":4.3602,"normalized":0.1895},{"date":"2024-12-01","raw":4.2941,"normalized":0.1716},{"date":"2024-12-02","raw":3.846,"normalized":0.0501},{"date":"2024-12-03","raw":4.313,"normalized":0.1767},{"date":"2024-12-04","raw":3.9828,"normalized":0.0872},{"date":"2024-12-05","raw":4.2494,"normalized":0.1595},{"date":"2024-12-06","raw":3.901,"normalized":0.065},{"date":"2024-12-07","raw":4.2937,"normalized":0.1715},{"date":"2024-12-08","raw":4.0306,"normalized":0.1001},{"date":"2024-12-09","raw":3.9306,"normalized":0.073},{"date":"2024-12-10","raw":4.3499,"normalized":0.1867},{"date":"2024-12-11","raw":4.2507,"normalized":0.1598},{"date":"2024-12-12","raw":4.0711,"normalized":0.1111},{"date":"2024-12-13","raw":4.5047,"normalized":0.2287},{"date":"2024-12-14","raw":4.1075,"normalized":0.121},{"date":"2024-12-15","raw":4.2067,"normalized":0.1479},{"date":"2024-12-16","raw":4.2565,"normalized":0.1614},{"date":"2024-12-17","raw":4.0699,"normalized":0.1108},{"date":"2024-12-18","raw":4.2989,"normalized":0.1729},{"date":"2024-12-19","raw":4.088,"normalized":0.1157},{"date":"2024-12-20","raw":4.1136,"normalized":0.1226},{"date":"2024-12-21","raw":4.4862,"normalized":0.2237},{"date":"2024-12-22","raw":3.9815,"normalized":0.0868},{"date":"2024-12-23","raw":3.6933,"normalized":0.0087},{"date":"2024-12-24","raw":4.5383,"normalized":0.2378},{"date":"2024-12-25","raw":4.7354,"normalized":0.2913},{"date":"2024-12-26","raw":4.1149,"normalized":0.123},{"date":"2024-12-27","raw":3.7933,"normalized":0.0358},{"date":"2024-12-28","raw":4.1348,"normalized":0.1284},{"date":"2024-12-29","raw":4.1399,"normalized":0.1298},{"date":"2024-12-30","raw":4.1601,"normalized":0.1353},{"date":"2024-12-31","raw":3.9662,"normalized":0.0827},{"date":"2025-01-01","raw":4.3217,"normalized":0.1791},{"date":"2025-01-02","raw":4.3101,"normalized":0.1759},{"date":"2025-01-03","raw":3.8862,"normalized":0.061},{"date":"2025-01-04","raw":4.3468,"normalized":0.1859},{"date":"2025-01-05","raw":4.6311,"normalized":0.263},{"date":"2025-01-06","raw":4.2361,"normalized":0.1559},{"date":"2025-01-07","raw":4.1292,"normalized":0.1269},{"date":"2025-01-08","raw":4.1702,"normalized":0.138},{"date":"2025-01-09","raw":4.3292,"normalized":0.1811},{"date":"2025-01-10","raw":3.8366,"normalized":0.0475},{"date":"2025-01-11","raw":4.2345,"normalized":0.1554},{"date":"2025-01-12","raw":4.118,"normalized":0.1238},{"date":"2025-01-13","raw":4.588,"normalized":0.2513},{"date":"2025-01-14","raw":4.1634,"normalized":0.1362},{"date":"2025-01-15","raw":4.5503,"normalized":0.2411},{"date":"2025-01-16","raw":3.9682,"normalized":0.0832},{"date":"2025-01-17","raw":4.3233,"normalized":0.1795},{"date":"2025-01-18","raw":4.2671,"normalized":0.1643},{"date":"2025-01-19","raw":4.0175,"normalized":0.0966},{"date":"2025-01-20","raw":4.2373,"normalized":0.1562},{"date":"2025-01-21","raw":4.4546,"normalized":0.2151},{"date":"2025-01-22","raw":4.132,"normalized":0.1276},{"date":"2025-01-23","raw":3.8447,"normalized":0.0497},{"date":"2025-01-24","raw":4.1963,"normalized":0.1451},{"date":"2025-01-25","raw":4.0105,"normalized":0.0947},{"date":"2025-01-26","raw":4.1281,"normalized":0.1266},{"date":"2025-01-27","raw":4.1829,"normalized":0.1414},{"date":"2025-01-28","raw":3.8418,"normalized":0.0489},{"date":"2025-01-29","raw":3.8607,"normalized":0.0541},{"date":"2025-01-30","raw":4.3012,"normalized":0.1735},{"date":"2025-01-31","raw":4.0902,"normalized":0.1163},{"date":"2025-02-01","raw":3.6614,"normalized":0.0},{"date":"2025-02-02","raw":4.3648,"normalized":0.1908},{"date":"2025-02-03","raw":4.2572,"normalized":0.1616},{"date":"2025-02-04","raw":4.0501,"normalized":0.1054},{"date":"2025-02-05","raw":3.9235,"normalized":0.0711},{"date":"2025-02-06","raw":4.3755,"normalized":0.1937},{"date":"2025-02-07","raw":4.2734,"normalized":0.166},{"date":"2025-02-08","raw":4.7003,"normalized":0.2818},{"date":"2025-02-09","raw":4.2882,"normalized":0.17},{"date":"2025-02-10","raw":4.2814,"normalized":0.1682},{"date":"2025-02-11","raw":4.1649,"normalized":0.1366},{"date":"2025-02-12","raw":4.3715,"normalized":0.1926},{"date":"2025-02-13","raw":4.3313,"normalized":0.1817},{"date":"2025-02-14","raw":4.4629,"normalized":0.2174},{"date":"2025-02-15","raw":4.0905,"normalized":0.1164},{"date":"2025-02-16","raw":4.1086,"normalized":0.1213},{"date":"2025-02-17","raw":4.0994,"normalized":0.1188},{"date":"2025-02-18","raw":4.3661,"normalized":0.1911},{"date":"2025-02-19","raw":4.5147,"normalized":0.2314},{"date":"2025-02-20","raw":4.1036,"normalized":0.1199},{"date":"2025-02-21","raw":4.1108,"normalized":0.1219},{"date":"2025-02-22","raw":4.83,"normalized":0.3169},{"date":"2025-02-23","raw":6.0015,"normalized":0.6346},{"date":"2025-02-24","raw":6.0183,"normalized":0.6392},{"date":"2025-02-25","raw":6.2488,"normalized":0.7017},{"date":"2025-02-26","raw":5.9361,"normalized":0.6169},{"date":"2025-02-27","raw":6.1958,"normalized":0.6873},{"date":"2025-02-28","raw":6.2841,"normalized":0.7113},{"date":"2025-03-01","raw":6.1678,"normalized":0.6798},{"date":"2025-03-02","raw":6.4257,"normalized":0.7497},{"date":"2025-03-03","raw":6.5145,"normalized":0.7738},{"date":"2025-03-04","raw":6.693,"normalized":0.8222},{"date":"2025-03-05","raw":6.9555,"normalized":0.8934},{"date":"2025-03-06","raw":6.8542,"normalized":0.8659},{"date":"2025-03-07","raw":6.8283,"normalized":0.8589},{"date":"2025-03-08","raw":7.048,"normalized":0.9185},{"date":"2025-03-09","raw":7.2898,"normalized":0.984},{"date":"2025-03-10","raw":7.0006,"normalized":0.9056},{"date":"2025-03-11","raw":7.01,"normalized":0.9081},{"date":"2025-03-12","raw":7.2198,"normalized":0.965},{"date":"2025-03-13","raw":7.1084,"normalized":0.9348},{"date":"2025-03-14","raw":7.2325,"normalized":0.9685},{"date":"2025-03-15","raw":7.1381,"normalized":0.9429},{"date":"2025-03-16","raw":7.2402,"normalized":0.9706},{"date":"2025-03-17","raw":6.9922,"normalized":0.9033},{"date":"2025-03-18","raw":7.1383,"normalized":0.9429},{"date":"2025-03-19","raw":7.1099,"normalized":0.9353},{"date":"2025-03-20","raw":6.9664,"normalized":0.8963},{"date":"2025-03-21","raw":6.9167,"normalized":0.8829},{"date":"2025-03-22","raw":7.2379,"normalized":0.97},{"date":"2025-03-23","raw":7.0899,"normalized":0.9298},{"date":"2025-03-24","raw":6.994,"normalized":0.9038},{"date":"2025-03-25","raw":7.1263,"normalized":0.9397},{"date":"2025-03-26","raw":7.3011,"normalized":0.9871},{"date":"2025-03-27","raw":6.8143,"normalized":0.8551},{"date":"2025-03-28","raw":6.9263,"normalized":0.8854},{"date":"2025-03-29","raw":7.0082,"normalized":0.9077},{"date":"2025-03-30","raw":7.3487,"normalized":1.0},{"date":"2025-03-31","raw":7.1804,"normalized":0.9544}],"event_date":"2025-02-22","signal_date":"2025-02-08","ticker":"GLEN.L"};
+const SITES_DATA = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[26.22,-10.72],[26.22,-10.58],[26.08,-10.58],[26.08,-10.72],[26.22,-10.72]]]},"properties":{"name":"Tenke Fungurume","color":"#E8A020","metal":"cobalt/copper","centroid_lon":26.15,"centroid_lat":-10.65}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[27.32,-10.98],[27.32,-10.84],[27.18,-10.84],[27.18,-10.98],[27.32,-10.98]]]},"properties":{"name":"Mutanda","color":"#4ECDC4","metal":"cobalt","centroid_lon":27.25,"centroid_lat":-10.91}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[25.56,-10.88],[25.56,-10.74],[25.42,-10.74],[25.42,-10.88],[25.56,-10.88]]]},"properties":{"name":"Kamoto","color":"#FF6B6B","metal":"cobalt/copper","centroid_lon":25.49,"centroid_lat":-10.81}}]};
+
+// ─────────────────────────────────────────
+// Mine config
+// ─────────────────────────────────────────
+const MINES = {
+  "Tenke Fungurume": { color: "#E8A020", centroid: [26.15, -10.65], key: "tenke_fungurume" },
+  "Mutanda":         { color: "#4ECDC4", centroid: [27.25, -10.91], key: "mutanda" },
+  "Kamoto":          { color: "#FF6B6B", centroid: [25.49, -10.81], key: "kamoto" },
+};
+
+const MINE_NAMES = Object.keys(MINES);
+
+// ─────────────────────────────────────────
+// Map
+// ─────────────────────────────────────────
+const map = L.map("map", {
+  center: [-10.75, 26.4],
+  zoom: 9,
+  zoomControl: true,
+});
+
+L.tileLayer(
+  "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  { attribution: "Esri World Imagery", maxZoom: 18 }
+).addTo(map);
+
+const markerMap = {};
+
+MINE_NAMES.forEach((name, idx) => {
+  const m = MINES[name];
+  const marker = L.circleMarker([m.centroid[1], m.centroid[0]], {
+    radius: name === "Tenke Fungurume" ? 10 : 7,
+    fillColor: m.color,
+    color: m.color,
+    weight: name === "Tenke Fungurume" ? 2 : 1,
+    fillOpacity: 0.85,
+    opacity: 1,
+  }).addTo(map);
+
+  marker.bindTooltip(name, {
+    permanent: false,
+    className: "leaflet-tooltip",
+    direction: "top",
+  });
+
+  // Pulse effect via repeated animation
+  if (name === "Tenke Fungurume") {
+    const pulseMarker = L.circleMarker([m.centroid[1], m.centroid[0]], {
+      radius: 10,
+      fillColor: "transparent",
+      color: m.color,
+      weight: 2,
+      fillOpacity: 0,
+      opacity: 0,
+      className: "pulse-circle",
+    }).addTo(map);
+
+    let pulseRadius = 10;
+    let pulseOpacity = 0.8;
+    setInterval(() => {
+      pulseRadius += 1;
+      pulseOpacity -= 0.05;
+      if (pulseRadius > 22 || pulseOpacity <= 0) {
+        pulseRadius = 10;
+        pulseOpacity = 0.8;
+      }
+      pulseMarker.setRadius(pulseRadius);
+      pulseMarker.setStyle({ opacity: pulseOpacity, color: m.color });
+    }, 80);
+  }
+
+  marker.on("click", () => highlightMine(idx));
+  markerMap[name] = marker;
+});
+
+// ─────────────────────────────────────────
+// Chart
+// ─────────────────────────────────────────
+let activityChart = null;
+let highlightedIdx = null;
+
+function buildChart(activityData, priceData) {
+  // Use price dates as the unified daily x-axis.
+  // Mine data is sparse (SAR revisit ~12 days); lookup by date, null elsewhere.
+  // spanGaps: true connects the line across missing scenes cleanly.
+  const labels = priceData.prices.map(p => p.date);
+
+  const datasets = MINE_NAMES.map((name, i) => {
+    const lookup = {};
+    activityData[name].forEach(d => { if (d.smoothed !== null) lookup[d.date] = d.smoothed; });
+    const hasData = labels.map(date => lookup[date] !== undefined);
+    return {
+      label: name,
+      data: labels.map(date => lookup[date] !== undefined ? lookup[date] : null),
+      borderColor: MINES[name].color,
+      backgroundColor: "transparent",
+      borderWidth: 2,
+      pointRadius: hasData.map(v => v ? 3 : 0),
+      pointBackgroundColor: MINES[name].color,
+      pointHoverRadius: 5,
+      spanGaps: true,
+      tension: 0.3,
+      yAxisID: "y",
+    };
+  });
+
+  // Price dataset (daily, no nulls)
+  datasets.push({
+    label: "Cobalt Price (GLEN.L)",
+    data: priceData.prices.map(p => p.normalized),
+    borderColor: "#555555",
+    backgroundColor: "transparent",
+    borderWidth: 1.5,
+    borderDash: [4, 4],
+    pointRadius: 0,
+    tension: 0.3,
+    yAxisID: "y2",
+  });
+
+  const ctx = document.getElementById("activityChart").getContext("2d");
+
+  activityChart = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "rgba(17,17,17,0.95)",
+          borderColor: "#1E1E1E",
+          borderWidth: 1,
+          titleColor: "#E8A020",
+          bodyColor: "#C8C8C8",
+          titleFont: { family: "'IBM Plex Mono', monospace", size: 10 },
+          bodyFont:  { family: "'IBM Plex Mono', monospace", size: 10 },
+          callbacks: {
+            label: ctx => {
+              if (ctx.dataset.label === "Cobalt Price (GLEN.L)") {
+                return `  ${ctx.dataset.label}: ${(ctx.raw * 100).toFixed(1)}%`;
+              }
+              return `  ${ctx.dataset.label}: ${ctx.raw.toFixed(3)}`;
+            },
+          },
+        },
+        annotation: {
+          annotations: {
+            exportBan: {
+              type: "line",
+              xMin: "2025-02-22",
+              xMax: "2025-02-22",
+              borderColor: "#FFFFFF",
+              borderWidth: 1.5,
+              label: {
+                display: true,
+                content: "Export Ban",
+                color: "#FFFFFF",
+                backgroundColor: "rgba(10,10,10,0.85)",
+                font: { family: "'IBM Plex Mono', monospace", size: 9 },
+                position: "start",
+                yAdjust: 8,
+              },
+            },
+            signalDrop: {
+              type: "line",
+              xMin: "2025-02-08",
+              xMax: "2025-02-08",
+              borderColor: "#E8A020",
+              borderWidth: 1.5,
+              borderDash: [4, 4],
+              label: {
+                display: true,
+                content: "Signal Drop",
+                color: "#E8A020",
+                backgroundColor: "rgba(10,10,10,0.85)",
+                font: { family: "'IBM Plex Mono', monospace", size: 9 },
+                position: "start",
+                yAdjust: 28,
+              },
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: "#666",
+            font: { family: "'IBM Plex Mono', monospace", size: 9 },
+            maxTicksLimit: 8,
+            maxRotation: 0,
+          },
+          grid: { color: "#1A1A1A" },
+        },
+        y: {
+          position: "left",
+          min: 0,
+          max: 1,
+          title: {
+            display: true,
+            text: "Activity Index",
+            color: "#666",
+            font: { family: "'IBM Plex Mono', monospace", size: 9 },
+          },
+          ticks: {
+            color: "#666",
+            font: { family: "'IBM Plex Mono', monospace", size: 9 },
+          },
+          grid: { color: "#1A1A1A" },
+        },
+        y2: {
+          position: "right",
+          min: 0,
+          max: 1,
+          title: {
+            display: true,
+            text: "Price (norm.)",
+            color: "#555",
+            font: { family: "'IBM Plex Mono', monospace", size: 9 },
+          },
+          ticks: {
+            color: "#555",
+            font: { family: "'IBM Plex Mono', monospace", size: 9 },
+          },
+          grid: { drawOnChartArea: false },
+        },
+      },
+    },
+  });
+}
+
+function highlightMine(idx) {
+  if (!activityChart) return;
+  if (highlightedIdx === idx) {
+    // reset all
+    activityChart.data.datasets.forEach((ds, i) => {
+      ds.borderWidth = i < 3 ? 2 : 1.5;
+      ds.borderColor = i < 3 ? MINES[MINE_NAMES[i]].color : "#555555";
+    });
+    highlightedIdx = null;
+  } else {
+    activityChart.data.datasets.forEach((ds, i) => {
+      if (i === idx) {
+        ds.borderWidth = 3.5;
+      } else if (i < 3) {
+        ds.borderWidth = 1;
+        ds.borderColor = "rgba(100,100,100,0.3)";
+      }
+    });
+    highlightedIdx = idx;
+  }
+  activityChart.update("none");
+}
+
+function toggleMine(idx) { highlightMine(idx); }
+
+// ─────────────────────────────────────────
+// Before/After Slider
+// ─────────────────────────────────────────
+let currentMineSlider = "tenke_fungurume";
+let isDragging = false;
+
+function selectMineSlider(key) {
+  currentMineSlider = key;
+  document.querySelectorAll(".stab").forEach(b => b.classList.remove("active"));
+  event.target.classList.add("active");
+  updateSliderImages();
+}
+
+function updateSliderImages() {
+  const before = `data/frames/${currentMineSlider}_2024-10-15.png`;
+  const after  = `data/frames/${currentMineSlider}_2025-02-15.png`;
+  document.getElementById("slider-before").src = before;
+  document.getElementById("slider-after").src  = after;
+}
+
+const sliderContainer = document.getElementById("slider-container");
+const sliderBefore    = document.getElementById("slider-before");
+const sliderDivider   = document.getElementById("slider-divider");
+
+function setSliderPos(clientX) {
+  const rect = sliderContainer.getBoundingClientRect();
+  const pct  = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+  sliderBefore.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+  sliderDivider.style.left    = `${pct}%`;
+}
+
+sliderContainer.addEventListener("mousedown", e => { isDragging = true; setSliderPos(e.clientX); });
+window.addEventListener("mousemove", e => { if (isDragging) setSliderPos(e.clientX); });
+window.addEventListener("mouseup", () => { isDragging = false; });
+sliderContainer.addEventListener("touchstart", e => { isDragging = true; setSliderPos(e.touches[0].clientX); });
+window.addEventListener("touchmove", e => { if (isDragging) setSliderPos(e.touches[0].clientX); });
+window.addEventListener("touchend", () => { isDragging = false; });
+
+// ─────────────────────────────────────────
+// Boot — load data
+// ─────────────────────────────────────────
+(function init() {
+  // In final build, ACTIVITY_DATA and PRICE_DATA are injected as inline JS.
+  // During development, we attempt to load from data/ via fetch.
+  // If fetch fails (file:// protocol), user must serve with http.server.
+
+  setTimeout(() => map.invalidateSize(), 100);
+
+  if (typeof ACTIVITY_DATA !== "undefined" && typeof PRICE_DATA !== "undefined") {
+    buildChart(ACTIVITY_DATA, PRICE_DATA);
+    updateSliderImages();
+    return;
+  }
+
+  // Dev mode: load from JSON files
+
+  Promise.all([
+    fetch("data/activity.json").then(r => r.json()),
+    fetch("data/price.json").then(r => r.json()),
+  ])
+    .then(([activity, price]) => {
+      buildChart(activity, price);
+      updateSliderImages();
+    })
+    .catch(err => {
+      document.getElementById("activityChart").parentElement.innerHTML =
+        `<div style="color:#E8A020;padding:20px;font-size:11px">
+          No data loaded. Run: python fallback/generate_mock.py<br>
+          Then serve: python -m http.server 8000 from dashboard/
+        </div>`;
+      console.error("Data load failed:", err);
+    });
+})();
+</script>
+</body>
+</html>
