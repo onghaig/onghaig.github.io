@@ -1,8 +1,0 @@
-{
-    "servers": [
-        {
-            "name": "my-anisette",
-            "address": "https://anisette-v3-server-rsg5.onrender.com"
-        }
-    ]
-}
