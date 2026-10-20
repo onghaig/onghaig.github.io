@@ -8,6 +8,7 @@ import RecruitimationSwipeImg from './recruitimation-swipe.png';
 import RecruitimationJobsImg from './recruitimation-jobs.png';
 import RecruitimationResultsImg from './recruitimation-results.png';
 import TravvyImg from './travvy-chat.png';
+import YaleMealsImg from './yalemeals-icon.png';
 
 interface Project {
   title: string;
@@ -18,6 +19,8 @@ interface Project {
   link?: string;
   // Label for the link when "View Project" is not the right words.
   linkLabel?: string;
+  // Write-up on this site, e.g. /blogs/HKUST/.
+  blog?: string;
   technologies?: string[];
   completed?: string;
   // What I actually did, for team projects and forks of existing work.
@@ -42,6 +45,8 @@ export const projects: Project[] = [
     image: MPCountImg,
     role: "Research Engineer — sole developer of the fork, HKUST",
     link: "https://github.com/onghaig/MPCount",
+    linkLabel: "View on GitHub →",
+    blog: "/blogs/HKUST/",
     technologies: ["PyTorch", "Python", "VGG16-BN U-Net", "Optical Flow", "CUDA", "Computer Vision", "Domain Generalization"],
     completed: "2026"
   },
@@ -79,11 +84,12 @@ export const projects: Project[] = [
     completed: "2025"
   },
   {
-    title: "Yale Menus: Campus Dining App",
-    description: "A responsive web app for browsing every Yale dining hall menu in one place. Students can search dishes across halls, filter by allergen and dietary restriction, and keep browsing on a spotty connection thanks to an offline cache of recently viewed menus.",
-    image: "https://yalemenus.com/images/logo/logo.png",
-    link: "https://yalemenus.com/",
-    technologies: ["React", "TypeScript", "Node.js", "MongoDB"],
+    title: "YaleMeals: Campus Dining App",
+    description: "An iOS app with real-time menus and community ratings across all 14 Yale residential colleges, Slifka, and Commons. Students can filter by dietary needs and allergens, rate dishes, and catch the best meals on campus before they leave their room. Built with the Yale Computer Society, where I am a Software Team Lead.",
+    image: YaleMealsImg,
+    link: "https://apps.apple.com/us/app/yalemeals/id6755962674",
+    linkLabel: "View on the App Store →",
+    technologies: ["React", "TypeScript"],
     completed: "2024"
   },
   {

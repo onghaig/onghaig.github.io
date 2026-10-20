@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#060c14" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+
+    <title>Counting Crowds in Hong Kong — Gavin Onghai</title>
+    <meta name="description" content="What I built and what I learned doing video crowd counting research at HKUST with Professor Gary Chan's group.">
+    <link rel="canonical" href="https://onghaig.github.io/blogs/HKUST/">
+    <meta name="author" content="Gavin Onghai">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Counting Crowds in Hong Kong: What I Built and What I Learned">
+    <meta property="og:description" content="Video crowd counting research at HKUST for an AIoT traffic management system at Kai Tak Sports Park.">
+    <meta property="og:url" content="https://onghaig.github.io/blogs/HKUST/">
+    <meta property="og:image" content="https://onghaig.github.io/blogs/HKUST/images/kowloon-night.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+
+    <style>
+      /* Mirrors the portfolio's palette and type: Inter body, Poppins headings,
+         #060c14 dark background, neutral-400 body copy. */
+      :root {
+        --font-body: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --font-heading: "Poppins", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --bg: #ffffff;
+        --text: #172531;
+        --muted: #525252;
+        --strong: #172531;
+        --rule: #e5e5e5;
+        --link: #2563eb;
+        --chip: #e5e7eb;
+      }
+      :root.dark {
+        --bg: #060c14;
+        --text: rgba(255, 255, 255, 0.87);
+        --muted: #a3a3a3;
+        --strong: #ffffff;
+        --rule: rgba(255, 255, 255, 0.15);
+        --link: #60a5fa;
+        --chip: #374151;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        transition: background-color 0.2s, color 0.2s;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: color-mix(in srgb, var(--bg) 80%, transparent);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--rule);
+      }
+      .topbar a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 500;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+      }
+      .topbar a:hover { opacity: 1; }
+      .theme-toggle {
+        background: none;
+        border: 0;
+        padding: 0.5rem;
+        border-radius: 8px;
+        color: var(--text);
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.2s;
+        display: flex;
+      }
+      .theme-toggle:hover { opacity: 1; }
+      .theme-toggle svg { width: 22px; height: 22px; }
+      :root.dark .icon-moon, :root:not(.dark) .icon-sun { display: none; }
+
+      article {
+        max-width: 46rem;
+        margin: 0 auto;
+        padding: 3rem 1rem 5rem;
+      }
+
+      .kicker {
+        font-weight: 300;
+        font-size: 0.9rem;
+        color: var(--muted);
+        margin: 0 0 0.5rem;
+      }
+      h1 {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 2rem;
+        line-height: 1.15;
+        margin: 0 0 1rem;
+        color: var(--strong);
+      }
+      h2 {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 1.4rem;
+        line-height: 1.4;
+        margin: 3rem 0 0.75rem;
+        color: var(--strong);
+      }
+      @media (min-width: 768px) {
+        article { padding-top: 4rem; }
+        h1 { font-size: 2.75rem; }
+        h2 { font-size: 1.6rem; }
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 300;
+        color: var(--muted);
+        margin-bottom: 2rem;
+      }
+      .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
+      .tags span {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        background: var(--chip);
+      }
+
+      p {
+        font-size: 1.05rem;
+        font-weight: 300;
+        line-height: 1.8;
+        color: var(--muted);
+        margin: 0 0 1.25rem;
+      }
+      p.lede {
+        font-size: 1.2rem;
+        color: var(--text);
+      }
+      @media (min-width: 768px) {
+        p { font-size: 1.125rem; }
+        p.lede { font-size: 1.3rem; }
+      }
+      strong { color: var(--strong); font-weight: 600; }
+
+      a.inline {
+        color: var(--strong);
+        font-weight: 700;
+        text-decoration: underline;
+        transition: all 0.2s;
+      }
+      a.inline:hover { background: var(--strong); color: var(--bg); }
+
+      figure { margin: 2rem 0; }
+      figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
+      }
+      /* Charts and diagrams are white-background exports; give them a frame
+         so they sit cleanly on the dark page. */
+      figure.chart img {
+        background: #fff;
+        padding: 0.75rem;
+      }
+      figure.narrow img { max-width: 30rem; margin: 0 auto; }
+
+      /* The architecture diagram has small text, so it breaks out of the
+         reading column to use more of the screen. */
+      figure.wide {
+        width: min(76rem, calc(100vw - 2rem));
+        margin-left: 50%;
+        transform: translateX(-50%);
+      }
+      figure.wide .wide-scroll {
+        display: block;
+        overflow-x: auto;
+        border-radius: 0.5rem;
+        cursor: zoom-in;
+      }
+      /* On phones, keep the diagram legible and let it scroll sideways. */
+      @media (max-width: 767px) {
+        figure.wide img { min-width: 900px; }
+      }
+      .pair-caption {
+        margin: -1.5rem 0 2.5rem;
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 300;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+      figure figcaption {
+        margin-top: 0.5rem;
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 300;
+        color: var(--muted);
+      }
+
+      .pair {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 2rem 0 2.5rem;
+      }
+      .pair figure { margin: 0; }
+      @media (min-width: 640px) {
+        .pair { flex-direction: row; align-items: stretch; }
+        /* Widths proportional to aspect ratio so both photos share a height. */
+        .pair .portrait { flex: 0.75; }
+        .pair .landscape { flex: 1.5; }
+        .pair img { height: 100%; object-fit: cover; }
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        margin: 1.5rem 0 2rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+        font-variant-numeric: tabular-nums;
+      }
+      th, td {
+        padding: 0.6rem 0.75rem;
+        text-align: right;
+        border-bottom: 1px solid var(--rule);
+        white-space: nowrap;
+      }
+      th:first-child, td:first-child { text-align: left; white-space: normal; }
+      th {
+        font-weight: 600;
+        color: var(--strong);
+        border-bottom-width: 2px;
+      }
+      td { font-weight: 300; color: var(--muted); }
+      td.na { font-style: italic; }
+
+      .thanks {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--rule);
+      }
+
+      footer {
+        max-width: 46rem;
+        margin: 0 auto;
+        padding: 0 1rem 4rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+        font-size: 0.95rem;
+      }
+      footer a { color: var(--link); text-decoration: none; }
+      footer a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <a href="/#projects">&larr; Gavin Onghai</a>
+      <button class="theme-toggle" type="button" aria-label="Toggle light and dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+    </header>
+
+    <article>
+      <p class="kicker">Blog &middot; HKUST Summer Research</p>
+      <h1>Counting Crowds in Hong Kong: What I Built and What I Learned</h1>
+      <div class="meta">
+        <span>Gavin Onghai</span>
+        <span>&bull;</span>
+        <span>Hong Kong University of Science and Technology</span>
+        <span>&bull;</span>
+        <span>Summer 2026</span>
+      </div>
+      <div class="tags">
+        <span>PyTorch</span><span>Computer Vision</span><span>Crowd Counting</span><span>Domain Generalization</span><span>Optical Flow</span>
+      </div>
+
+      <p class="lede">This summer I taught a computer to count dense crowds of people in video, and spent a good part of it learning how to tell whether a model is really working.</p>
+
+      <div class="pair">
+        <figure class="portrait">
+          <img src="/blogs/HKUST/images/hkust-campus.jpg" width="821" height="1094" alt="View over the HKUST sports field and Clear Water Bay at dusk, with mountains under a cloudy sky">
+        </figure>
+        <figure class="landscape">
+          <img src="/blogs/HKUST/images/kowloon-night.jpg" width="1600" height="1067" alt="Gavin standing at a railing in front of the Hong Kong skyline at night">
+        </figure>
+      </div>
+      <p class="pair-caption">Left: the HKUST campus over Clear Water Bay. Right: me, with the Hong Kong skyline at night.</p>
+
+      <h2>Why I was in Hong Kong</h2>
+      <p>I did research at the Hong Kong University of Science and Technology (HKUST) with Professor Gary Chan, whose group is building an AIoT-enabled real-time traffic management system for mega events at the newly developed Kai Tak Sports Park. To optimize traffic around a venue like that, a traffic optimization engine needs several live data sources: car counts, intersection behavior, and people counts. My project focused on people counts, a computer vision task called crowd counting. The standard approach has a neural network produce a density map of an image, and the sum of that map is the number of people in the scene.</p>
+
+      <figure class="chart narrow">
+        <img src="/blogs/HKUST/images/training-window.jpg" width="827" height="851" loading="lazy" alt="Grid of video frames from a training window, the center frame's annotated head points, its density overlay summing to 9, and a binary occupancy map">
+        <figcaption>One training example: three consecutive frames, the annotated heads in the center frame, and the density map the model learns to predict (its sum is the count).</figcaption>
+      </figure>
+
+      <p>The cameras at Kai Tak are a mix of fixed cameras and per-event cameras, so the counting model has to work on views it was never trained on. This is called domain shift. A model that scores well on a proven benchmark can still struggle when it is pointed at a new street with different lighting, angles, or weather.</p>
+
+      <h2>The plan</h2>
+      <p>Two prior papers from HKUST each address part of this. MPCount (Peng and Chan, CVPR 2024) generalizes to unseen scenes for still images, and Flow-Count (Sizhe Song's MPhil thesis, 2023) uses the motion of people as an extra training signal for video. Neither covers the other's problem, so my goal was to combine them into a video model that uses motion and generalizes to new cameras. I planned to measure it on FDST, a standard video crowd counting benchmark.</p>
+
+      <figure class="chart wide">
+        <a href="/blogs/HKUST/images/architecture.png" target="_blank" rel="noopener" class="wide-scroll">
+          <img src="/blogs/HKUST/images/architecture.png" width="1999" height="789" loading="lazy" alt="Model architecture diagram: a three-frame window passes through a shared VGG16-BN encoder and U-Net decoder, temporal fusion, the attention memory bank, and a density head, with an optional optical-flow branch">
+        </a>
+        <figcaption>The video model: three frames are combined over time before the attention memory bank. Dashed parts are optional or used only in training. Click to open full size.</figcaption>
+      </figure>
+
+      <h2>What I built</h2>
+      <p>I started by replicating MPCount, then extended it to take a window of three video frames. The new temporal encoder sits before the memory bank, so the part of the model responsible for domain invariance works with motion-aware features instead of static appearance. At the start of training the video model behaves exactly like the original single-frame one, which means any improvement afterward can be credited directly to what I added.</p>
+      <p>I compared four ways of combining frames: the center frame only (the control), plain averaging, a learned convolution over time, and a convolution over space and time. The learned temporal convolution won, cutting test error from 1.7951 to 1.3712 MAE, about 24% lower. (MAE, or mean absolute error, is the average number of people the model miscounts per frame, so lower is better.) It also beat averaging (1.6627), so the gain came from learned temporal structure and not from smoothing.</p>
+
+      <figure class="chart">
+        <img src="/blogs/HKUST/images/fusion-results.jpg" width="882" height="475" loading="lazy" alt="Bar chart of validation and test MAE for four fusion modes: single frame 1.795 test, mean 1.663, tconv 1.371, stconv 1.482; tconv cuts MAE 23.6% and MSE 33.0%">
+        <figcaption>Counting error for the four ways of combining frames. Lower is better.</figcaption>
+      </figure>
+
+      <p>Flow supervision took more work. FDST has no motion labels, so I generated the targets myself, estimating optical flow and sampling it at each annotated head. Drawing one arrow per head on the video frames caught a sampling problem that no training curve would have shown me: some people who were clearly walking were being labeled as stationary. After the fix, confirmed misses dropped from twelve to one. In a controlled comparison against an identical model with the flow weight set to zero, the control did slightly better on validation (1.311 vs 1.359 MAE), while the supervised model won on the benchmark test set.</p>
+
+
+      <figure>
+        <img src="/blogs/HKUST/images/flow-arrows.jpg" width="1280" height="720" loading="lazy" alt="Crowd on a running track with a colored motion arrow drawn at each annotated head showing its sampled optical flow">
+        <figcaption>Optical flow sampled at each annotated head, drawn as one arrow per person. Looking at frames like this is what caught the sampling bug.</figcaption>
+      </figure>
+
+      <h2>Testing on new cameras</h2>
+      <p>Next I built a cross-domain test from the Mall and UCSD datasets, matched to FDST in crowd density first so that a difference in crowd size wouldn't be mistaken for domain shift. Error on these unseen cameras was higher than on FDST, which pointed me to two things worth understanding.</p>
+      <p>The first was scale. Doubling the resolution of FDST's own test footage, with no change of camera, raised error from 1.7951 to 11.7980, so the model had learned what a person looks like at one particular size. Correcting for scale showed that about 30% of the cross-domain gap came from scale mismatch and the other 70% from genuine domain shift. Sweeping the input scale on Mall shows error is lowest at 1.5&times;, which is how I estimated the scale share of the gap.</p>
+
+      <figure class="chart">
+        <img src="/blogs/HKUST/images/mall-scale-sweep.jpg" width="1600" height="719" loading="lazy" alt="Mall scale sweep line charts: MAE and MSE are lowest at 1.5x input scale (14.46 MAE, 227.78 MSE) and rise toward 0.75x and 4.0x">
+        <figcaption>Counting error on Mall at different input scales. Lower is better, and 1.5&times; is best.</figcaption>
+      </figure>
+
+      <p>The second was the benchmark itself. FDST's 100 videos come from about 20 fixed camera locations, and the official split divides clips, not cameras, so all 20 locations appear in both training and testing. FDST was built for video crowd counting, not for testing new cameras, so a good score there tells you how a model does on familiar views. Knowing that changed how I read every result I had.</p>
+
+      <h2>Data Acquisition</h2>
+      <p>Since I was in Hong Kong, I was fortunately able to visit the Kai Tak Sports Park and see where this traffic system would be implemented. I managed the cameras recording the event during entrance and exit times. The events were definitely &ldquo;mega&rdquo; and the crowds were ginormous. This footage will be used to further improve and validate the model I made.</p>
+
+      <figure class="narrow">
+        <img src="/blogs/HKUST/images/kai-tak-crowd.jpg" width="821" height="1094" loading="lazy" alt="Large crowd walking along the promenade at Kai Tak Sports Park beside a curved video billboard and high-rise apartments">
+        <figcaption>Crowds at Kai Tak Sports Park.</figcaption>
+      </figure>
+
+      <h2>Did it generalize?</h2>
+      <p>No. The cross-domain results showed a failure to transfer. I went back to the original evaluation logs to check, and these are the MAEs at each dataset's native resolution:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Model</th><th>Mall MAE</th><th>UCSD MAE</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Single-frame baseline</td><td>19.9364</td><td>28.1645</td></tr>
+            <tr><td>Extra flow branch, no flow supervision</td><td>21.1177</td><td>28.2529</td></tr>
+            <tr><td>Flow-supervised model</td><td>21.2943</td><td>28.2923</td></tr>
+            <tr><td>Temporal convolution (tconv)</td><td>22.0039</td><td class="na">Not evaluated</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Every change I added did slightly worse than the plain single-frame baseline on the new cameras. The temporal convolution, which cut error on FDST by about 24%, did the worst on Mall. Part of what looked like a better model was a model that had learned FDST's familiar camera views more closely.</p>
+      <p>That taught me a great lesson about overfitting when training machine learning models. Despite the changes I added, the model was still trained on a narrow source domain, and the width of that source domain mattered more than the architecture. A model can only be as general as the range of scenes it learns from.</p>
+
+      <h2>What I learned</h2>
+      <p>I came into the summer unsure which part of the broader traffic management project I would work on. I met with Aaron and Jason, two exceptionally helpful project managers, and they helped me decide on model training. From there I had a very high degree of independence, choosing what to work on and how to approach it. I learned a lot about training AI models, especially optimizing training architectures through code.</p>
+
+      <figure>
+        <img src="/blogs/HKUST/images/hkust-lab.jpg" width="1458" height="1094" loading="lazy" alt="Gavin and a labmate giving thumbs up in the HKUST lab">
+        <figcaption>With Jason at HKUST.</figcaption>
+      </figure>
+
+      <p>The lessons that will last are about checking things. Before I trust a number, I now check what the test holds out. Before I trust my own pipeline, I look at the pictures and not only the loss. And before I trust an improvement, I test it on cameras the model has never seen, because a model that looks better on familiar data can be worse everywhere else. Building a strong model starts with what it learns from, not just how it is built.</p>
+      <p>HKUST was a wonderful place to do research, and the UG Summer Research Program wrapped up with a final research symposium where I presented this work.</p>
+
+      <h2>What's next</h2>
+      <p>The cross-domain results changed what I think comes next. Adding more to the architecture did not make the model more general, so the priority now is widening what it learns from: training across more scenes and camera views, including the footage from Kai Tak, and judging every change on cameras the model has never seen before trusting its FDST score.</p>
+      <p>The next step is motion and frame-rate augmentation, so the model learns what stays the same across motion patterns instead of details specific to FDST. I also want scale variation in training, and evaluation on held-out cameras. Efficiency comes after accuracy.</p>
+
+      <div class="thanks">
+        <p>Thank you to Professor Gary Chan for welcoming me into his lab, and to David Yu and the Andy Keidel Fund Summer Grant for funding this work. I am also grateful to Dean Belperron for making this project possible, and to the Alan S. Tetelman 1958 Fellowship for International Research in the Sciences, whose funding also supported this work.</p>
+      </div>
+    </article>
+
+    <footer>
+      <a href="/#projects">&larr; Back to projects</a>
+      <a href="https://github.com/onghaig/MPCount" target="_blank" rel="noopener noreferrer">View the code on GitHub &rarr;</a>
+    </footer>
+
+    <script>
+      document.querySelector('.theme-toggle').addEventListener('click', function () {
+        document.documentElement.classList.toggle('dark');
+      });
+    </script>
+  </body>
+</html>

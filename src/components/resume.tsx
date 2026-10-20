@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import gavinResume from "../assets/Gavin Technical Resume.pdf";
+import gavinResume from "../assets/Gavin Resume.pdf";
 import { Loader2 } from 'lucide-react';
 
 export default function Resume() {

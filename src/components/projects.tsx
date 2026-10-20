@@ -78,15 +78,27 @@ export default function Projects() {
                   ))}
                 </div>
               )}
-              {project.link && (
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  {project.linkLabel ?? 'View Project →'}
-                </a>
+              {(project.link || project.blog) && (
+                <div className="flex flex-wrap gap-x-6 gap-y-2">
+                  {project.blog && (
+                    <a
+                      href={project.blog}
+                      className="inline-block text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      Read the blog post →
+                    </a>
+                  )}
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      {project.linkLabel ?? 'View Project →'}
+                    </a>
+                  )}
+                </div>
               )}
             </div>
           </motion.div>
