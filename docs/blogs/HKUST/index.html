@@ -360,7 +360,7 @@
         <figcaption>Counting error on Mall at different input scales. Lower is better, and 1.5&times; is best.</figcaption>
       </figure>
 
-      <p>The second was the benchmark itself. FDST's 100 videos come from about 20 fixed camera locations, and the official split divides clips, not cameras, so all 20 locations appear in both training and testing. FDST was built for video crowd counting, not for testing new cameras, so a good score there tells you how a model does on familiar views. Knowing that changed how I read every result I had.</p>
+      <p>The second was the benchmark itself. FDST's 100 videos come from about 20 fixed camera locations, and the official split divides clips, not cameras, so all 20 locations appear in both training and testing. FDST was built for video crowd counting, not for testing new cameras, so a good score there tells you how a model does on familiar views. This taught me to focus more on the training domain, and to validate whether the data I'm training on is sufficient for the goal.</p>
 
       <h2>Data Acquisition</h2>
       <p>Since I was in Hong Kong, I was fortunately able to visit the Kai Tak Sports Park and see where this traffic system would be implemented. I managed the cameras recording the event during entrance and exit times. The events were definitely &ldquo;mega&rdquo; and the crowds were ginormous. This footage will be used to further improve and validate the model I made.</p>
@@ -371,7 +371,7 @@
       </figure>
 
       <h2>Did it generalize?</h2>
-      <p>No. The cross-domain results showed a failure to transfer. I went back to the original evaluation logs to check, and these are the MAEs at each dataset's native resolution:</p>
+      <p>The cross-domain results struggled to transfer. I went back to the original evaluation logs to check, and these are the MAEs at each dataset's native resolution:</p>
 
       <div class="table-wrap">
         <table>
@@ -388,7 +388,7 @@
       </div>
 
       <p>Every change I added did slightly worse than the plain single-frame baseline on the new cameras. The temporal convolution, which cut error on FDST by about 24%, did the worst on Mall. Part of what looked like a better model was a model that had learned FDST's familiar camera views more closely.</p>
-      <p>That taught me a great lesson about overfitting when training machine learning models. Despite the changes I added, the model was still trained on a narrow source domain, and the width of that source domain mattered more than the architecture. A model can only be as general as the range of scenes it learns from.</p>
+      <p>That taught me a great lesson about overfitting when training machine learning models. Despite the changes I added, the model was still trained on a narrow source domain, and the width of that source domain mattered more than the architecture. I realized a model can only be as general as the range of scenes it learns from.</p>
 
       <h2>What I learned</h2>
       <p>I came into the summer unsure which part of the broader traffic management project I would work on. I met with Aaron and Jason, two exceptionally helpful project managers, and they helped me decide on model training. From there I had a very high degree of independence, choosing what to work on and how to approach it. I learned a lot about training AI models, especially optimizing training architectures through code.</p>
@@ -403,7 +403,7 @@
 
       <h2>What's next</h2>
       <p>The cross-domain results changed what I think comes next. Adding more to the architecture did not make the model more general, so the priority now is widening what it learns from: training across more scenes and camera views, including the footage from Kai Tak, and judging every change on cameras the model has never seen before trusting its FDST score.</p>
-      <p>The next step is motion and frame-rate augmentation, so the model learns what stays the same across motion patterns instead of details specific to FDST. I also want scale variation in training, and evaluation on held-out cameras. Efficiency comes after accuracy.</p>
+      <p>The next step is motion and frame-rate augmentation, so the model learns what stays the same across motion patterns instead of details specific to FDST. I also want scale variation in training, and evaluation on held-out cameras. After improving the model's accuracy, I will experiment with making the model work on more resource constrained devices.</p>
 
       <div class="thanks">
         <p>Thank you to Professor Gary Chan for welcoming me into his lab, and to David Yu and the Andy Keidel Fund Summer Grant for funding this work. I am also grateful to Dean Belperron for making this project possible, and to the Alan S. Tetelman 1958 Fellowship for International Research in the Sciences, whose funding also supported this work.</p>
