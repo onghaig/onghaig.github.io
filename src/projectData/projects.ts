@@ -9,6 +9,8 @@ import RecruitimationJobsImg from './recruitimation-jobs.png';
 import RecruitimationResultsImg from './recruitimation-results.png';
 import TravvyImg from './travvy-chat.png';
 import YaleMealsImg from './yalemeals-icon.png';
+import BarRaiserBehavioralImg from './bar-raiser-behavioral.png';
+import BarRaiserWhiteboardImg from './bar-raiser-whiteboard.png';
 
 interface Project {
   title: string;
@@ -56,6 +58,16 @@ export const projects: Project[] = [
     image: RecruitimationSwipeImg,
     images: [RecruitimationJobsImg, RecruitimationResultsImg],
     technologies: ["TypeScript", "React", "Fastify", "Prisma", "PostgreSQL", "BullMQ", "Redis", "OpenAI", "Claude", "Chrome Extension", "Cloudflare R2", "Docker"],
+    completed: "2026"
+  },
+  {
+    title: "Bar Raiser — Voice Mock Interview Coach",
+    description: "A mock interview coach for software engineers. Type any system design, low-level design, or LeetCode-style question, or paste a resume and a set of leadership principles for a behavioral round, and an AI interviewer talks it through with you in real time over the Gemini Live API. It sees your Excalidraw whiteboard and your code as you work, asks follow-ups, and grades you at the end against a rubric it wrote beforehand and kept hidden until you finished. Every interview is saved to your account and can be exported as a single Markdown file. Accounts and history live in MongoDB, each user brings their own API key so interviews run on their own quota, and one live interview per account is enforced across servers. Containerized and deployed on Google Cloud Run.",
+    image: BarRaiserBehavioralImg,
+    images: [BarRaiserWhiteboardImg],
+    link: "https://bar-raiser-ibj6tr2ixq-uc.a.run.app",
+    linkLabel: "Try it live →",
+    technologies: ["TypeScript", "React", "Node.js", "Express", "WebSockets", "MongoDB", "Gemini Live API", "Excalidraw", "Docker", "Google Cloud Run"],
     completed: "2026"
   },
   {
